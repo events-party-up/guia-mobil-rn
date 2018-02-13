@@ -6,8 +6,10 @@ const byId = (state = {}, action) => {
 	switch (action.type) {
 		case actions.ITEMS_UPDATE_SUCCESS:
 			return action.response.data.reduce((acc, item) => {
+				const oldState = state[item.id] ? state[item.id] : {};
 				acc[item.id] = {
 					isFavourite: false,
+					oldState,
 					...item
 				};
 				return acc;
@@ -18,8 +20,9 @@ const byId = (state = {}, action) => {
 			const item = state[id];
 			const updatedItem = {
 				...item,
-				liked: !item.liked
+				isFavourite: !item.isFavourite
 			};
+			console.log({ updatedItem });
 			return {
 				...state,
 				[id]: updatedItem

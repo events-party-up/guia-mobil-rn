@@ -25,7 +25,7 @@ export default function apiCallMiddleware(apiClient) {
 
       dispatch({ type, ...payload, requestId });
 
-      const request = apiCall(apiClient, payload)
+      const request = apiCall(apiClient, payload, getState)
         .then((response: any) => {
           runningRequests = runningRequests.filter(
             request => request.requestId !== requestId

@@ -3,6 +3,7 @@ import { persistStore, autoRehydrate } from "redux-persist";
 import { AsyncStorage } from "react-native";
 import axios from "axios";
 import thunk from "redux-thunk";
+import logger from "redux-logger";
 import apiCallMiddleware from "./apiCallMiddleware";
 import reducers from "../reducers";
 

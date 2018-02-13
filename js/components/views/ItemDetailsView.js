@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, { navigation }) => {
 	const { id } = navigation.state.params;
-	return { ...state.items.byId[id] };
+	return { ...state.items.byId[id], comments: state.comments[id] };
 };
 
 export default connect(mapStateToProps)(ItemDetailsView);
