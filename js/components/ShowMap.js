@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, Dimensions } from "react-native";
+import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import geoViewport from "@mapbox/geo-viewport";
 import supercluster from "supercluster";
@@ -7,49 +8,52 @@ import supercluster from "supercluster";
 import BaseExamplePropTypes from "./common/BaseExamplePropTypes";
 import TabBarPage from "./common/TabBarPage";
 import sheet from "../styles/sheet";
-import { onSortOptions } from "../utils";
+import { onSortOptions, itemToGeoJSONPoint } from "../utils";
 import { DEFAULT_CENTER_COORDINATE } from "../utils";
-
+import config from "../utils/config";
 import { getItems } from "../api";
 
-class ShowMap extends React.Component {
-  static propTypes = {
-    ...BaseExamplePropTypes
-  };
-  state = {};
+const MAPBOX_VECTOR_TILE_SIZE = 512;
+const MAX_ZOOM = 20;
+const MIN_ZOOM = 10;
 
+class ShowMap extends React.Component {
+  static navigationOptions = { title: "Map" };
   constructor(props) {
     super(props);
-    getItems()
-      .then(items => {
-        console.log({ items });
-        const geoJSONItems = items.map(item => ({
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: item.coord
-          },
-          properties: item
-        }));
-
-        const clustering = supercluster({
-          radius: 40,
-          maxZoom: 16
-        });
-        console.log({ geoJSONItems });
-        clustering.load(geoJSONItems);
-
-        this.setState({ clustering });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.clustering = supercluster({
+      radius: 30,
+      maxZoom: MAX_ZOOM,
+      minZoom: MIN_ZOOM
+    });
+    this.state = {
+      pointsLoaded: false,
+      clusteredItems: []
+    };
+  }
+  componentDidMount() {
+    this.setItems(this.props.items);
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log("receiving props");
+    this.setItems(this.props.items);
   }
 
+  setItems = items => {
+    if (items) {
+      const geoJSONItems = items.map(itemToGeoJSONPoint);
+      console.log("!!!! loading points");
+      this.clustering.load(geoJSONItems);
+
+      this.setState({ pointsLoaded: true });
+    }
+  };
+
   async onDidFinishLoadingStyle() {
+    console.log("styles loaded");
     const { width, height } = Dimensions.get("window");
     const bounds = geoViewport.bounds(
-      CENTER_COORD,
+      DEFAULT_CENTER_COORDINATE,
       12,
       [width, height],
       MAPBOX_VECTOR_TILE_SIZE
@@ -66,68 +70,96 @@ class ShowMap extends React.Component {
     // start download
     MapboxGL.offlineManager.createPack(options, this.onDownloadProgress);
   }
-  renderItems = () => {
-    const { clustering } = this.state;
-    if (clustering) {
-      const { geometry, properties } = this.state.regionFeature;
+  recomputeClusters = regionFeature => {
+    if (!regionFeature) return undefined;
+    const { pointsLoaded } = this.state;
+    if (pointsLoaded) {
+      const { geometry, properties } = regionFeature;
       console.log({ geometry }, { properties });
 
       const [northLat, eastLong] = properties.visibleBounds[0];
       const [southLat, westLong] = properties.visibleBounds[1];
       console.log({ northLat }, { eastLong }, { southLat }, { westLong });
       console.log([westLong, southLat, eastLong, northLat]);
-      const clusters = clustering.getClusters(
+      const clustersItems = this.clustering.getClusters(
         [southLat, westLong, northLat, eastLong],
-        Math.round(properties.zoomLevel)
+        Math.floor(properties.zoomLevel)
       );
-      console.log({ clusters });
-      // return null;
-      return clusters.map(item => {
-        return (
-          <MapboxGL.PointAnnotation
-            key={item.properties.id}
-            id={`${item.properties.id}`}
-            coordinate={item.geometry.coordinates}
-            onSelected={this.onAnnotationSelected}
-          >
-            <View style={styles.annotationContainer}>
-              <View style={styles.annotationFill}>
-                {item.properties.cluster ? (
-                  <Text>{item.properties.point_count}</Text>
-                ) : null}
-              </View>
+      return clustersItems;
+    }
+    return [];
+  };
+  renderItems = () => {
+    const { clusteredItems } = this.state;
+
+    return clusteredItems.map(item => {
+      const id = item.properties.cluster
+        ? `cluster_${item.properties.cluster_id}`
+        : `point_${item.properties.id}`;
+      return (
+        <MapboxGL.PointAnnotation
+          key={id}
+          pitchEnabled={false}
+          showUserLocation={true}
+          id={`${item.properties.id}`}
+          coordinate={item.geometry.coordinates}
+          onSelected={() => this.onAnnotationSelected(item)}
+          maxZoom={MAX_ZOOM}
+          minZoom={MIN_ZOOM}
+        >
+          <View style={styles.annotationContainer}>
+            <View style={styles.annotationFill}>
+              {item.properties.cluster ? (
+                <Text>{item.properties.point_count}</Text>
+              ) : null}
             </View>
-            <MapboxGL.Callout title="Look! An annotation!" />
-          </MapboxGL.PointAnnotation>
-        );
+          </View>
+          <MapboxGL.Callout title="Look! An annotation!" />
+        </MapboxGL.PointAnnotation>
+      );
+    });
+  };
+  onAnnotationSelected = item => {
+    console.log({ item });
+    if (item.properties.cluster) {
+      const zoom = this.clustering.getClusterExpansionZoom(
+        item.properties.cluster_id
+      );
+      this._map.setCamera({
+        centerCoordinate: item.geometry.coordinates,
+        zoom
       });
-    } else {
-      return null;
     }
   };
-  onAnnotationSelected = feature => {
-    console.log({ feature });
-  };
-
+  count = 0;
   onRegionDidChange = regionFeature => {
-    this.setState({ regionFeature: regionFeature });
+    console.log("count", this.count++);
+    const clusteredItems = this.recomputeClusters(regionFeature);
+    this.setState({ clusteredItems, regionFeature });
+    // do other stuff here, nothing for now
   };
   render() {
     return (
       <MapboxGL.MapView
-        ref={c => (this._map = c)}
-        zoomLevel={12}
-        onRegionDidChange={this.onRegionDidChange}
         styleURL={MapboxGL.StyleURL.Street}
         style={sheet.matchParent}
-        centerCoordinate={DEFAULT_CENTER_COORDINATE}
+        onRegionDidChange={this.onRegionDidChange}
         onDidFinishLoadingMap={this.onDidFinishLoadingStyle}
+        centerCoordinate={DEFAULT_CENTER_COORDINATE}
+        zoomLevel={12}
+        ref={c => (this._map = c)}
       >
         {this.renderItems()}
       </MapboxGL.MapView>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  items: state.items.allIds
+});
+
+export default connect(mapStateToProps)(ShowMap);
 
 const styles = {
   annotationContainer: {
@@ -152,4 +184,3 @@ const styles = {
     backgroundColor: "transparent"
   }
 };
-export default ShowMap;

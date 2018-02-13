@@ -23,3 +23,14 @@ export function onSortOptions(a, b) {
 
 	return 0;
 }
+
+export function itemToGeoJSONPoint(item) {
+	return {
+		type: "Feature",
+		geometry: {
+			type: "Point",
+			coordinates: item.coord
+		},
+		properties: item
+	};
+}

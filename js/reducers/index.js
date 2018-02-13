@@ -1,3 +1,5 @@
-const rootReducer = (state, action) => state;
+import { combineReducers } from "redux";
+import categories from "./categories";
+import items from "./items";
 
-export default rootReducer;
+export default combineReducers({ categories, items });

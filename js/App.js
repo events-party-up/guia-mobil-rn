@@ -1,5 +1,6 @@
 import React from "react";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
+import { Button } from "react-native-elements";
 
 import {
   View,
@@ -9,6 +10,7 @@ import {
   Modal,
   TouchableOpacity
 } from "react-native";
+import { StackNavigator } from "react-navigation";
 
 import { Icon } from "react-native-elements";
 
@@ -23,36 +25,14 @@ import colors from "./styles/colors";
 import { IS_ANDROID } from "./utils";
 import config from "./utils/config";
 
-// examples
 import ShowMap from "./components/ShowMap";
-import SetPitch from "./components/SetPitch";
-import SetBearing from "./components/SetBearing";
-import ShowClick from "./components/ShowClick";
-import FlyTo from "./components/FlyTo";
-import FitBounds from "./components/FitBounds";
-import SetUserTrackingModes from "./components/SetUserTrackingModes";
-import SetUserLocationVerticalAlignment from "./components/SetUserLocationVerticalAlignment";
-import ShowRegionDidChange from "./components/ShowRegionDidChange";
-import CustomIcon from "./components/CustomIcon";
-import YoYo from "./components/YoYo";
-import EarthQuakes from "./components/EarthQuakes";
-import GeoJSONSource from "./components/GeoJSONSource";
-import WatercolorRasterTiles from "./components/WatercolorRasterTiles";
-import TwoByTwo from "./components/TwoByTwo";
-import IndoorBuilding from "./components/IndoorBuilding";
-import QueryAtPoint from "./components/QueryAtPoint";
-import QueryWithRect from "./components/QueryWithRect";
-import ShapeSourceIcon from "./components/ShapeSourceIcon";
-import CustomVectorSource from "./components/CustomVectorSource";
-import ShowPointAnnotation from "./components/ShowPointAnnotation";
-import CreateOfflineRegion from "./components/CreateOfflineRegion";
-import DriveTheLine from "./components/DriveTheLine";
-import ImageOverlay from "./components/ImageOverlay";
-import DataDrivenCircleColors from "./components/DataDrivenCircleColors";
-import ChoroplethLayerByZoomLevel from "./components/ChoroplethLayerByZoomLevel";
-import PointInMapView from "./components/PointInMapView";
-import TakeSnapshot from "./components/TakeSnapshot";
-import TakeSnapshotWithMap from "./components/TakeSnapshotWithMap";
+import CategoriesList from "./components/CategoriesList";
+import ItemsListView from "./components/ItemsListView";
+import MapView from "./components/ShowMap";
+import ItemDetailsView from "./components/views/ItemDetailsView";
+import * as actions from "./actions";
+
+import { connect } from "react-redux";
 
 const styles = StyleSheet.create({
   noPermissionsText: {
@@ -102,6 +82,10 @@ class App extends React.Component {
     this.onCloseExample = this.onCloseExample.bind(this);
   }
 
+  componentDidMount() {
+    this.props.dispatch(actions.categoriesUpdate());
+    this.props.dispatch(actions.itemsUpdate());
+  }
   async componentWillMount() {
     if (IS_ANDROID) {
       const isGranted = await MapboxGL.requestAndroidLocationPermissions();
@@ -132,7 +116,9 @@ class App extends React.Component {
       </View>
     );
   }
-
+  navigateToMap = () => {
+    this.props.navigation.navigate("MapView");
+  };
   render() {
     if (IS_ANDROID && !this.state.isAndroidPermissionGranted) {
       if (this.state.isFetchingAndroidPermission) {
@@ -150,16 +136,45 @@ class App extends React.Component {
 
     return (
       <View style={sheet.matchParent}>
-        <MapHeader label="React Native Mapbox GL" />
-
-        <View style={sheet.matchParent}>
+        <Button
+          title="Show Map"
+          onPress={this.navigateToMap}
+          buttonStyle={{
+            backgroundColor: "rgba(92, 99,216, 1)",
+            width: 300,
+            height: 45,
+            borderColor: "transparent",
+            borderWidth: 0,
+            borderRadius: 5
+          }}
+          textStyle={{ color: "white" }}
+        />
+        <CategoriesList navigation={this.props.navigation} />
+        {/*<View style={sheet.matchParent}>
           <View style={styles.exampleBackground}>
             <ShowMap label={"Map"} onDismissExample={this.onCloseExample} />
           </View>
-        </View>
+        </View>*/}
       </View>
     );
   }
 }
+const ConnectedApp = connect()(App);
 
-export default App;
+export default StackNavigator({
+  Home: {
+    screen: ConnectedApp
+  },
+  CategoriesList: {
+    screen: CategoriesList
+  },
+  ItemsListView: {
+    screen: ItemsListView
+  },
+  MapView: {
+    screen: MapView
+  },
+  ItemDetailsView: {
+    screen: ItemDetailsView
+  }
+});
