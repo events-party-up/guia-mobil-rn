@@ -1,20 +1,20 @@
-import * as actions from "../actions";
-
 import groupBy from "lodash/groupBy";
+import * as actions from "../actions";
 
 const byId = (state = {}, action) => {
 	switch (action.type) {
 		case actions.ITEMS_UPDATE_SUCCESS:
-			return action.response.data.reduce((acc, item) => {
-				const oldState = state[item.id] ? state[item.id] : {};
-				acc[item.id] = {
-					isFavourite: false,
-					oldState,
-					...item
-				};
-				return acc;
-			}, {});
+			const nextState = { ...state };
 
+			action.response.data.forEach(item => {
+				const oldItem = nextState[item.id];
+				nextState[item.id] = {
+					...item,
+					isFavourite: oldItem ? oldItem.isFavourite : false
+				};
+			});
+
+			return nextState;
 		case actions.ITEM_TOGGLE_FAVOURITE:
 			const id = action.payload;
 			const item = state[id];

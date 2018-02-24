@@ -4,14 +4,12 @@ import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import geoViewport from "@mapbox/geo-viewport";
 import supercluster from "supercluster";
-
-import BaseExamplePropTypes from "./common/BaseExamplePropTypes";
-import TabBarPage from "./common/TabBarPage";
+import BaseExamplePropTypes from "../components/common/BaseExamplePropTypes";
+import TabBarPage from "../components/common/TabBarPage";
 import sheet from "../styles/sheet";
 import { onSortOptions, itemToGeoJSONPoint } from "../utils";
 import { DEFAULT_CENTER_COORDINATE } from "../utils";
 import config from "../utils/config";
-import { getItems } from "../api";
 
 const MAPBOX_VECTOR_TILE_SIZE = 512;
 const MAX_ZOOM = 20;

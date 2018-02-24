@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import configureStore from "./store/configureStore";
 import PushNotification from "react-native-push-notification";
 import App from "./App";
+import { PushNotificationIOS } from "react-native";
 
 function setup() {
   console.disableYellowBox = true;

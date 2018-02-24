@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text, ListView } from "react-native";
-import { getCategories } from "../api";
+import { View, StyleSheet, ListView } from "react-native";
 import { List, ListItem } from "react-native-elements";
-import * as actions from "../actions";
 import { connect } from "react-redux";
+import * as actions from "../actions";
 
 class ItemsListView extends Component {
 	constructor() {

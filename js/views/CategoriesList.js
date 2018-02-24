@@ -6,6 +6,7 @@ import type NavigationScreenProp from "react-navigation";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 import { ICategory } from "../models";
+import { getCategoriesWithParentId } from "../reducers";
 
 type CategoriesListProps = {
 	categories: ICategory[],
@@ -56,7 +57,7 @@ class CategoriesList extends Component<CategoriesListProps> {
 				parentCategory: selectedCategory
 			});
 		} else {
-			this.props.navigation.navigate("ItemsListView", {
+			this.props.navigation.navigate("ItemsList", {
 				categoryId: selectedCategory.id
 			});
 		}
@@ -95,17 +96,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const mapStateToProps = ({ categories }, ownProps) => {
-	if (
-		ownProps.navigation.state.params &&
-		ownProps.navigation.state.params.categories
-	) {
-		return {
-			categories: ownProps.navigation.state.params.categories
-		};
+const mapStateToProps = (state, { navigation, id }) => {
+	if (navigation && navigation.state) {
+		const { params } = navigation.state;
+		if (params && params.categories)
+			return {
+				categories: params.categories
+			};
 	}
 	return {
-		categories
+		categories: getCategoriesWithParentId(state, id)
 	};
 };
 
