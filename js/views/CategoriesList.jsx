@@ -1,11 +1,19 @@
+// @flow
 import React, { Component } from "react";
-import { View, StyleSheet, Text, ListView } from "react-native";
-import { getCategories } from "../api";
+import { StyleSheet, ListView } from "react-native";
 import { List, ListItem } from "react-native-elements";
-import * as actions from "../actions";
+import type NavigationScreenProp from "react-navigation";
 import { connect } from "react-redux";
+import * as actions from "../actions";
+import { ICategory } from "../models";
 
-class CategoriesList extends Component {
+type CategoriesListProps = {
+	categories: ICategory[],
+	navigation: NavigationScreenProp,
+	updateCategoriesData: Function
+};
+
+class CategoriesList extends Component<CategoriesListProps> {
 	static navigationOptions = ({ navigation }) => {
 		const { params } = navigation.state;
 
@@ -29,6 +37,7 @@ class CategoriesList extends Component {
 
 	componentDidMount() {
 		this.setCategories(this.props.categories);
+		this.props.updateCategoriesData();
 	}
 	componentWillReceiveProps(nextProps) {
 		this.setCategories(nextProps.categories);
@@ -36,21 +45,11 @@ class CategoriesList extends Component {
 
 	setCategories = categories => {
 		this.setState({
-			categories: categories,
 			dataSource: this.state.dataSource.cloneWithRows(categories)
 		});
 	};
 
-	renderRow = (category, sectionID) => {
-		return (
-			<ListItem
-				onPress={() => this.navigateTo(category)}
-				key={category.id}
-				title={category.name}
-			/>
-		);
-	};
-	navigateTo = selectedCategory => {
+	navigateTo = (selectedCategory: ICategory) => {
 		if (selectedCategory.children.length) {
 			this.props.navigation.navigate("CategoriesList", {
 				categories: selectedCategory.children,
@@ -62,6 +61,14 @@ class CategoriesList extends Component {
 			});
 		}
 	};
+
+	renderRow = category => (
+		<ListItem
+			onPress={() => this.navigateTo(category)}
+			key={category.id}
+			title={category.name}
+		/>
+	);
 
 	render() {
 		return (
@@ -89,7 +96,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ categories }, ownProps) => {
-	console.log({ ownProps });
 	if (
 		ownProps.navigation.state.params &&
 		ownProps.navigation.state.params.categories
@@ -97,11 +103,16 @@ const mapStateToProps = ({ categories }, ownProps) => {
 		return {
 			categories: ownProps.navigation.state.params.categories
 		};
-	} else {
-		return {
-			categories
-		};
 	}
+	return {
+		categories
+	};
 };
 
-export default connect(mapStateToProps)(CategoriesList);
+const mapDispatchToProps = (dispatch: Function) => ({
+	updateCategoriesData: () => {
+		dispatch(actions.categoriesUpdate());
+	}
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoriesList);

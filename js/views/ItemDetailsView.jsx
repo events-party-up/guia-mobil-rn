@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { connect } from "react-redux";
@@ -5,7 +6,14 @@ import { Button } from "react-native-elements";
 import * as actions from "../../actions";
 import CommentsView from "./CommentsView";
 
-class ItemDetailsView extends Component {
+type Props = {
+	name: string,
+	id: string,
+	isFavourite: boolean,
+	dispatch: Function
+};
+
+class ItemDetailsView extends Component<Props> {
 	static navigationOptions = ({ name }) => ({ title: name });
 	toggleFavourite = id => {
 		this.props.dispatch(actions.toggleFavourite(id));
@@ -19,7 +27,7 @@ class ItemDetailsView extends Component {
 				{isFavourite ? (
 					<Text> You like this</Text>
 				) : (
-					<Text>You don't like this</Text>
+					<Text>{"You don't like this"}</Text>
 				)}
 				<Button
 					title="Toggle Favourite"
