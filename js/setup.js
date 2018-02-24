@@ -1,9 +1,10 @@
+// @flow
 import React from "react";
 import { Provider } from "react-redux";
-import configureStore from "./store/configureStore";
-import PushNotification from "react-native-push-notification";
-import App from "./App";
 import { PushNotificationIOS } from "react-native";
+import PushNotification from "react-native-push-notification";
+import configureStore from "./store/configureStore";
+import App from "./App";
 
 function setup() {
   console.disableYellowBox = true;
@@ -20,7 +21,7 @@ function setup() {
     componentDidMount() {
       configureStore(
         // rehydration callback (after async compatibility and persistStore)
-        _ => this.setState({ storeRehydrated: true })
+        () => this.setState({ storeRehydrated: true })
       ).then(
         // creation callback (after async compatibility)
         store => {
@@ -41,7 +42,7 @@ function setup() {
       // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
       notification.finish(PushNotificationIOS.FetchResult.NoData);
     };
-    setupPush = store => {
+    setupPush = () => {
       PushNotification.configure({
         // (optional) Called when Token is generated (iOS and Android)
         onRegister: this.onTokenReceived,

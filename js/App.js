@@ -1,3 +1,4 @@
+// @flow
 import React from "react";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import { Icon } from "react-native-elements";
@@ -47,8 +48,12 @@ const styles = StyleSheet.create({
 
 MapboxGL.setAccessToken(config.get("MAPBOX_ACCESS_TOKEN"));
 
-class App extends React.Component {
-  constructor(props) {
+type Props = {
+  dispatch: Function
+};
+
+class App extends React.Component<Props> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {

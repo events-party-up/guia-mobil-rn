@@ -53,9 +53,9 @@ class ItemsListView extends Component {
 
 	render() {
 		return (
-			<View>
+			<View style={styles.container}>
 				<Header title="Categories" />
-				<List style={styles.container}>
+				<List style={styles.list}>
 					<ListView
 						dataSource={this.state.dataSource}
 						renderRow={this.renderRow}
@@ -69,6 +69,10 @@ class ItemsListView extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
+	},
+	list: {
+		flex: 1,
+		marginBottom: 50
 	},
 	row: {
 		height: 40,

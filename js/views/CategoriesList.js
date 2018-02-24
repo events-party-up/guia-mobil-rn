@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { StyleSheet, ListView, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import type NavigationScreenProp from "react-navigation";
 import { connect } from "react-redux";
@@ -9,36 +9,16 @@ import { ICategory } from "../models";
 import { getCategoriesWithParentId } from "../reducers";
 import Header from "../components/Header";
 
-type CategoriesListProps = {
+type Props = {
 	categories: ICategory[],
 	navigation: NavigationScreenProp,
 	updateCategoriesData: Function
 };
 
-class CategoriesList extends Component<CategoriesListProps> {
-	constructor() {
-		super();
-		const ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1.id !== r2.id
-		});
-		this.state = {
-			dataSource: ds
-		};
-	}
-
+class CategoriesList extends Component<Props> {
 	componentDidMount() {
-		this.setCategories(this.props.categories);
 		this.props.updateCategoriesData();
 	}
-	componentWillReceiveProps(nextProps) {
-		this.setCategories(nextProps.categories);
-	}
-
-	setCategories = categories => {
-		this.setState({
-			dataSource: this.state.dataSource.cloneWithRows(categories)
-		});
-	};
 
 	navigateTo = (selectedCategory: ICategory) => {
 		if (selectedCategory.children.length) {
@@ -64,13 +44,12 @@ class CategoriesList extends Component<CategoriesListProps> {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Header title="Categories" />
-				<List style={styles.list}>
-					<ListView
-						dataSource={this.state.dataSource}
-						renderRow={this.renderRow}
-					/>
-				</List>
+				<Header title="Categories" navItem={{ back: true }} />
+				<ScrollView>
+					<List style={styles.list}>
+						{this.props.categories.map(this.renderRow)}
+					</List>
+				</ScrollView>
 			</View>
 		);
 	}
@@ -82,7 +61,9 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		flex: 1,
-		backgroundColor: "transparent"
+		backgroundColor: "transparent",
+		marginTop: 0,
+		marginBottom: 60
 	},
 	row: {
 		height: 40,
