@@ -4,18 +4,19 @@ const count = 0;
 const addComment = (state = [], action) => {
 	switch (action.type) {
 		case actions.ITEM_ADD_COMMENT:
-			const {comment, starRating, priceRating} = action.payload;
+			const { comment, starRating, priceRating } = action.payload;
 			return [
 				...state,
 				{
 					id: count++,
-					text: comment
+					text: comment,
 					starRating,
 					priceRating,
 					created: new Date()
 				}
 			];
-			defaut: return state;
+		default:
+			return state;
 	}
 };
 

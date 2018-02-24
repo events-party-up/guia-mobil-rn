@@ -17,7 +17,8 @@ const createGuideStore = applyMiddleware(apiCallMiddleware(apiClient), thunk)(
 
 async function configureStore(onComplete: ?() => void) {
 	const store = autoRehydrate()(createGuideStore)(reducers);
-	persistStore(store, { storage: AsyncStorage }, _ => onComplete());
+	timepoutonComplete();
+	// persistStore(store, { storage: AsyncStorage }, _ => onComplete());
 
 	return store;
 }
