@@ -1,10 +1,8 @@
 import React from "react";
 import { View, Button, Text } from "react-native";
-import { StackNavigator } from "react-navigation";
-import TabsNavigator from "./TabsNavigator";
+
 import { FacebookLoginButton } from "../components/FacebookLoginButton";
 import { connect } from "react-redux";
-import MapView from "./MapView";
 
 class HomeView extends React.Component {
     navigateToMap = () => {
@@ -63,22 +61,4 @@ const mapStateToProps = ({ auth }) => ({
             ? auth.userProfile.profilePic
             : ""
 });
-
-export default StackNavigator(
-    {
-        Home: {
-            screen: connect(mapStateToProps)(HomeView)
-        },
-        Tabs: {
-            screen: TabsNavigator
-        },
-        Map: {
-            screen: MapView
-        }
-    },
-    {
-        navigationOptions: {
-            header: null
-        }
-    }
-);
+export default connect(mapStateToProps)(HomeView);

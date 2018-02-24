@@ -1,7 +1,7 @@
 // @flow
 import * as actions from "../actions";
 
-const categories = (state = [], action) => {
+const categories = (state = { raw: [] }, action) => {
     switch (action.type) {
         case actions.CATEGORY_UPDATE_SUCCESS:
             return {

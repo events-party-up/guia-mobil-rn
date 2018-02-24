@@ -1,66 +1,43 @@
 import React, { Component } from "react";
-import { View, StyleSheet, ListView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import { connect } from "react-redux";
 import Header from "../components/Header";
+import type NavigationScreenProp from "react-navigation";
 import * as actions from "../actions";
 
-class ItemsListView extends Component {
-	constructor() {
-		super();
-		const ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1.id !== r2.id
-		});
-		this.state = {
-			dataSource: ds
-		};
-	}
+type Props = {
+	items: any[],
+	navigation: NavigationScreenProp
+};
 
-	componentDidMount() {
-		this.setItems(this.props.items);
-	}
-	componentWillReceiveProps(nextProps) {
-		this.setItems(nextProps.items);
-	}
-
-	setItems = items => {
-		this.setState({
-			items: items,
-			dataSource: this.state.dataSource.cloneWithRows(items)
-		});
-	};
-
-	renderRow = item => {
-		return (
-			<ListItem
-				onPress={() => this.navigateTo(item)}
-				key={item.id}
-				title={item.name}
-				avatar={{
-					uri: `https://bariloche.guiasmoviles.com/images/${
-						item.image
-					}`
-				}}
-			/>
-		);
-	};
+class ItemsListView extends Component<Props> {
 	navigateTo = selectedItem => {
-		console.log({ selectedItem });
 		this.props.navigation.navigate("ItemDetailsView", {
 			id: selectedItem.id
 		});
 	};
 
+	renderRow = item => (
+		<ListItem
+			onPress={() => this.navigateTo(item)}
+			key={item.id}
+			title={item.name}
+			avatar={{
+				uri: `https://bariloche.guiasmoviles.com/images/${item.image}`
+			}}
+		/>
+	);
+
 	render() {
 		return (
 			<View style={styles.container}>
 				<Header title="Categories" />
-				<List style={styles.list}>
-					<ListView
-						dataSource={this.state.dataSource}
-						renderRow={this.renderRow}
-					/>
-				</List>
+				<ScrollView>
+					<List style={styles.list}>
+						{this.props.items.map(this.renderRow)}
+					</List>
+				</ScrollView>
 			</View>
 		);
 	}
@@ -92,11 +69,10 @@ const mapStateToProps = ({ items }, ownProps) => {
 			items:
 				items.byCategoryId[ownProps.navigation.state.params.categoryId]
 		};
-	} else {
-		return {
-			items: []
-		};
 	}
+	return {
+		items: []
+	};
 };
 
 export default connect(mapStateToProps)(ItemsListView);

@@ -14,7 +14,7 @@ import * as actions from "../actions";
 import CommentsView from "./CommentsView";
 import { IItem } from "../models";
 import Header from "../components/Header";
-
+import MapboxGL from "@mapbox/react-native-mapbox-gl";
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 300;
@@ -33,8 +33,34 @@ class ItemDetailsView extends Component<Props> {
 	toggleFavourite = id => {
 		this.props.dispatch(actions.toggleFavourite(id));
 	};
+
+	renderInfoItem = (iconName, text) => {
+		if (text) {
+			return (
+				<View style={styles.contactRow}>
+					<Icon
+						type="material-community"
+						style={styles.contactRowIcon}
+						name={iconName}
+					/>
+					<Text> {text} </Text>
+				</View>
+			);
+		}
+		return null;
+	};
+
 	render() {
-		const { name, description, isFavourite, id, image } = this.props;
+		const {
+			name,
+			description,
+			isFavourite,
+			id,
+			image,
+			phone,
+			mail,
+			address
+		} = this.props;
 		const favouriteIcon = require("./img/favorite.png");
 		const favouriteIconOutline = require("./img/favorite-outline.png");
 		const rightItem = {
@@ -43,6 +69,7 @@ class ItemDetailsView extends Component<Props> {
 			icon: isFavourite ? favouriteIcon : favouriteIconOutline,
 			onPress: () => this.toggleFavourite(id)
 		};
+
 		return (
 			<View style={styles.container}>
 				<ScrollView style={styles.scrollView} bounces={false}>
@@ -59,13 +86,33 @@ class ItemDetailsView extends Component<Props> {
 					/>
 
 					<Text style={styles.title}> {name.toUpperCase()}</Text>
+					<View style={styles.actionItems}>
+						<Button title={"LLamar"} />
+						<Button title={"Ver en mapa"} />
+					</View>
+					<View style={styles.contactItems}>
+						{this.renderInfoItem("phone", phone)}
+						{this.renderInfoItem("email", mail)}
+						{this.renderInfoItem("map-marker", address)}
+					</View>
 					<Text style={styles.description}> {description} </Text>
 					{isFavourite ? (
 						<Text> You like this</Text>
 					) : (
 						<Text>{"You don't like this"}</Text>
 					)}
-
+					<MapboxGL.MapView
+						styleURL={MapboxGL.StyleURL.Street}
+						centerCoordinate={this.props.coord}
+						zoomLevel={16}
+						height={200}
+						zoomEnabled={false}
+						scrollEnabled={false}
+						rotateEnabled={false}
+					/>
+					<View>
+						<Text>Evaluaciones</Text>
+					</View>
 					<CommentsView itemId={id} />
 				</ScrollView>
 				<View style={styles.headerContainer}>
@@ -105,6 +152,23 @@ const styles = StyleSheet.create({
 	topBar: {
 		height: 40,
 		padding: 10
+	},
+	contactItems: {
+		margin: 10
+	},
+	contactRow: {
+		flexDirection: "row",
+		alignItems: "center"
+	},
+	contactRowIcon: {
+		width: 40,
+		height: 40,
+		borderWidth: 1,
+		marginRight: 30
+	},
+	actionItems: {
+		flexDirection: "row",
+		justifyContent: "space-around"
 	}
 });
 
