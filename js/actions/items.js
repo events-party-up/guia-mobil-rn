@@ -31,26 +31,4 @@ export const toggleFavourite = id => {
 	};
 };
 
-export const commentItem = (id, { comment, starRating, priceRating }) => {
-	return {
-		type: ITEM_ADD_COMMENT,
-		apiCall: (
-			apiClient,
-			{ id, comment, starRating, priceRating },
-			getState
-		) => {
-			const { auth } = getState();
-			return apiClient.post("review/post", {
-				item_id: id,
-				user_id: auth.id,
-				profile_name: auth.name,
-				profile_img: auth.profileImg,
-				stars: starRating,
-				price: priceRating,
-				rtext: comment,
-				uuid: DeviceInfo.getUniqueID()
-			});
-		},
-		payload: { id, comment, starRating, priceRating }
-	};
-};
+
