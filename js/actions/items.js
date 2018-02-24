@@ -14,10 +14,10 @@ export const itemsUpdate = options => {
 		type: ITEMS_UPDATE,
 		apiCall: apiClient => {
 			return apiClient.get("update/items/0").then(res => {
-				console.log(
-					"normalized items response",
-					normalize(res.data, schema.arrayOfItems)
-				);
+				// console.log(
+				// 	"normalized items response",
+				// 	normalize(res.data, schema.arrayOfItems)
+				// );
 				const itemList = res.data.map(item => ({
 					...item,
 					coord: parseCoordinate(item.coord)

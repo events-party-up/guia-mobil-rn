@@ -1,12 +1,21 @@
 // @flow
 import React, { Component } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import {
+	View,
+	StyleSheet,
+	Text,
+	Image,
+	Dimensions,
+	ScrollView
+} from "react-native";
 import { connect } from "react-redux";
 import { Button } from "react-native-elements";
 import * as actions from "../actions";
 import CommentsView from "./CommentsView";
 import { IItem } from "../models";
 
+const WINDOW_WIDTH = Dimensions.get("window").width;
+const IMAGE_HEIGHT = 300;
 interface Props extends IItem {
 	isFavourite: boolean;
 	dispatch: Function;
@@ -21,16 +30,27 @@ class ItemDetailsView extends Component<Props> {
 		this.props.dispatch(actions.toggleFavourite(id));
 	};
 	render() {
-		const { name, description, isFavourite, id } = this.props;
+		const { name, description, isFavourite, id, image } = this.props;
 
 		return (
-			<View style={styles.container}>
+			<ScrollView style={styles.container}>
 				<View style={styles.topBar}>
 					<Button
 						title="Toggle Favourite"
 						onPress={() => this.toggleFavourite(id)}
 					/>
 				</View>
+				{!!image && (
+					<Image
+						source={{
+							uri: `https://bariloche.guiasmoviles.com/uploads/${image}`
+						}}
+						style={{
+							width: WINDOW_WIDTH,
+							height: IMAGE_HEIGHT
+						}}
+					/>
+				)}
 				<Text style={styles.title}> {name.toUpperCase()}</Text>
 				<Text style={styles.description}> {description} </Text>
 				{isFavourite ? (
@@ -40,7 +60,7 @@ class ItemDetailsView extends Component<Props> {
 				)}
 
 				<CommentsView itemId={id} />
-			</View>
+			</ScrollView>
 		);
 	}
 }

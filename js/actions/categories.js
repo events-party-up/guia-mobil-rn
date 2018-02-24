@@ -10,10 +10,10 @@ export const categoriesUpdate = options => {
 		apiCall: apiClient => {
 			return apiClient.get("update/categories/0").then(res => {
 				const categoryList = res.data.nav;
-				console.log(
-					"normalized response",
-					normalize(categoryList, schema.arrayOfCategories)
-				);
+				// console.log(
+				// 	"normalized response",
+				// 	normalize(categoryList, schema.arrayOfCategories)
+				// );
 				return { data: categoryList };
 			});
 		},

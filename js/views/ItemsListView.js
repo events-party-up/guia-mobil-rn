@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, StyleSheet, ListView } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import { connect } from "react-redux";
+import Header from "../components/Header";
 import * as actions from "../actions";
 
 class ItemsListView extends Component {
@@ -29,7 +30,7 @@ class ItemsListView extends Component {
 		});
 	};
 
-	renderRow = (item, sectionID) => {
+	renderRow = item => {
 		return (
 			<ListItem
 				onPress={() => this.navigateTo(item)}
@@ -53,6 +54,7 @@ class ItemsListView extends Component {
 	render() {
 		return (
 			<View>
+				<Header title="Categories" />
 				<List style={styles.container}>
 					<ListView
 						dataSource={this.state.dataSource}

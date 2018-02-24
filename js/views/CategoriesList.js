@@ -1,12 +1,13 @@
 // @flow
 import React, { Component } from "react";
-import { StyleSheet, ListView } from "react-native";
+import { StyleSheet, ListView, View } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import type NavigationScreenProp from "react-navigation";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 import { ICategory } from "../models";
 import { getCategoriesWithParentId } from "../reducers";
+import Header from "../components/Header";
 
 type CategoriesListProps = {
 	categories: ICategory[],
@@ -15,17 +16,6 @@ type CategoriesListProps = {
 };
 
 class CategoriesList extends Component<CategoriesListProps> {
-	static navigationOptions = ({ navigation }) => {
-		const { params } = navigation.state;
-
-		return {
-			title:
-				params && params.parentCategory
-					? params.parentCategory.name
-					: "Categories"
-		};
-	};
-
 	constructor() {
 		super();
 		const ds = new ListView.DataSource({
@@ -73,12 +63,15 @@ class CategoriesList extends Component<CategoriesListProps> {
 
 	render() {
 		return (
-			<List style={styles.container}>
-				<ListView
-					dataSource={this.state.dataSource}
-					renderRow={this.renderRow}
-				/>
-			</List>
+			<View style={styles.container}>
+				<Header title="Categories" />
+				<List style={styles.list}>
+					<ListView
+						dataSource={this.state.dataSource}
+						renderRow={this.renderRow}
+					/>
+				</List>
+			</View>
 		);
 	}
 }
@@ -86,6 +79,10 @@ class CategoriesList extends Component<CategoriesListProps> {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1
+	},
+	list: {
+		flex: 1,
+		backgroundColor: "transparent"
 	},
 	row: {
 		height: 40,

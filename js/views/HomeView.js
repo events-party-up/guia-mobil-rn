@@ -64,14 +64,21 @@ const mapStateToProps = ({ auth }) => ({
             : ""
 });
 
-export default StackNavigator({
-    Home: {
-        screen: connect(mapStateToProps)(HomeView)
+export default StackNavigator(
+    {
+        Home: {
+            screen: connect(mapStateToProps)(HomeView)
+        },
+        Tabs: {
+            screen: TabsNavigator
+        },
+        Map: {
+            screen: MapView
+        }
     },
-    Tabs: {
-        screen: TabsNavigator
-    },
-    Map: {
-        screen: MapView
+    {
+        navigationOptions: {
+            header: null
+        }
     }
-});
+);
