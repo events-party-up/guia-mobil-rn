@@ -13,10 +13,14 @@ type Props = {
   categories: ICategory[],
   navigation: NavigationScreenProp,
   updateCategoriesData: Function,
-  categoryName: string
+  categoryName: string,
+  isRoot: boolean
 };
 
 class CategoriesList extends Component<Props> {
+  static defaultProps = {
+    isRoot: false
+  };
   componentDidMount() {
     this.props.updateCategoriesData();
   }
@@ -34,6 +38,15 @@ class CategoriesList extends Component<Props> {
     }
   };
 
+  goBack = () => {
+    const { navigation, isRoot } = this.props;
+    if (isRoot) {
+      navigation.goBack(null);
+    } else {
+      navigation.goBack();
+    }
+  };
+
   renderRow = category => (
     <ListItem
       onPress={() => this.navigateTo(category)}
@@ -41,16 +54,15 @@ class CategoriesList extends Component<Props> {
       title={category.name}
     />
   );
-
   render() {
-    const { navigation, categoryName, categories } = this.props;
+    const { categoryName, categories } = this.props;
     return (
       <View style={styles.container}>
         <Header
           title={categoryName}
           navItem={{
             back: true,
-            onPress: () => navigation.goBack()
+            onPress: this.goBack
           }}
         />
         <ScrollView>
@@ -81,16 +93,18 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, { navigation, id }) => {
-  if (navigation && navigation.state) {
-    const { params } = navigation.state;
-    if (params && params.categories)
-      return {
-        categoryName: params.name || "Categories",
-        categories: params.categories
-      };
-  }
   const category = getCategoryWithId(state, id);
+  const isRoot = category && category.parent_id === 0;
+  console.log({ category });
+  if (navigation.getParams("categories")) {
+    return {
+      isRoot,
+      categoryName: navigation.getParam("name", "Categories"),
+      categories: navigation.getParams("categories")
+    };
+  }
   return {
+    isRoot,
     categories: getCategoriesWithParentId(state, id),
     categoryName: category ? category.name : "Unknow category"
   };
