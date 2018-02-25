@@ -1,15 +1,10 @@
 // @flow
 import React from "react";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
-import { Icon } from "react-native-elements";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
-import sheet from "./styles/sheet";
-import colors from "./styles/colors";
 import { StackNavigator } from "react-navigation";
 import { IS_ANDROID } from "./utils";
 import config from "./utils/config";
-
 import HomeView from "./views/HomeView";
 import MapView from "./views/MapView";
 import TabsNavigator from "./views/TabsNavigator";
@@ -21,6 +16,10 @@ type Props = {
   dispatch: Function
 };
 
+type State = {
+  isFetchingAndroidPermission: boolean,
+  isAndroidPermissionGranted: boolean
+};
 const NavigationStack = StackNavigator(
   {
     Home: {
@@ -40,7 +39,7 @@ const NavigationStack = StackNavigator(
   }
 );
 
-class App extends React.Component<Props> {
+class App extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -48,8 +47,6 @@ class App extends React.Component<Props> {
       isFetchingAndroidPermission: IS_ANDROID,
       isAndroidPermissionGranted: false
     };
-
-    this.renderItem = this.renderItem.bind(this);
   }
 
   async componentWillMount() {
@@ -65,19 +62,7 @@ class App extends React.Component<Props> {
   componentDidMount() {
     this.props.dispatch(actions.categoriesUpdate());
     this.props.dispatch(actions.itemsUpdate());
-  }
-
-  renderItem({ item, index }) {
-    return (
-      <View style={styles.exampleListItemBorder}>
-        <TouchableOpacity onPress={() => this.onExamplePress(index)}>
-          <View style={styles.exampleListItem}>
-            <Text style={styles.exampleListLabel}>{item.label}</Text>
-            <Icon name="keyboard-arrow-right" />
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
+    this.props.dispatch(actions.itemsLoadFeatured());
   }
 
   render() {
