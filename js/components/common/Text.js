@@ -14,6 +14,10 @@ export function Text({ style, ...props }: Object): ReactElement {
 export function Heading2({ style, ...props }: Object): ReactElement {
   return <ReactNative.Text style={[styles.h2, style]} {...props} />;
 }
+
+export function Heading3({ style, ...props }: Object): ReactElement {
+    return <ReactNative.Text style={[styles.h3, style]} {...props} />;
+  }
 export function Heading4({ style, ...props }: Object): ReactElement {
   return <ReactNative.Text style={[styles.h4, style]} {...props} />;
 }

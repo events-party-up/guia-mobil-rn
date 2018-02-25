@@ -6,7 +6,8 @@ import type NavigationScreenProp from "react-navigation";
 import * as actions from "../actions";
 import Header from "../components/Header";
 import ItemThumb from "../components/ItemThumb";
-import { ICategory } from "../models";
+import { ICategory, IItem } from "../models";
+import { getItemsForCategoryId } from "../reducers";
 
 type Props = {
   items: any[],
@@ -61,9 +62,9 @@ const styles = StyleSheet.create({
     flex: 1
   },
   scrollView: {
-	flex: 1,
-	paddingLeft: 10,
-	paddingRight: 10 
+    flex: 1,
+    paddingLeft: 10,
+    paddingRight: 10
   },
   grid: {
     flexDirection: "row",
@@ -72,16 +73,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ items }, ownProps) => {
-  if (
-    ownProps.navigation &&
-    ownProps.navigation.state.params &&
-    ownProps.navigation.state.params.category
-  ) {
-    const { category } = ownProps.navigation.state.params;
+const mapStateToProps = (state, { navigation }) => {
+  if (navigation.getParam("category")) {
+    const category = navigation.getParam("category");
     return {
       category,
-      items: items.byCategoryId[category.id]
+      items: getItemsForCategoryId(state, category.id)
     };
   }
   return {

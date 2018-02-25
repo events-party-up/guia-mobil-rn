@@ -3,12 +3,12 @@ import React, { Component } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import type NavigationScreenProp from "react-navigation";
+import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 import { ICategory } from "../models";
 import { getCategoriesWithParentId, getCategoryWithId } from "../reducers";
 import Header from "../components/Header";
-
 type Props = {
   categories: ICategory[],
   navigation: NavigationScreenProp,
@@ -40,11 +40,11 @@ class CategoriesList extends Component<Props> {
 
   goBack = () => {
     const { navigation, isRoot } = this.props;
-    if (isRoot) {
-      navigation.goBack(null);
-    } else {
-      navigation.goBack();
-    }
+    // if (isRoot) {
+    //   navigation.pop();
+    // } else {
+    navigation.goBack(null);
+    // }
   };
 
   renderRow = category => (
@@ -96,11 +96,11 @@ const mapStateToProps = (state, { navigation, id }) => {
   const category = getCategoryWithId(state, id);
   const isRoot = category && category.parent_id === 0;
   console.log({ category });
-  if (navigation.getParams("categories")) {
+  if (navigation.getParam("categories")) {
     return {
       isRoot,
       categoryName: navigation.getParam("name", "Categories"),
-      categories: navigation.getParams("categories")
+      categories: navigation.getParam("categories")
     };
   }
   return {

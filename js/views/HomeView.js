@@ -1,3 +1,4 @@
+// @flow
 import React from "react";
 import { View, Button, Text, ScrollView, Image } from "react-native";
 import { connect } from "react-redux";
@@ -8,17 +9,20 @@ import { getFeaturedItems } from "../reducers";
 import ItemThumb from "../components/ItemThumb";
 import { IItem } from "../models";
 import type NavigationScreenProp from "react-navigation";
+import CategoryCard from "../components/CategoryCard";
+import StyleSheet from "../components/common/F8StyleSheet";
 
 type Props = {
   navigation: NavigationScreenProp,
   featuredItems: IItem[]
 };
-class HomeView extends React.Component {
+
+class HomeView extends React.Component<Props> {
   navigateToMap = () => {
     this.props.navigation.navigate("Map");
   };
 
-  renderFeaturedList = (categoryId: number, featuredItems: IItem) => {
+  renderFeaturedList = (categoryId: number, featuredItems: IItem[]) => {
     console.log({ featuredItems });
     return (
       <View style={styles.featuredList}>
@@ -30,6 +34,7 @@ class HomeView extends React.Component {
             image={item.image}
             title={item.name}
             isFavorite={false}
+            stars={item.rating}
             onPress={() =>
               this.props.navigation &&
               this.props.navigation.navigate("ItemDetailsView", {
@@ -42,7 +47,7 @@ class HomeView extends React.Component {
     );
   };
 
-  renderCategoriesPreviews() {
+  renderCategoriesPreviews = () => {
     const categories = [
       {
         name: "Alojamientos",
@@ -62,23 +67,27 @@ class HomeView extends React.Component {
       }
     ];
     return (
-      <View style={styles.featuredList}>
-        {categories.map((category, idx) => (
-          <ItemThumb
-            key={idx}
-            id={idx}
-            title={category.name}
-            onPress={() =>
-              this.props.navigation &&
-              this.props.navigation.navigate(category.tab, {
-                name: category.name
-              })
-            }
+      <ScrollView
+        contentContainerStyle={styles.categoriesScroll}
+        horizontal
+        snapToInterval={158}
+        decelerationRate="fast"
+        snapToAlignment="start"
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        {categories.map(category => (
+          <CategoryCard
+            key={category.tab}
+            {...category}
+            onPress={() => {
+              this.props.navigation.navigate(category.tab);
+            }}
           />
         ))}
-      </View>
+      </ScrollView>
     );
-  }
+  };
   render() {
     const { userName, isAuthenticated, profilePic, featuredItems } = this.props;
     const rightItem = {
@@ -97,7 +106,7 @@ class HomeView extends React.Component {
     };
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "white" }}>
         <Header
           backgroundColor="transparent"
           rightItem={rightItem}
@@ -146,7 +155,7 @@ class HomeView extends React.Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   featuredList: {
     flexDirection: "row",
     flexWrap: "wrap"
@@ -154,8 +163,11 @@ const styles = {
   withPadding: {
     paddingLeft: 10,
     paddingRight: 10
+  },
+  categoriesScroll: {
+    paddingVertical: 10
   }
-};
+});
 const mapStateToProps = state => ({
   featuredItems: getFeaturedItems(state),
   isAuthenticated: state.auth.isAuthenticated,

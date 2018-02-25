@@ -4,6 +4,7 @@ import { Dimensions, View, Text, Image, TouchableOpacity } from "react-native";
 import StyleSheet from "./common/F8StyleSheet";
 import F8Colors from "./common/F8Colors";
 import F8Fonts from "./common/F8Fonts";
+import { Rating } from "react-native-elements";
 
 type ThumbType = "small" | "large";
 type Props = {
@@ -11,6 +12,7 @@ type Props = {
   onPress: () => void,
   image: string,
   title: string,
+  stars: number,
   activeOpacity: number,
   isFavorite: boolean,
   type: ThumbType
@@ -83,7 +85,8 @@ class ItemThumb extends React.Component<Props> {
       title,
       activeOpacity,
       isFavorite,
-      type
+      type,
+      stars
     } = this.props;
 
     const { imageWidth, imageHeight } = this.getImageSize(type);
@@ -98,6 +101,17 @@ class ItemThumb extends React.Component<Props> {
           {this.renderImage(image, imageWidth, imageHeight)}
         </View>
         {this.renderTitle(type, title)}
+
+        <Rating
+          type="star"
+          fractions={1}
+          startingValue={stars || 0}
+          readonly
+          imageSize={14}
+          ratingBackgroundColor="transparent"
+          ratingColor="#0000ff"
+          style={{ paddingVertical: 10, backgroundColor: "transparent" }}
+        />
       </TouchableOpacity>
     );
   }

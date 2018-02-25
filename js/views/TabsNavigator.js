@@ -16,7 +16,11 @@ export default TabNavigator(
     ServicesTab: { screen: CategoriesStack(SERVICES_CATEGORIES_ID) }
   },
   {
+    backBehavior: "none",
+    swipeEnabled: false,
+    animationEnabled: false,
     navigationOptions: ({ navigation }) => ({
+      tabBarPosition: "bottom",
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
         let iconName;

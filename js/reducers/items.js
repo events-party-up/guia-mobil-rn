@@ -1,5 +1,7 @@
+// @flow
 import groupBy from "lodash/groupBy";
 import * as actions from "../actions";
+import { IItem } from "../models";
 
 const byId = (state = {}, action) => {
   switch (action.type) {
@@ -30,7 +32,26 @@ const byId = (state = {}, action) => {
       return state;
   }
 };
-const items = (state = { featuredIds: [], allIds: [], byId: {} }, action) => {
+
+type State = {
+  featuredIds: number[],
+  allIds: number[],
+  byId: {
+    [key: number]: IItem
+  },
+  byCategoryId: {
+    [key: number]: IItem[]
+  }
+};
+
+const initialState = {
+  featuredIds: [],
+  allIds: [],
+  byId: {},
+  byCategoryId: {}
+};
+
+const items = (state: State = initialState, action) => {
   switch (action.type) {
     case actions.ITEMS_UPDATE_SUCCESS:
       return {
@@ -56,8 +77,13 @@ const items = (state = { featuredIds: [], allIds: [], byId: {} }, action) => {
 
 export default items;
 
-export function getFeaturedItems(state) {
+// selectors
+export function getFeaturedItems(state: State) {
   return state.featuredIds
     .map(id => state.byId[id])
     .filter(item => item !== undefined);
+}
+
+export function getItemsForCategoryId(state: State, categoryId: number): Array<IItem> {
+  return state.byCategoryId[categoryId] || [];
 }
