@@ -7,4 +7,5 @@ export interface ICategory {
     icon: string;
     parent_id: number;
     children: any[];
+    name: string
 }
