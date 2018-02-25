@@ -61,7 +61,9 @@ const styles = StyleSheet.create({
     flex: 1
   },
   scrollView: {
-    flex: 1
+	flex: 1,
+	paddingLeft: 10,
+	paddingRight: 10 
   },
   grid: {
     flexDirection: "row",
