@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable react/no-multi-comp */
 import React from "react";
 import {
   Dimensions,
@@ -44,9 +45,13 @@ export type Props = {
   title?: string,
   leftItem?: Item,
   rightItem?: Item,
-  extraItems?: Array<Item>,
+  extraItems?: Array<Item> /* eslint-disable-line react/no-unused-prop-types */,
   style?: any,
-  children?: any
+  children?: any,
+  navItem?: any,
+  backgroundColor?: string,
+  titleColor?: string,
+  itemsColor: ?string /* eslint-disable-line react/no-unused-prop-types */
 };
 
 /* =============================================================================
@@ -56,11 +61,10 @@ ToolbarAndroid header
 
 ============================================================================= */
 
-class F8HeaderAndroid extends React.Component {
+class F8HeaderAndroid extends React.Component<Props> {
   static height: number;
-  props: Props;
 
-  static defaultProps = {
+  static defaultProps: Props = {
     backgroundColor: F8Colors.blue,
     titleColor: F8Colors.yellow,
     itemsColor: F8Colors.white
@@ -71,6 +75,27 @@ class F8HeaderAndroid extends React.Component {
 
     this.limitActionSelection = false;
   }
+
+  limitActionSelection: boolean;
+
+  handleActionSelected = (position: number) => {
+    if (this.limitActionSelection) {
+      return;
+    }
+    let items = this.props.extraItems || [];
+    if (this.props.rightItem) {
+      items = [this.props.rightItem, ...items];
+    }
+    if (this.props.leftItem) {
+      items = [this.props.leftItem, ...items];
+    }
+    const item = items[position];
+    if (item && item.onPress) item.onPress();
+    this.limitActionSelection = true;
+    setTimeout(() => {
+      this.limitActionSelection = false;
+    }, 1000);
+  };
 
   render() {
     const {
@@ -134,7 +159,7 @@ class F8HeaderAndroid extends React.Component {
           titleColor={titleColor}
           subtitleColor={titleColor}
           actions={actions}
-          onActionSelected={this.handleActionSelected.bind(this)}
+          onActionSelected={this.handleActionSelected}
           style={styles.toolbar}
         >
           {content}
@@ -143,27 +168,7 @@ class F8HeaderAndroid extends React.Component {
       </View>
     );
   }
-
-  handleActionSelected(position: number) {
-    if (this.limitActionSelection) {
-      return;
-    }
-    let items = this.props.extraItems || [];
-    if (this.props.rightItem) {
-      items = [this.props.rightItem, ...items];
-    }
-    if (this.props.leftItem) {
-      items = [this.props.leftItem, ...items];
-    }
-    const item = items[position];
-    item && item.onPress && item.onPress();
-    this.limitActionSelection = true;
-    setTimeout(() => {
-      this.limitActionSelection = false;
-    }, 1000);
-  }
 }
-
 /* =============================================================================
 <F8Header /> (When Platform.os is iOS)
 --------------------------------------------------------------------------------
@@ -171,9 +176,8 @@ View header
 
 ============================================================================= */
 
-class F8HeaderIOS extends React.Component {
+class F8HeaderIOS extends React.Component<Props> {
   static height: number;
-  props: Props;
 
   static defaultProps = {
     backgroundColor: F8Colors.blue,
@@ -222,7 +226,7 @@ class F8HeaderIOS extends React.Component {
       <View style={[styles.header, { backgroundColor }, this.props.style]}>
         <View style={styles.leftItem}>{left}</View>
         <View
-          accessible={true}
+          accessible
           accessibilityLabel={title}
           accessibilityTraits="header"
           style={styles.centerItem}
@@ -242,41 +246,34 @@ Item wrapper
 
 ============================================================================= */
 
-class ItemWrapperIOS extends React.Component {
-  props: {
-    item: Item,
-    color: string
-  };
-
-  render() {
-    const { item, color } = this.props;
-    if (!item) {
-      return null;
-    }
-
-    let content;
-    const { title, icon, layout, onPress } = item;
-
-    if (layout !== "icon" && title) {
-      content = (
-        <Text style={[styles.itemText, { color }]}>{title.toUpperCase()}</Text>
-      );
-    } else if (icon) {
-      content = <Image source={icon} style={{ tintColor: color }} />;
-    }
-
-    return (
-      <TouchableOpacity
-        accessibilityLabel={title}
-        accessibilityTraits="button"
-        onPress={onPress}
-        style={styles.itemWrapper}
-      >
-        {content}
-      </TouchableOpacity>
-    );
+const ItemWrapperIOS = (props: { item: ?Item, color: ?string }) => {
+  const { item, color } = props;
+  if (!item) {
+    return null;
   }
-}
+
+  let content;
+  const { title, icon, layout, onPress } = item;
+
+  if (layout !== "icon" && title) {
+    content = (
+      <Text style={[styles.itemText, { color }]}>{title.toUpperCase()}</Text>
+    );
+  } else if (icon) {
+    content = <Image source={icon} style={{ tintColor: color }} />;
+  }
+
+  return (
+    <TouchableOpacity
+      accessibilityLabel={title}
+      accessibilityTraits="button"
+      onPress={onPress}
+      style={styles.itemWrapper}
+    >
+      {content}
+    </TouchableOpacity>
+  );
+};
 
 /* StyleSheet
 ============================================================================= */
@@ -343,3 +340,4 @@ const styles = StyleSheet.create({
 const Header = Platform.OS === "ios" ? F8HeaderIOS : F8HeaderAndroid;
 
 export default Header;
+/* eslint-disable react/no-multi-comp */
