@@ -2,6 +2,7 @@ import React from "react";
 import { TabNavigator } from "react-navigation";
 import CategoriesStack from "./CategoriesStack";
 import { Icon } from "react-native-elements";
+
 const EAT_CATEGORIES_ID = 30;
 const SLEEP_CATEGORIES_ID = 1;
 const TODO_CATEGORIES_ID = 36;

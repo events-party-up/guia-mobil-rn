@@ -3,13 +3,18 @@ import React from "react";
 import { Provider } from "react-redux";
 import { PushNotificationIOS } from "react-native";
 import PushNotification from "react-native-push-notification";
+import type Store from "redux";
 import configureStore from "./store/configureStore";
 import App from "./App";
 
-function setup() {
-  console.disableYellowBox = true;
+type State = {
+  storeCreated: boolean,
+  store: ?Store,
+  storeRehydrated: boolean
+};
 
-  class Root extends React.Component {
+function setup() {
+  class Root extends React.Component<{}, State> {
     constructor() {
       super();
       this.state = {
@@ -31,7 +36,7 @@ function setup() {
       );
     }
 
-    onTokenReceived = token => {
+    onTokenReceived = (token: string) => {
       console.log("TOKEN:", token);
     };
     onNotification = notification => {
@@ -42,7 +47,7 @@ function setup() {
       // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
       notification.finish(PushNotificationIOS.FetchResult.NoData);
     };
-    setupPush = () => {
+    setupPush = (store: Store) => {
       PushNotification.configure({
         // (optional) Called when Token is generated (iOS and Android)
         onRegister: this.onTokenReceived,

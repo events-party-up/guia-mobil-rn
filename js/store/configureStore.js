@@ -6,26 +6,23 @@ import axios from "axios";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import apiCallMiddleware from "./apiCallMiddleware";
-import reducers, { fromCategories } from "../reducers";
+import reducers from "../reducers";
 
 const apiClient = axios.create({
-    baseURL: "https://bariloche.guiasmoviles.com/",
-    timeout: 1000
+  baseURL: "https://bariloche.guiasmoviles.com/",
+  timeout: 1000
 });
-const createGuideStore = applyMiddleware(apiCallMiddleware(apiClient), thunk)(
-    createStore
-);
+const createGuideStore = applyMiddleware(
+  apiCallMiddleware(apiClient),
+  thunk,
+  logger
+)(createStore);
 
-async function configureStore(onComplete) {
-    const store = autoRehydrate()(createGuideStore)(reducers);
-    onComplete();
-    // persistStore(store, { storage: AsyncStorage }, _ => onComplete());
+async function configureStore(onComplete: () => void) {
+  const store = autoRehydrate()(createGuideStore)(reducers);
+  persistStore(store, { storage: AsyncStorage }, onComplete);
 
-    return store;
+  return store;
 }
-
-export const getCategoriesWithParentId = (state, id: number) => {
-    fromCategories.getCategoriesWithParentId(state.categories, id);
-};
 
 export default configureStore;

@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import { connect } from "react-redux";
-import Header from "../components/Header";
 import type NavigationScreenProp from "react-navigation";
 import * as actions from "../actions";
+import Header from "../components/Header";
+import ItemThumb from "../components/ItemThumb";
 
 type Props = {
 	items: any[],
@@ -12,31 +13,35 @@ type Props = {
 };
 
 class ItemsListView extends Component<Props> {
-	navigateTo = selectedItem => {
-		this.props.navigation.navigate("ItemDetailsView", {
-			id: selectedItem.id
-		});
-	};
-
-	renderRow = item => (
-		<ListItem
-			onPress={() => this.navigateTo(item)}
-			key={item.id}
-			title={item.name}
-			avatar={{
-				uri: `https://bariloche.guiasmoviles.com/images/${item.image}`
-			}}
-		/>
-	);
+	renderItemsGrid = (items: IItem[]) => (
+			<View style={styles.grid}>
+				{items.map(item => (
+					<ItemThumb
+						key={item.id}
+						id={item.id}
+						type="small"
+						category={item.category_id}
+						image={item.image}
+						title={item.name}
+						isFavorite={false}
+						onPress={() =>
+							this.props.navigation &&
+							this.props.navigation.navigate("ItemDetailsView", {
+								id: item.id
+							})
+						}
+					/>
+				))}
+			</View>
+		);
 
 	render() {
+		const { items } = this.props;
 		return (
 			<View style={styles.container}>
 				<Header title="Categories" />
-				<ScrollView>
-					<List style={styles.list}>
-						{this.props.items.map(this.renderRow)}
-					</List>
+				<ScrollView style={styles.scrollView}>
+					{this.renderItemsGrid(items)}
 				</ScrollView>
 			</View>
 		);
@@ -47,16 +52,13 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1
 	},
-	list: {
-		flex: 1,
-		marginBottom: 50
+	scrollView: {
+		flex: 1
 	},
-	row: {
-		height: 40,
+	grid: {
 		flexDirection: "row",
-		alignItems: "center",
-		padding: 4,
-		borderWidth: 1
+		flexWrap: "wrap",
+		justifyContent: "space-between"
 	}
 });
 
