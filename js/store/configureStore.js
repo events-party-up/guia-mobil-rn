@@ -20,8 +20,8 @@ const createGuideStore = applyMiddleware(
 
 async function configureStore(onComplete: () => void) {
   const store = autoRehydrate()(createGuideStore)(reducers);
-  persistStore(store, { storage: AsyncStorage }, onComplete);
-
+  // persistStore(store, { storage: AsyncStorage }, onComplete);
+  onComplete();
   return store;
 }
 

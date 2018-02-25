@@ -73,7 +73,7 @@ class ItemDetailsView extends Component<Props> {
       icon: isFavourite ? favouriteIcon : favouriteIconOutline,
       onPress: () => this.toggleFavourite(id)
     };
-
+    const { goBack } = this.props.navigation;
     return (
       <View style={styles.container}>
         <ScrollView style={styles.scrollView} bounces={false}>
@@ -122,7 +122,7 @@ class ItemDetailsView extends Component<Props> {
         <View style={styles.headerContainer}>
           <Header
             backgroundColor="transparent"
-            navItem={{ back: true }}
+            navItem={{ back: true, onPress: () => goBack(null) }}
             rightItem={rightItem}
           />
         </View>

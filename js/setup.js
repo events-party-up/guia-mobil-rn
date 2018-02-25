@@ -2,6 +2,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { PushNotificationIOS } from "react-native";
+// $FlowIssue
 import PushNotification from "react-native-push-notification";
 import type Store from "redux";
 import configureStore from "./store/configureStore";
@@ -24,21 +25,28 @@ function setup() {
       };
     }
     componentDidMount() {
+      this.setupPush();
       configureStore(
         // rehydration callback (after async compatibility and persistStore)
-        () => this.setState({ storeRehydrated: true })
+        () => {
+          console.log("Store rehydrated");
+          this.setState({ storeRehydrated: true });
+        }
       ).then(
         // creation callback (after async compatibility)
         store => {
           this.setState({ store, storeCreated: true });
-          this.setupPush(store);
         }
       );
     }
+    // componentDidUpdate() {
+    //   PushNotification.requestPermissions();
+    // }
 
     onTokenReceived = (token: string) => {
       console.log("TOKEN:", token);
     };
+
     onNotification = notification => {
       console.log("NOTIFICATION:", notification);
 
@@ -48,6 +56,7 @@ function setup() {
       notification.finish(PushNotificationIOS.FetchResult.NoData);
     };
     setupPush = (store: Store) => {
+      console.log("Setting push notifications");
       PushNotification.configure({
         // (optional) Called when Token is generated (iOS and Android)
         onRegister: this.onTokenReceived,

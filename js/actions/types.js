@@ -13,6 +13,8 @@ export type Action =
   | { type: actions.ADD_ITEM_REVIEW_SUCCESS }
   | { type: actions.SET_FACEBOOK_CREDENTIALS, payload: {} }
   | { type: actions.actions.SET_USER_PROFILE, payload: UserProfile }
+  | { type: actions.LOGOUT }
+  | { type: actions.RECEIVED_PUSH_NOTIFICATION, notification: Object }
   | { type: "LOADED_ABOUT", list: Array<ParseObject> }
   | { type: "LOADED_NOTIFICATIONS", list: Array<ParseObject> }
   | { type: "LOADED_MAPS", list: Array<ParseObject> }
@@ -35,7 +37,6 @@ export type Action =
     }
   | { type: "RESTORED_SCHEDULE", list: Array<ParseObject> }
   | { type: "SKIPPED_LOGIN" }
-  | { type: "LOGGED_OUT" }
   | { type: "SESSION_ADDED", id: string }
   | { type: "SESSION_REMOVED", id: string }
   | { type: "SET_SHARING", enabled: boolean }
@@ -49,7 +50,6 @@ export type Action =
   | { type: "TURNED_ON_PUSH_NOTIFICATIONS" }
   | { type: "REGISTERED_PUSH_NOTIFICATIONS" }
   | { type: "SKIPPED_PUSH_NOTIFICATIONS" }
-  | { type: "RECEIVED_PUSH_NOTIFICATION", notification: Object }
   | { type: "SEEN_ALL_NOTIFICATIONS" }
   | { type: "RESET_NUXES" };
 
