@@ -37,6 +37,11 @@ type Props = {
   theme: Object
 };
 
+const getItemId = item =>
+  item.properties.cluster
+    ? `cluster_${item.properties.cluster_id}`
+    : `point_${item.properties.id}`;
+
 class MapView extends React.Component<Props, State> {
   static navigationOptions = { title: "Map" };
 
@@ -123,12 +128,19 @@ class MapView extends React.Component<Props, State> {
       minZoom: 10,
       maxZoom: 20
     };
-
+    MapboxGL.offlineManager.getPacks().then(packs => {
+      const missingRegionPack =
+        packs.findIndex(
+          pack => pack.metadata.name === config.get("REGION_NAME")
+        ) < 0;
+      if (missingRegionPack)
+        MapboxGL.offlineManager.createPack(options, this.onDownloadProgress);
+    });
     // start download
-    MapboxGL.offlineManager.createPack(options, this.onDownloadProgress);
   }
 
   onAnnotationSelected = item => {
+    this.setState({ selectedItem: item });
     if (item.properties.cluster) {
       const zoom = this.clustering.getClusterExpansionZoom(
         item.properties.cluster_id
@@ -138,6 +150,10 @@ class MapView extends React.Component<Props, State> {
         zoom
       });
     }
+  };
+
+  onAnnotationDeselected = () => {
+    this.setState({ selectedItem: null });
   };
 
   setItems = items => {
@@ -175,14 +191,14 @@ class MapView extends React.Component<Props, State> {
   };
 
   renderItems = () => {
-    const { clusteredItems } = this.state;
-    console.log({ clusteredItems });
+    const { clusteredItems, selectedItem } = this.state;
+    const selectedItemId = selectedItem ? getItemId(selectedItem) : "";
+
+    console.log({ selectedItemId });
+
     if (clusteredItems) {
       return clusteredItems.map(item => {
-        const id = item.properties.cluster
-          ? `cluster_${item.properties.cluster_id}`
-          : `point_${item.properties.id}`;
-
+        const id = getItemId(item);
         let markerView;
         if (item.properties.cluster) {
           markerView = (
@@ -201,8 +217,11 @@ class MapView extends React.Component<Props, State> {
           <MapboxGL.PointAnnotation
             key={id}
             id={`${item.properties.id}`}
+            selected={selectedItemId === id}
             coordinate={item.geometry.coordinates}
             onSelected={() => this.onAnnotationSelected(item)}
+            onDeselected={() => this.onAnnotationDeselected()}
+            anchor={{ x: 0.5, y: 1.0 }}
           >
             {markerView}
             <MapboxGL.Callout title="Look! An annotation!" />
@@ -220,6 +239,7 @@ class MapView extends React.Component<Props, State> {
       duration: 2000
     });
   };
+
   centerOnUser = () => {
     const { latitude, longitude, error, userLocationLoaded } = this.state;
     if (!error && userLocationLoaded)
@@ -228,6 +248,7 @@ class MapView extends React.Component<Props, State> {
 
   render() {
     const { theme, navigation } = this.props;
+    const { error, userLocationLoaded } = this.state;
     return (
       <View style={styles.container}>
         <Header
@@ -265,6 +286,9 @@ class MapView extends React.Component<Props, State> {
             type="material-icons"
             color={theme.colors.primary}
             onPress={this.centerOnUser}
+            containerStyle={{
+              opacity: error !== null || !userLocationLoaded ? 0.5 : 1.0
+            }}
           />
           <Icon
             raised
