@@ -25,6 +25,7 @@ const MAX_ZOOM = 20;
 const MIN_ZOOM = 10;
 const DEFAULT_ZOOM_LEVEL = 10;
 const WINDOW_WIDTH = Dimensions.get("window").width;
+const WINDOW_HEIGHT = Dimensions.get("window").height;
 
 type State = {
   pointsLoaded: boolean,
@@ -38,6 +39,11 @@ type Props = {
 
 class MapView extends React.Component<Props, State> {
   static navigationOptions = { title: "Map" };
+
+  state = {
+    userLocationLoaded: false
+  };
+
   constructor(props) {
     super(props);
     this.clustering = supercluster({
@@ -50,20 +56,56 @@ class MapView extends React.Component<Props, State> {
       clusteredItems: []
     };
   }
+
   clustering: any;
   _map: any;
   count: number = 0;
 
   componentDidMount() {
     this.setItems(this.props.items);
+    navigator.geolocation.requestAuthorization();
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const { coords } = pos;
+        console.log({ coords });
+        this.setState({
+          ...coords,
+          error: null,
+          userLocationLoaded: true
+        });
+      },
+      error => {
+        this.setState({ error: error.message });
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000
+      }
+    );
+  }
+
+  renderUserLocationMarker() {
+    const { latitude, longitude, error, userLocationLoaded } = this.state;
+    if (error || !userLocationLoaded) return null;
+    return (
+      <MapboxGL.PointAnnotation
+        id={`user-location-marker`}
+        coordinate={[longitude, latitude]}
+      >
+        <View style={{ width: 50, height: 50, backgroundColor: "yellow" }} />
+      </MapboxGL.PointAnnotation>
+    );
   }
 
   componentWillReceiveProps(nextProps: Props) {
     this.setItems(nextProps.items);
   }
+
   onDownloadProgress = () => {
     console.log("donwload is progressing");
   };
+
   async onDidFinishLoadingStyle() {
     console.log("styles loaded");
     const { width, height } = Dimensions.get("window");
@@ -158,13 +200,9 @@ class MapView extends React.Component<Props, State> {
         return (
           <MapboxGL.PointAnnotation
             key={id}
-            pitchEnabled={false}
-            showUserLocation
             id={`${item.properties.id}`}
             coordinate={item.geometry.coordinates}
             onSelected={() => this.onAnnotationSelected(item)}
-            maxZoom={MAX_ZOOM}
-            minZoom={MIN_ZOOM}
           >
             {markerView}
             <MapboxGL.Callout title="Look! An annotation!" />
@@ -182,6 +220,11 @@ class MapView extends React.Component<Props, State> {
       duration: 2000
     });
   };
+  centerOnUser = () => {
+    const { latitude, longitude, error, userLocationLoaded } = this.state;
+    if (!error && userLocationLoaded)
+      this._map.flyTo([longitude, latitude], 2000);
+  };
 
   render() {
     const { theme, navigation } = this.props;
@@ -198,14 +241,21 @@ class MapView extends React.Component<Props, State> {
         />
         <MapboxGL.MapView
           styleURL={MapboxGL.StyleURL.Street}
-          style={[sheet.matchParent, { width: WINDOW_WIDTH }]}
+          style={[
+            sheet.matchParent,
+            { width: WINDOW_WIDTH, height: WINDOW_HEIGHT }
+          ]}
           onRegionDidChange={this.onRegionDidChange}
           onDidFinishLoadingMap={this.onDidFinishLoadingStyle}
           centerCoordinate={DEFAULT_CENTER_COORDINATE}
           zoomLevel={DEFAULT_ZOOM_LEVEL}
           ref={c => (this._map = c)}
+          maxZoom={MAX_ZOOM}
+          minZoom={MIN_ZOOM}
+          showUserLocation
         >
           {this.renderItems()}
+          {this.renderUserLocationMarker()}
         </MapboxGL.MapView>
         <View style={styles.bottomView}>
           <Icon
@@ -214,7 +264,7 @@ class MapView extends React.Component<Props, State> {
             name="my-location"
             type="material-icons"
             color={theme.colors.primary}
-            onPress={() => console.log("hello")}
+            onPress={this.centerOnUser}
           />
           <Icon
             raised
