@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import geoViewport from "@mapbox/geo-viewport";
@@ -8,6 +8,8 @@ import supercluster from "supercluster";
 import sheet from "../styles/sheet";
 import { IItem } from "../models";
 import { getItems } from "../reducers";
+import Header from "../components/Header";
+import { withTheme } from "styled-components";
 
 import {
   onSortOptions,
@@ -20,13 +22,15 @@ import config from "../utils/config";
 const MAPBOX_VECTOR_TILE_SIZE = 512;
 const MAX_ZOOM = 20;
 const MIN_ZOOM = 10;
+
 type State = {
   pointsLoaded: boolean,
   clusteredItems: ?any
 };
 
 type Props = {
-  items: ?Array<IItem>
+  items: ?Array<IItem>,
+  theme: Object
 };
 
 class MapView extends React.Component<Props, State> {
@@ -159,18 +163,30 @@ class MapView extends React.Component<Props, State> {
   };
 
   render() {
+    const { theme, navigation } = this.props;
     return (
-      <MapboxGL.MapView
-        styleURL={MapboxGL.StyleURL.Street}
-        style={sheet.matchParent}
-        onRegionDidChange={this.onRegionDidChange}
-        onDidFinishLoadingMap={this.onDidFinishLoadingStyle}
-        centerCoordinate={DEFAULT_CENTER_COORDINATE}
-        zoomLevel={12}
-        ref={c => (this._map = c)}
-      >
-        {this.renderItems()}
-      </MapboxGL.MapView>
+      <View style={styles.container}>
+        <Header
+          title={"Mapa"}
+          navItem={{
+            back: true,
+            onPress: () => navigation.goBack(null)
+          }}
+          backgroundColor={theme.colors.primary}
+          titleColor={theme.colors.highContrast}
+        />
+        <MapboxGL.MapView
+          styleURL={MapboxGL.StyleURL.Street}
+          style={sheet.matchParent}
+          onRegionDidChange={this.onRegionDidChange}
+          onDidFinishLoadingMap={this.onDidFinishLoadingStyle}
+          centerCoordinate={DEFAULT_CENTER_COORDINATE}
+          zoomLevel={12}
+          ref={c => (this._map = c)}
+        >
+          {this.renderItems()}
+        </MapboxGL.MapView>
+      </View>
     );
   }
 }
@@ -179,9 +195,12 @@ const mapStateToProps = state => ({
   items: getItems(state)
 });
 
-export default connect(mapStateToProps)(MapView);
+export default withTheme(connect(mapStateToProps)(MapView));
 
-const styles = {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
   annotationContainer: {
     width: 30,
     height: 30,
@@ -203,4 +222,4 @@ const styles = {
     color: "white",
     backgroundColor: "transparent"
   }
-};
+});
