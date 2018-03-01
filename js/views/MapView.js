@@ -10,7 +10,8 @@ import { IItem } from "../models";
 import { getItems } from "../reducers";
 import Header from "../components/Header";
 import { withTheme } from "styled-components";
-
+import ItemMapMarker from "../components/ItemMapMarker";
+import { Icon } from "react-native-elements";
 import {
   onSortOptions,
   itemToGeoJSONPoint,
@@ -22,6 +23,8 @@ import config from "../utils/config";
 const MAPBOX_VECTOR_TILE_SIZE = 512;
 const MAX_ZOOM = 20;
 const MIN_ZOOM = 10;
+const DEFAULT_ZOOM_LEVEL = 10;
+const WINDOW_WIDTH = Dimensions.get("window").width;
 
 type State = {
   pointsLoaded: boolean,
@@ -131,11 +134,27 @@ class MapView extends React.Component<Props, State> {
 
   renderItems = () => {
     const { clusteredItems } = this.state;
+    console.log({ clusteredItems });
     if (clusteredItems) {
       return clusteredItems.map(item => {
         const id = item.properties.cluster
           ? `cluster_${item.properties.cluster_id}`
           : `point_${item.properties.id}`;
+
+        let markerView;
+        if (item.properties.cluster) {
+          markerView = (
+            <View style={styles.annotationContainer}>
+              <View style={styles.annotationFill}>
+                {item.properties.cluster ? (
+                  <Text>{item.properties.point_count}</Text>
+                ) : null}
+              </View>
+            </View>
+          );
+        } else {
+          markerView = <ItemMapMarker icon={item.properties.iconCode} />;
+        }
         return (
           <MapboxGL.PointAnnotation
             key={id}
@@ -147,19 +166,21 @@ class MapView extends React.Component<Props, State> {
             maxZoom={MAX_ZOOM}
             minZoom={MIN_ZOOM}
           >
-            <View style={styles.annotationContainer}>
-              <View style={styles.annotationFill}>
-                {item.properties.cluster ? (
-                  <Text>{item.properties.point_count}</Text>
-                ) : null}
-              </View>
-            </View>
+            {markerView}
             <MapboxGL.Callout title="Look! An annotation!" />
           </MapboxGL.PointAnnotation>
         );
       });
     }
     return null;
+  };
+
+  birdView = () => {
+    this._map.setCamera({
+      centerCoordinate: DEFAULT_CENTER_COORDINATE,
+      zoom: DEFAULT_ZOOM_LEVEL,
+      duration: 2000
+    });
   };
 
   render() {
@@ -177,15 +198,41 @@ class MapView extends React.Component<Props, State> {
         />
         <MapboxGL.MapView
           styleURL={MapboxGL.StyleURL.Street}
-          style={sheet.matchParent}
+          style={[sheet.matchParent, { width: WINDOW_WIDTH }]}
           onRegionDidChange={this.onRegionDidChange}
           onDidFinishLoadingMap={this.onDidFinishLoadingStyle}
           centerCoordinate={DEFAULT_CENTER_COORDINATE}
-          zoomLevel={12}
+          zoomLevel={DEFAULT_ZOOM_LEVEL}
           ref={c => (this._map = c)}
         >
           {this.renderItems()}
         </MapboxGL.MapView>
+        <View style={styles.bottomView}>
+          <Icon
+            raised
+            reverse
+            name="my-location"
+            type="material-icons"
+            color={theme.colors.primary}
+            onPress={() => console.log("hello")}
+          />
+          <Icon
+            raised
+            reverse
+            name="center-focus-weak"
+            type="material-icons"
+            color={theme.colors.primary}
+            onPress={this.birdView}
+          />
+          <Icon
+            raised
+            reverse
+            name="filter"
+            type="feather"
+            color={theme.colors.primary}
+            onPress={() => console.log("hello")}
+          />
+        </View>
       </View>
     );
   }
@@ -221,5 +268,15 @@ const styles = StyleSheet.create({
   annotationText: {
     color: "white",
     backgroundColor: "transparent"
+  },
+  bottomView: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 10,
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    justifyContent: "space-around"
   }
 });

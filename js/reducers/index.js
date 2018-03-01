@@ -27,5 +27,8 @@ export function getCategoryChain(state: State, childCategoryId: number) {
 }
 
 export function getItems(state) {
-    return fromItems.getItems(state.items);
+    return fromItems.getItems(state.items).map(item => ({
+        ...item,
+        iconCode: getCategoryWithId(state, item.category_id).icon
+    }));
 }
