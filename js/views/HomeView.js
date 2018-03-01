@@ -1,14 +1,25 @@
 // @flow
 import React from "react";
-import { View, Button, Text, ScrollView, Image } from "react-native";
+import {
+  View,
+  Button,
+  Text,
+  ScrollView,
+  Image,
+  Dimensions,
+  TouchableOpacity
+} from "react-native";
 import { connect } from "react-redux";
+import styled from "styled-components";
+import type NavigationScreenProp from "react-navigation";
+import { withTheme } from "styled-components";
+import { getImageUrl } from "../utils";
 import { FacebookLoginButton } from "../components/FacebookLoginButton";
 import Header from "../components/Header";
 import { Heading2, Heading4 } from "../components/common/Text";
 import { getFeaturedItems } from "../reducers";
 import ItemThumb from "../components/ItemThumb";
 import { IItem } from "../models";
-import type NavigationScreenProp from "react-navigation";
 import CategoryCard from "../components/CategoryCard";
 import StyleSheet from "../components/common/F8StyleSheet";
 
@@ -17,20 +28,44 @@ type Props = {
   featuredItems: IItem[]
 };
 
+const Subtitle = styled.Text`
+  color: ${props => props.theme.colors.gray};
+  font-size: 18px;
+  line-height: 18px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+`;
+
+const WINDOW_WIDTH = Dimensions.get("window").width;
+const CONTAINER_PADDING_H = 15;
+const WIDTH = WINDOW_WIDTH - 2 * CONTAINER_PADDING_H;
+
+const WeekImagesContainer = styled.View`
+  background-color: ${props => props.theme.colors.lightBackground};
+  padding-horizontal: ${CONTAINER_PADDING_H}px;
+  padding-top: 20px;
+  padding-bottom: 40px;
+`;
+
+const WeekImagesHeader = styled(Heading2)`
+  color: ${props => props.theme.colors.gray};
+  padding-vertical: 10px;
+`;
+
 class HomeView extends React.Component<Props> {
   navigateToMap = () => {
     this.props.navigation.navigate("Map");
   };
 
-  renderFeaturedList = (categoryId: number, featuredItems: IItem[]) => {
+  renderFeaturedList = (featuredItems: IItem[]) => {
     console.log({ featuredItems });
     return (
       <View style={styles.featuredList}>
-        {featuredItems.filter(item => item.category_id !== 0).map(item => (
+        {featuredItems.map(item => (
           <ItemThumb
             key={item.id}
             id={item.id}
-            category={item.category_id}
+            categoryId={item.category_id}
             image={item.image}
             title={item.name}
             isFavorite={false}
@@ -51,19 +86,23 @@ class HomeView extends React.Component<Props> {
     const categories = [
       {
         name: "Alojamientos",
-        tab: "SleepTab"
+        tab: "SleepTab",
+        image: require("./img/cover-hotel.png")
       },
       {
         name: "Gastronomia",
-        tab: "EatTab"
+        tab: "EatTab",
+        image: require("./img/cover-cake.png")
       },
       {
         name: "Experiencias",
-        tab: "TodoTab"
+        tab: "TodoTab",
+        image: require("./img/cover-gondolas.png")
       },
       {
         name: "Servicios",
-        tab: "ServicesTab"
+        tab: "ServicesTab",
+        image: require("./img/cover-gondolas.png")
       }
     ];
     return (
@@ -88,8 +127,16 @@ class HomeView extends React.Component<Props> {
       </ScrollView>
     );
   };
+
   render() {
-    const { userName, isAuthenticated, profilePic, featuredItems } = this.props;
+    const {
+      userName,
+      isAuthenticated,
+      profilePic,
+      featuredItems,
+      theme,
+      weekPics
+    } = this.props;
     const rightItem = {
       title: "Map",
       layout: "icon",
@@ -104,56 +151,67 @@ class HomeView extends React.Component<Props> {
       onPress: () =>
         this.props.navigation && this.props.navigation.navigate("Settings")
     };
-
+    const showWeekPics: boolean = weekPics.length > 0;
     return (
       <View style={{ flex: 1, backgroundColor: "white" }}>
         <Header
           backgroundColor="transparent"
           rightItem={rightItem}
           leftItem={leftItem}
-          itemsColor="blue"
+          itemsColor={theme.colors.primary}
         />
         <ScrollView>
           <View style={styles.withPadding}>
-            <Heading2>Descubrí Bariloche.</Heading2>
-            <Heading2>Las mejores actividades para disfrutar.</Heading2>
-            {this.renderCategoriesPreviews()}
-            <Heading4>
-              Conocé los lugares que recomendamos para visitar y disfrutar.
-            </Heading4>
-            <Heading2>Alojamientos destacados donde descansar.</Heading2>
-            {this.renderFeaturedList(78, featuredItems)}
-            <Heading4>
-              Hospedate en los mejores alojamientos en base a tus pretensiones.
-            </Heading4>
-            <Heading2>
-              Restaurantes recomendados, excelente gastronomia
-            </Heading2>
-            {isAuthenticated && (
-              <View>
-                <Text>{userName} </Text>
-                <Image
-                  style={{ width: 50, height: 50 }}
-                  source={{
-                    uri: profilePic
-                  }}
-                />
-              </View>
-            )}
-            <FacebookLoginButton />
-
-            <Button
-              onPress={() => {
-                this.props.navigation.navigate("Tabs");
+            <Image
+              style={{
+                height: 90,
+                width: 200,
+                resizeMode: "contain",
+                alignSelf: "center"
               }}
-              title="Show Categories "
+              source={require("./img/logo.png")}
             />
+
+            <Heading2>Descubrí Bariloche.</Heading2>
+            {this.renderCategoriesPreviews()}
+            <Heading2 style={{ paddingTop: 20 }}>
+              Las mejores actividades para disfrutar.
+            </Heading2>
+            <Subtitle>
+              Conocé los lugares que recomendamos para visitar y disfrutar.
+            </Subtitle>
+            {this.renderFeaturedList(featuredItems)}
           </View>
+          {showWeekPics && (
+            <WeekImagesContainer>
+              <WeekImagesHeader>Fotos de la semana</WeekImagesHeader>
+              <TouchableOpacity activeOpacity={0.7}>
+                <Image
+                  style={styles.weekImage}
+                  source={{ uri: getImageUrl(weekPics[0].image) }}
+                />
+              </TouchableOpacity>
+            </WeekImagesContainer>
+          )}
         </ScrollView>
       </View>
     );
   }
 }
+/*
+{isAuthenticated && (
+  <View>
+    <Text>{userName} </Text>
+    <Image
+      style={{ width: 50, height: 50 }}
+      source={{
+        uri: profilePic
+      }}
+    />
+  </View>
+)}
+<FacebookLoginButton />
+*/
 
 const styles = StyleSheet.create({
   featuredList: {
@@ -166,11 +224,19 @@ const styles = StyleSheet.create({
   },
   categoriesScroll: {
     paddingVertical: 10
+  },
+  weekImage: {
+    borderRadius: 8,
+    width: WIDTH,
+    height: WIDTH * 0.675,
+    resizeMode: "cover"
   }
 });
+
 const mapStateToProps = state => ({
   featuredItems: getFeaturedItems(state),
   isAuthenticated: state.auth.isAuthenticated,
+  weekPics: state.weekPics,
   userName:
     state.auth.isAuthenticated && state.auth.userProfile
       ? `${state.auth.userProfile.firstName} ${state.auth.userProfile.lastName}`
@@ -180,4 +246,4 @@ const mapStateToProps = state => ({
       ? state.auth.userProfile.profilePic
       : ""
 });
-export default connect(mapStateToProps)(HomeView);
+export default withTheme(connect(mapStateToProps)(HomeView));

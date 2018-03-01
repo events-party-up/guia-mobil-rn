@@ -7,6 +7,7 @@ import geoViewport from "@mapbox/geo-viewport";
 import supercluster from "supercluster";
 import sheet from "../styles/sheet";
 import { IItem } from "../models";
+import { getItems } from "../reducers";
 
 import {
   onSortOptions,
@@ -28,7 +29,7 @@ type Props = {
   items: ?Array<IItem>
 };
 
-class ShowMap extends React.Component<Props, State> {
+class MapView extends React.Component<Props, State> {
   static navigationOptions = { title: "Map" };
   constructor(props) {
     super(props);
@@ -79,7 +80,6 @@ class ShowMap extends React.Component<Props, State> {
   }
 
   onAnnotationSelected = item => {
-    console.log({ item });
     if (item.properties.cluster) {
       const zoom = this.clustering.getClusterExpansionZoom(
         item.properties.cluster_id
@@ -176,10 +176,10 @@ class ShowMap extends React.Component<Props, State> {
 }
 
 const mapStateToProps = state => ({
-  items: state.items.allIds
+  items: getItems(state)
 });
 
-export default connect(mapStateToProps)(ShowMap);
+export default connect(mapStateToProps)(MapView);
 
 const styles = {
   annotationContainer: {

@@ -4,11 +4,17 @@ import { Dimensions, View, Text, Image, TouchableOpacity } from "react-native";
 import StyleSheet from "./common/F8StyleSheet";
 import F8Colors from "./common/F8Colors";
 import F8Fonts from "./common/F8Fonts";
-import { Rating } from "react-native-elements";
+import Rating from "./Rating";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { ICategory } from "../models";
+import { getCategoryWithId } from "../reducers";
 
 type ThumbType = "small" | "large";
+
 type Props = {
-  category: number,
+  categoryId: number,
+  category: ICategory,
   onPress: () => void,
   image: string,
   title: string,
@@ -17,6 +23,12 @@ type Props = {
   isFavorite: boolean,
   type: ThumbType
 };
+
+const CategoryLabel = styled.Text`
+  padding-top: 4px;
+  padding-bottom: 4px;
+  color: ${props => props.theme.colors.primary};
+`;
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const CONTAINER_PADDING_H = 15;
@@ -100,24 +112,20 @@ class ItemThumb extends React.Component<Props> {
         <View style={styles.thumb}>
           {this.renderImage(image, imageWidth, imageHeight)}
         </View>
+        <CategoryLabel>{category.name.toUpperCase()} </CategoryLabel>
         {this.renderTitle(type, title)}
 
-        <Rating
-          type="star"
-          fractions={1}
-          startingValue={stars || 0}
-          readonly
-          imageSize={14}
-          ratingBackgroundColor="transparent"
-          ratingColor="#0000ff"
-          style={{ paddingVertical: 10, backgroundColor: "transparent" }}
-        />
+        <Rating imageSize={14} rating={stars} />
       </TouchableOpacity>
     );
   }
 }
 
-export default ItemThumb;
+const mapStateToProps = (state, { categoryId }) => ({
+  category: getCategoryWithId(state, categoryId)
+});
+
+export default connect(mapStateToProps, null)(ItemThumb);
 
 /* StyleSheet =============================================================== */
 const styles = StyleSheet.create({
@@ -141,7 +149,7 @@ const styles = StyleSheet.create({
     color: F8Colors.black
   },
   titleSmall: {
-    marginTop: 9,
+    marginTop: 4,
     fontSize: 13,
     lineHeight: F8Fonts.lineHeight(17)
   },

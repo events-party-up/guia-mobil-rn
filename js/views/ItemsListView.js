@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import type NavigationScreenProp from "react-navigation";
+import styled, { withTheme } from "styled-components";
 import * as actions from "../actions";
 import Header from "../components/Header";
 import ItemThumb from "../components/ItemThumb";
@@ -15,6 +16,11 @@ type Props = {
   category: ICategory
 };
 
+const ViewContainer = styled.View`
+  flex: 1;
+  background-color: ${props => props.theme.colors.highContrast};
+`;
+
 class ItemsListView extends Component<Props> {
   renderItemsGrid = (items: IItem[]) => (
     <View style={styles.grid}>
@@ -23,7 +29,7 @@ class ItemsListView extends Component<Props> {
           key={item.id}
           id={item.id}
           type="small"
-          category={item.category_id}
+          categoryId={item.category_id}
           image={item.image}
           title={item.name}
           isFavorite={false}
@@ -39,11 +45,13 @@ class ItemsListView extends Component<Props> {
   );
 
   render() {
-    const { items, category } = this.props;
+    const { items, category, theme } = this.props;
     return (
-      <View style={styles.container}>
+      <ViewContainer style={styles.container}>
         <Header
           title={category.name}
+          backgroundColor={theme.colors.primary}
+          titleColor={theme.colors.highContrast}
           navItem={{
             back: true,
             onPress: () => this.props.navigation.goBack()
@@ -52,7 +60,7 @@ class ItemsListView extends Component<Props> {
         <ScrollView style={styles.scrollView}>
           {this.renderItemsGrid(items)}
         </ScrollView>
-      </View>
+      </ViewContainer>
     );
   }
 }
@@ -86,4 +94,4 @@ const mapStateToProps = (state, { navigation }) => {
   };
 };
 
-export default connect(mapStateToProps)(ItemsListView);
+export default withTheme(connect(mapStateToProps)(ItemsListView));

@@ -84,6 +84,13 @@ export function getFeaturedItems(state: State) {
     .filter(item => item !== undefined);
 }
 
-export function getItemsForCategoryId(state: State, categoryId: number): Array<IItem> {
+export function getItemsForCategoryId(
+  state: State,
+  categoryId: number
+): Array<IItem> {
   return state.byCategoryId[categoryId] || [];
+}
+
+export function getItems(state: State) {
+  return state.allIds.map(id => state.byId[id]);
 }

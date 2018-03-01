@@ -1,14 +1,18 @@
 // @flow
 import React, { Component } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Text } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import type NavigationScreenProp from "react-navigation";
 import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
+import { withTheme } from "styled-components";
 import * as actions from "../actions";
 import { ICategory } from "../models";
 import { getCategoriesWithParentId, getCategoryWithId } from "../reducers";
 import Header from "../components/Header";
+import GuideIcon from "../components/GuideIcon";
+import styled from "styled-components";
+
 type Props = {
   categories: ICategory[],
   navigation: NavigationScreenProp,
@@ -17,6 +21,9 @@ type Props = {
   isRoot: boolean
 };
 
+const RowIcon = styled(GuideIcon)`
+  color: ${props => props.theme.colors.primary};
+`;
 class CategoriesList extends Component<Props> {
   static defaultProps = {
     isRoot: false
@@ -38,32 +45,27 @@ class CategoriesList extends Component<Props> {
     }
   };
 
-  goBack = () => {
-    const { navigation, isRoot } = this.props;
-    // if (isRoot) {
-    //   navigation.pop();
-    // } else {
-    navigation.goBack(null);
-    // }
-  };
-
   renderRow = category => (
     <ListItem
       onPress={() => this.navigateTo(category)}
       key={category.id}
       title={category.name}
+      leftIcon={<RowIcon icon={category.icon} />}
     />
   );
+
   render() {
-    const { categoryName, categories } = this.props;
+    const { categoryName, categories, navigation, theme } = this.props;
     return (
       <View style={styles.container}>
         <Header
           title={categoryName}
           navItem={{
             back: true,
-            onPress: this.goBack
+            onPress: () => navigation.goBack(null)
           }}
+          backgroundColor={theme.colors.primary}
+          titleColor={theme.colors.highContrast}
         />
         <ScrollView>
           <List style={styles.list}>{categories.map(this.renderRow)}</List>
@@ -116,4 +118,6 @@ const mapDispatchToProps = (dispatch: Function) => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CategoriesList);
+export default withTheme(
+  connect(mapStateToProps, mapDispatchToProps)(CategoriesList)
+);

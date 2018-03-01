@@ -40,6 +40,17 @@ export function getCategoryWithId(state: State, id: number): ?ICategory {
   return state.byId[id];
 }
 
+export function getCategoryChain(
+  state: State,
+  childCategoryId: number
+): ICategory[] {
+  const category = state.byId[childCategoryId];
+  if (category) {
+    return [...getCategoryChain(state, category.parent_id), category];
+  }
+  return [];
+}
+
 // flat the tree and store the ids instead
 function flatTree(
   categoryTree: ICategory[]

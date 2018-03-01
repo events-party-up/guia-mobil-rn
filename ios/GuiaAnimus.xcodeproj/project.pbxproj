@@ -31,6 +31,7 @@
 		7F0D82F018674285B76C0D1E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1346FEE8FE5F4478943AF7A0 /* Foundation.ttf */; };
 		7F5F127CF14C4F3E878EF3E2 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A21346C926284F6E8F2182FC /* Feather.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		8619E59C20462EBA00A8CF66 /* guide-v01.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8619E59B20462EBA00A8CF66 /* guide-v01.ttf */; };
 		86665B162033772C0072FEC1 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86665AF9203377100072FEC1 /* libRCTPushNotification.a */; };
 		86709E722030BA6E007450E8 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86709E712030BA6E007450E8 /* Mapbox.framework */; };
 		86709E732030BA6E007450E8 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 86709E712030BA6E007450E8 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -402,6 +403,7 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		8619E59B20462EBA00A8CF66 /* guide-v01.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "guide-v01.ttf"; sourceTree = "<group>"; };
 		86665AE62033770F0072FEC1 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		86665B17203378DF0072FEC1 /* GuiaAnimus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = GuiaAnimus.entitlements; path = GuiaAnimus/GuiaAnimus.entitlements; sourceTree = "<group>"; };
 		86709E712030BA6E007450E8 /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = "../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework"; sourceTree = "<group>"; };
@@ -636,6 +638,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				8619E59B20462EBA00A8CF66 /* guide-v01.ttf */,
 				86709E712030BA6E007450E8 /* Mapbox.framework */,
 				13B07FAE1A68108700A75B9A /* GuiaAnimus */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -1190,6 +1193,7 @@
 				7F5F127CF14C4F3E878EF3E2 /* Feather.ttf in Resources */,
 				7A5991B8F59646BEA9810842 /* FontAwesome.ttf in Resources */,
 				7F0D82F018674285B76C0D1E /* Foundation.ttf in Resources */,
+				8619E59C20462EBA00A8CF66 /* guide-v01.ttf in Resources */,
 				595354B09D1B4758A7C244E4 /* Ionicons.ttf in Resources */,
 				46BDE873790D4CFAA859A93F /* MaterialCommunityIcons.ttf in Resources */,
 				377DF25C397245A8BB88C5C3 /* MaterialIcons.ttf in Resources */,

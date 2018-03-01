@@ -43,7 +43,7 @@ export default function apiCallMiddleware(apiClient) {
       return request
         .then((response: any) => {
           dispatch({
-            type: `${type  }_SUCCESS`,
+            type: `${type}_SUCCESS`,
             ...payload,
             requestId,
             response,
@@ -58,7 +58,7 @@ export default function apiCallMiddleware(apiClient) {
             console.error(error);
           }
           dispatch({
-            type: `${type  }_FAILURE`,
+            type: `${type}_FAILURE`,
             ...payload,
             requestId,
             error,

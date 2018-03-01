@@ -2,12 +2,13 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { PushNotificationIOS } from "react-native";
+import { ThemeProvider } from "styled-components";
 // $FlowIssue
 import PushNotification from "react-native-push-notification";
 import type Store from "redux";
 import configureStore from "./store/configureStore";
 import App from "./App";
-
+import theme from "./theme";
 type State = {
   storeCreated: boolean,
   store: ?Store,
@@ -93,7 +94,9 @@ function setup() {
       }
       return (
         <Provider store={this.state.store}>
-          <App />
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
         </Provider>
       );
     }

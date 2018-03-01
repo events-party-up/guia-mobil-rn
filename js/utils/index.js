@@ -34,3 +34,6 @@ export function itemToGeoJSONPoint(item) {
 		properties: item
 	};
 }
+
+export const getImageUrl = (image: string) =>
+	`https://bariloche.guiasmoviles.com/uploads/${image}`;

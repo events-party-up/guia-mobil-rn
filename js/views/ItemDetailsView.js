@@ -6,37 +6,80 @@ import {
   Text,
   Image,
   Dimensions,
-  ScrollView
+  ScrollView,
+  Animated
 } from "react-native";
 import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
-import { Button, Icon } from "react-native-elements";
+import { Icon } from "react-native-elements";
+import styled, { withTheme } from "styled-components";
 import * as actions from "../actions";
 import ReviewsListView from "./ReviewsListView";
 import { IItem } from "../models";
 import Header from "../components/Header";
+import Button from "../components/Button";
+import { getCategoryChain } from "../reducers";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").width;
-const IMAGE_HEIGHT = 300;
+const IMAGE_HEIGHT = 200;
+
 interface Props extends IItem {
   isFavourite: boolean;
   dispatch: Function;
   image: ?string;
   phone: ?string;
+  categoryChain: Array<ICategory>;
 }
+
+const ViewContainer = styled.View`
+  flex: 1;
+  background-color: ${props => props.theme.colors.highContrast};
+`;
+
+const CategoryLabel = styled.Text`
+  color: ${props => props.theme.colors.primary};
+  padding-horizontal: 10px;
+`;
+const CategoryBreakdrum = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-vertical: 10px;
+  align-items: center;
+`;
 
 const lakeImage =
   "https://upload.wikimedia.org/wikipedia/commons/2/22/Lago_Nahuel_Huapi%2C_Argentina%2C_2005.jpeg";
+
+const arrowLeft = require("../components/img/header/back.png");
+
+const ThemedImage = styled.Image`
+  tint-color: ${props => props.theme.colors.primary};
+  height: 10px;
+  width: 10px;
+`;
+const Separator = () => <ThemedImage source={arrowLeft} />;
+const favouriteIcon = require("./img/favorite.png");
+const favouriteIconOutline = require("./img/favorite-outline.png");
+
+const scroll = new Animated.Value(0);
+const onScroll = Animated.event([
+  { nativeEvent: { contentOffset: { y: scroll } } }
+]);
 
 class ItemDetailsView extends Component<Props> {
   static navigationOptions = ({ name }) => ({
     title: name,
     header: null
   });
+
   toggleFavourite = id => {
     this.props.dispatch(actions.toggleFavourite(id));
   };
+
+  constructor() {
+    super();
+  }
 
   renderInfoItem = (iconName, text) => {
     if (text) {
@@ -54,6 +97,24 @@ class ItemDetailsView extends Component<Props> {
     return null;
   };
 
+  renderCategoriesBreakdrum = () => {
+    const { categoryChain } = this.props;
+    console.log({ categoryChain });
+    return (
+      <CategoryBreakdrum>
+        {categoryChain
+          .map(category => category.name)
+          .map(name => <CategoryLabel>{name.toUpperCase()}</CategoryLabel>)
+          .reduce((items, category) => {
+            if (items.length) return [...items, <Separator />, category];
+            else {
+              return [...items, category];
+            }
+          }, [])}
+      </CategoryBreakdrum>
+    );
+  };
+
   render() {
     const {
       name,
@@ -63,10 +124,10 @@ class ItemDetailsView extends Component<Props> {
       image,
       phone,
       mail,
-      address
+      address,
+      theme
     } = this.props;
-    const favouriteIcon = require("./img/favorite.png");
-    const favouriteIconOutline = require("./img/favorite-outline.png");
+
     const rightItem = {
       title: "Settings",
       layout: "icon",
@@ -74,25 +135,31 @@ class ItemDetailsView extends Component<Props> {
       onPress: () => this.toggleFavourite(id)
     };
     const { goBack } = this.props.navigation;
+    const height = scroll.interpolate({
+      inputRange: [0, IMAGE_HEIGHT - 50],
+      outputRange: [IMAGE_HEIGHT, 50],
+      extrapolate: "clamp"
+    });
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.scrollView} bounces={false}>
-          <Image
-            source={{
-              uri: image
-                ? `https://bariloche.guiasmoviles.com/uploads/${image}`
-                : lakeImage
-            }}
-            style={{
-              width: WINDOW_WIDTH,
-              height: IMAGE_HEIGHT
-            }}
-          />
-
+      <ViewContainer>
+        <Animated.ScrollView
+          alwaysBounceVertical={true}
+          overScrollMode="auto"
+          scrollEventThrottle={16}
+          contentInsetAdjustmentBehavior="always"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingTop: IMAGE_HEIGHT
+          }}
+          onScroll={onScroll}
+          style={styles.scrollView}
+          bounces={false}
+        >
+          {this.renderCategoriesBreakdrum()}
           <Text style={styles.title}> {name.toUpperCase()}</Text>
           <View style={styles.actionItems}>
-            <Button title="LLamar" />
-            <Button title="Ver en mapa" />
+            <Button title="LLamar" primary />
+            <Button title="Ver en mapa" primary />
           </View>
           <View style={styles.contactItems}>
             {this.renderInfoItem("phone", phone)}
@@ -118,7 +185,21 @@ class ItemDetailsView extends Component<Props> {
             <Text>Evaluaciones</Text>
           </View>
           <ReviewsListView itemId={id} />
-        </ScrollView>
+        </Animated.ScrollView>
+        <Animated.Image
+          source={{
+            uri: image
+              ? `https://bariloche.guiasmoviles.com/uploads/${image}`
+              : lakeImage
+          }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height
+          }}
+        />
         <View style={styles.headerContainer}>
           <Header
             backgroundColor="transparent"
@@ -126,15 +207,12 @@ class ItemDetailsView extends Component<Props> {
             rightItem={rightItem}
           />
         </View>
-      </View>
+      </ViewContainer>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
   headerContainer: {
     position: "absolute",
     top: 0,
@@ -143,7 +221,7 @@ const styles = StyleSheet.create({
   },
   scollView: {
     position: "absolute",
-    height: WINDOW_HEIGHT
+    top: 0
   },
   title: {
     padding: 10,
@@ -178,7 +256,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, { navigation }) => {
   const { id } = navigation.state.params;
-  return { ...state.items.byId[id], comments: state.comments[id] };
+  const item = state.items.byId[id];
+  return {
+    ...item,
+    comments: state.comments[id],
+    categoryChain: getCategoryChain(state, item.category_id)
+  };
 };
 
-export default connect(mapStateToProps)(ItemDetailsView);
+export default withTheme(connect(mapStateToProps)(ItemDetailsView));
