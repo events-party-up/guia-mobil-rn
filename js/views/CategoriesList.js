@@ -24,10 +24,12 @@ type Props = {
 const RowIcon = styled(GuideIcon)`
   color: ${props => props.theme.colors.primary};
 `;
+
 class CategoriesList extends Component<Props> {
   static defaultProps = {
     isRoot: false
   };
+
   componentDidMount() {
     this.props.updateCategoriesData();
   }

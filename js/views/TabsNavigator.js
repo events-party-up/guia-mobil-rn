@@ -20,16 +20,27 @@ const TabIcon = styled(Icon).attrs({
 
 export default TabNavigator(
   {
-    EatTab: { screen: CategoriesStack(EAT_CATEGORIES_ID) },
-    SleepTab: { screen: CategoriesStack(SLEEP_CATEGORIES_ID) },
-    TodoTab: { screen: CategoriesStack(TODO_CATEGORIES_ID) },
-    ServicesTab: { screen: CategoriesStack(SERVICES_CATEGORIES_ID) }
+    EatTab: {
+      screen: CategoriesStack(EAT_CATEGORIES_ID),
+      navigationOptions: { tabBarLabel: "COMER" }
+    },
+    SleepTab: {
+      screen: CategoriesStack(SLEEP_CATEGORIES_ID),
+      navigationOptions: { tabBarLabel: "DORMIR" }
+    },
+    TodoTab: {
+      screen: CategoriesStack(TODO_CATEGORIES_ID),
+      navigationOptions: { tabBarLabel: "ACTIVIDADES" }
+    },
+    ServicesTab: {
+      screen: CategoriesStack(SERVICES_CATEGORIES_ID),
+      navigationOptions: { tabBarLabel: "SERVICIOS" }
+    }
   },
   {
     backBehavior: "none",
     swipeEnabled: false,
     animationEnabled: false,
-    lazy: false,
     tabBarOptions: {
       activeTintColor: ACTIVE_TINT_COLOR
     },

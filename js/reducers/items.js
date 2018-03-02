@@ -40,7 +40,7 @@ type State = {
     [key: number]: IItem
   },
   byCategoryId: {
-    [key: number]: IItem[]
+    [key: number]: number[]
   }
 };
 
@@ -51,13 +51,21 @@ const initialState = {
   byCategoryId: {}
 };
 
+function groupByCategory(items) {
+  const byCategory = groupBy(items, item => item.category_id);
+  return Object.keys(byCategory).reduce((acc, key) => {
+    acc[key] = byCategory[key].map(item => item.id);
+    return acc;
+  }, {});
+}
+
 const items = (state: State = initialState, action) => {
   switch (action.type) {
     case actions.ITEMS_UPDATE_SUCCESS:
       return {
         ...state,
         allIds: action.response.data.map(item => item.id),
-        byCategoryId: groupBy(action.response.data, item => item.category_id),
+        byCategoryId: groupByCategory(action.response.data),
         byId: byId(state.byId, action)
       };
     case actions.ITEMS_UPDATE_FEATURED_SUCCESS:
@@ -88,7 +96,7 @@ export function getItemsForCategoryId(
   state: State,
   categoryId: number
 ): Array<IItem> {
-  return state.byCategoryId[categoryId] || [];
+  return state.byCategoryId[categoryId].map(itemId => state.byId[itemId]) || [];
 }
 
 export function getItems(state: State) {
