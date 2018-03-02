@@ -4,9 +4,18 @@ import categories, * as fromCategories from "./categories";
 import items, * as fromItems from "./items";
 import comments from "./comments";
 import auth from "./auth";
+import filters, * as fromFilters from "./filters";
 import weekPics from "./weekpics";
+import first from "lodash/first";
 
-export default combineReducers({ categories, items, comments, auth, weekPics });
+export default combineReducers({
+    categories,
+    items,
+    comments,
+    auth,
+    weekPics,
+    filters
+});
 
 export function getCategoriesWithParentId(state, id) {
     return fromCategories.getCategoriesWithParentId(state.categories, id);
@@ -31,6 +40,21 @@ export function getItems(state) {
         ...item,
         iconCode: getCategoryWithId(state, item.category_id).icon
     }));
+}
+
+export function getFilteredItems(state) {
+    const activeCategories = fromFilters.getActiveCategories(state.filters);
+
+    console.log({ activeCategories });
+
+    const items = getItems(state).map(item => ({
+        ...item,
+        rootCategoryId: first(getCategoryChain(state, item.category_id)).id
+    }));
+    console.log({ items });
+    return items.filter(
+        item => activeCategories.indexOf(item.rootCategoryId) >= 0
+    );
 }
 
 export function getItemWithId(state, itemId: number) {

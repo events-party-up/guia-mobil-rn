@@ -9,7 +9,7 @@ import { Icon } from "react-native-elements";
 import { withTheme } from "styled-components";
 import sheet from "../../styles/sheet";
 import { IItem } from "../../models";
-import { getItems } from "../../reducers";
+import { getItems, getFilteredItems } from "../../reducers";
 import Header from "../../components/Header";
 import ItemMapMarker from "../../components/ItemMapMarker";
 import {
@@ -32,9 +32,17 @@ type State = {
   clusteredItems: ?any
 };
 
+type Filters = {
+  sleep: boolean,
+  eat: boolean,
+  services: boolean,
+  activities: boolean
+};
+
 type Props = {
   items: ?Array<IItem>,
-  theme: Object
+  theme: Object,
+  filters: Filters
 };
 
 const getItemId = item =>
@@ -320,7 +328,7 @@ class MapView extends React.Component<Props, State> {
 }
 
 const mapStateToProps = state => ({
-  items: getItems(state)
+  items: getFilteredItems(state)
 });
 
 export default withTheme(connect(mapStateToProps)(MapView));
