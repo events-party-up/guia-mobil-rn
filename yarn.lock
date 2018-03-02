@@ -4405,6 +4405,12 @@ react-native-facebook-login@^1.6.0:
   dependencies:
     itypeof "^1.1.2"
 
+react-native-parallax-scroll-view@^0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/react-native-parallax-scroll-view/-/react-native-parallax-scroll-view-0.20.1.tgz#7fad3411df8632b7c99fed5d0a5c0a8f97007b38"
+  dependencies:
+    prop-types "^15.6.0"
+
 react-native-push-notification@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.0.2.tgz#3fa7d654cfd915436597b0dd5ba8b0f898c4b0f5"

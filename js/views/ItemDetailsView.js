@@ -13,10 +13,11 @@ import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import { Icon } from "react-native-elements";
 import styled, { withTheme } from "styled-components";
+import ParallaxScrollView from "react-native-parallax-scroll-view";
 import * as actions from "../actions";
 import ReviewsListView from "./ReviewsListView";
 import { IItem } from "../models";
-import Header from "../components/Header";
+import Header, { AnimatableHeaderBackground } from "../components/Header";
 import Button from "../components/Button";
 import { getCategoryChain } from "../reducers";
 
@@ -24,13 +25,7 @@ const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
 
-interface Props extends IItem {
-  isFavourite: boolean;
-  dispatch: Function;
-  image: ?string;
-  phone: ?string;
-  categoryChain: Array<ICategory>;
-}
+
 
 const ViewContainer = styled.View`
   flex: 1;
@@ -41,6 +36,7 @@ const CategoryLabel = styled.Text`
   color: ${props => props.theme.colors.primary};
   padding-horizontal: 10px;
 `;
+
 const CategoryBreakdrum = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
@@ -62,12 +58,22 @@ const Separator = () => <ThemedImage source={arrowLeft} />;
 const favouriteIcon = require("./img/favorite.png");
 const favouriteIconOutline = require("./img/favorite-outline.png");
 
-const scroll = new Animated.Value(0);
-const onScroll = Animated.event([
-  { nativeEvent: { contentOffset: { y: scroll } } }
-]);
 
-class ItemDetailsView extends Component<Props> {
+type State = {
+  isSticky: boolean;
+}
+
+interface Props extends IItem {
+  isFavourite: boolean;
+  dispatch: Function;
+  image: ?string;
+  phone: ?string;
+  categoryChain: Array<ICategory>;
+}
+
+
+class ItemDetailsView extends Component<Props, State> {
+
   static navigationOptions = ({ name }) => ({
     title: name,
     header: null
@@ -77,8 +83,8 @@ class ItemDetailsView extends Component<Props> {
     this.props.dispatch(actions.toggleFavourite(id));
   };
 
-  constructor() {
-    super();
+  state = {
+    isSticky: false
   }
 
   renderInfoItem = (iconName, text) => {
@@ -123,46 +129,79 @@ class ItemDetailsView extends Component<Props> {
     );
   };
 
-  render() {
-    const {
-      name,
-      description,
-      isFavourite,
-      id,
-      image,
-      phone,
-      mail,
-      address,
-      theme
-    } = this.props;
-
+  renderHeader = () => {
+    const  {isFavourite  } = this.props
     const rightItem = {
       title: "Settings",
       layout: "icon",
       icon: isFavourite ? favouriteIcon : favouriteIconOutline,
       onPress: () => this.toggleFavourite(id)
     };
-    const { goBack } = this.props.navigation;
-    const height = scroll.interpolate({
-      inputRange: [0, IMAGE_HEIGHT - 50],
-      outputRange: [IMAGE_HEIGHT, 50],
-      extrapolate: "clamp"
-    });
+
     return (
-      <ViewContainer>
-        <Animated.ScrollView
-          alwaysBounceVertical={true}
-          overScrollMode="auto"
-          scrollEventThrottle={16}
-          contentInsetAdjustmentBehavior="always"
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingTop: IMAGE_HEIGHT
-          }}
-          onScroll={onScroll}
-          style={styles.scrollView}
-          bounces={false}
-        >
+      <View style={styles.headerContainer}>
+          <Header
+            backgroundColor="transparent"
+            navItem={{ back: true, onPress: () => goBack(null) }}
+            rightItem={rightItem}/>
+        </View>
+        )
+    }
+    
+  render() {
+    const {
+      name,
+      description,
+      id,
+      image,
+      phone,
+      mail,
+      address,
+      theme,
+      navigation: {goBack}
+    } = this.props;
+
+    
+    const { isSticky } = this.state
+  
+
+    return (
+      <ParallaxScrollView
+        backgroundColor={theme.colors.primary}
+        contentBackgroundColor={theme.colors.highContrast}
+        stickyHeaderHeight={70}
+        backgroundSpeed={10}
+        onChangeHeaderVisibility={(isSticky) => this.setState({isSticky})}
+        renderFixedHeader={()=> {
+          return this.renderHeader()
+        }}
+        renderStickyHeader={() => (
+          <View style={
+            {
+              height: 70,
+              backgroundColor: theme.colors.primary
+            }
+          }/>)
+        }
+        parallaxHeaderHeight={200}
+        renderForeground={() => (
+          <Animated.Image
+            source={{
+              uri: image
+                ? `https://bariloche.guiasmoviles.com/uploads/${image}`
+                : lakeImage
+            }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 200
+            }}
+          />
+        )}
+      >
+        <ViewContainer>
           {this.renderCategoriesBreakdrum()}
           <Text style={styles.title}> {name.toUpperCase()}</Text>
           <View style={styles.actionItems}>
@@ -175,11 +214,7 @@ class ItemDetailsView extends Component<Props> {
             {this.renderInfoItem("map-marker", address)}
           </View>
           <Text style={styles.description}> {description} </Text>
-          {isFavourite ? (
-            <Text> You like this</Text>
-          ) : (
-            <Text>You dont like this</Text>
-          )}
+          
           <MapboxGL.MapView
             styleURL={MapboxGL.StyleURL.Street}
             centerCoordinate={this.props.coord}
@@ -193,29 +228,8 @@ class ItemDetailsView extends Component<Props> {
             <Text>Evaluaciones</Text>
           </View>
           <ReviewsListView itemId={id} />
-        </Animated.ScrollView>
-        <Animated.Image
-          source={{
-            uri: image
-              ? `https://bariloche.guiasmoviles.com/uploads/${image}`
-              : lakeImage
-          }}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height
-          }}
-        />
-        <View style={styles.headerContainer}>
-          <Header
-            backgroundColor="transparent"
-            navItem={{ back: true, onPress: () => goBack(null) }}
-            rightItem={rightItem}
-          />
-        </View>
-      </ViewContainer>
+        </ViewContainer>
+      </ParallaxScrollView>
     );
   }
 }
@@ -229,7 +243,7 @@ const styles = StyleSheet.create({
   },
   scollView: {
     position: "absolute",
-    top: 0
+    flex: 1
   },
   title: {
     padding: 10,
