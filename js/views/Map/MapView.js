@@ -5,20 +5,20 @@ import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import geoViewport from "@mapbox/geo-viewport";
 import supercluster from "supercluster";
-import sheet from "../styles/sheet";
-import { IItem } from "../models";
-import { getItems } from "../reducers";
-import Header from "../components/Header";
-import { withTheme } from "styled-components";
-import ItemMapMarker from "../components/ItemMapMarker";
 import { Icon } from "react-native-elements";
+import { withTheme } from "styled-components";
+import sheet from "../../styles/sheet";
+import { IItem } from "../../models";
+import { getItems } from "../../reducers";
+import Header from "../../components/Header";
+import ItemMapMarker from "../../components/ItemMapMarker";
 import {
   onSortOptions,
   itemToGeoJSONPoint,
   DEFAULT_CENTER_COORDINATE
-} from "../utils";
+} from "../../utils";
 
-import config from "../utils/config";
+import config from "../../utils/config";
 
 const MAPBOX_VECTOR_TILE_SIZE = 512;
 const MAX_ZOOM = 20;
@@ -43,7 +43,10 @@ const getItemId = item =>
     : `point_${item.properties.id}`;
 
 class MapView extends React.Component<Props, State> {
-  static navigationOptions = { title: "Map" };
+  static navigationOptions = {
+    title: "Map",
+    gesturesEnabled: false // no gestures on mapa
+  };
 
   state = {
     userLocationLoaded: false
@@ -246,6 +249,10 @@ class MapView extends React.Component<Props, State> {
       this._map.flyTo([longitude, latitude], 2000);
   };
 
+  showFiltersModal = () => {
+    this.props.navigation.navigate("FiltersModal");
+  };
+
   render() {
     const { theme, navigation } = this.props;
     const { error, userLocationLoaded } = this.state;
@@ -304,7 +311,7 @@ class MapView extends React.Component<Props, State> {
             name="filter"
             type="feather"
             color={theme.colors.primary}
-            onPress={() => console.log("hello")}
+            onPress={this.showFiltersModal}
           />
         </View>
       </View>

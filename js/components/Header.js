@@ -256,9 +256,7 @@ const ItemWrapperIOS = (props: { item: ?Item, color: ?string }) => {
   const { title, icon, layout, onPress } = item;
 
   if (layout !== "icon" && title) {
-    content = (
-      <Text style={[styles.itemText, { color }]}>{title.toUpperCase()}</Text>
-    );
+    content = <Text style={[styles.itemText, { color }]}>{title}</Text>;
   } else if (icon) {
     content = <Image source={icon} style={{ tintColor: color }} />;
   }

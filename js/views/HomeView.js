@@ -54,7 +54,7 @@ const WeekImagesHeader = styled(Heading2)`
 
 class HomeView extends React.Component<Props> {
   navigateToMap = () => {
-    this.props.navigation.navigate("Map");
+    this.props.navigation.navigate("MapStack");
   };
 
   renderFeaturedList = (featuredItems: IItem[]) => {
@@ -137,13 +137,14 @@ class HomeView extends React.Component<Props> {
       theme,
       weekPics
     } = this.props;
+
     const rightItem = {
       title: "Map",
       layout: "icon",
       icon: require("../components/img/header/map.png"),
-      onPress: () =>
-        this.props.navigation && this.props.navigation.navigate("Map")
+      onPress: this.navigateToMap
     };
+
     const leftItem = {
       title: "Menu",
       layout: "icon",
@@ -151,7 +152,9 @@ class HomeView extends React.Component<Props> {
       onPress: () =>
         this.props.navigation && this.props.navigation.navigate("Settings")
     };
+
     const showWeekPics: boolean = weekPics.length > 0;
+
     return (
       <View style={{ flex: 1, backgroundColor: "white" }}>
         <Header
@@ -182,6 +185,7 @@ class HomeView extends React.Component<Props> {
             </Subtitle>
             {this.renderFeaturedList(featuredItems)}
           </View>
+
           {showWeekPics && (
             <WeekImagesContainer>
               <WeekImagesHeader>Fotos de la semana</WeekImagesHeader>

@@ -6,7 +6,7 @@ import { StackNavigator } from "react-navigation";
 import { IS_ANDROID } from "./utils";
 import config from "./utils/config";
 import HomeView from "./views/HomeView";
-import MapView from "./views/MapView";
+import MapStack from "./views/Map";
 import TabsNavigator from "./views/TabsNavigator";
 import * as actions from "./actions";
 
@@ -28,8 +28,8 @@ const NavigationStack = StackNavigator(
     Tabs: {
       screen: TabsNavigator
     },
-    Map: {
-      screen: MapView
+    MapStack: {
+      screen: MapStack
     }
   },
   {
