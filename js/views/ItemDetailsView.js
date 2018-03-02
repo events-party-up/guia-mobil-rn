@@ -6,7 +6,8 @@ import {
   Text,
   Image,
   Dimensions,
-  Animated
+  Animated,
+  TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
@@ -20,6 +21,7 @@ import { IItem, ICategory } from "../models";
 import Header from "../components/Header";
 import Button from "../components/Button";
 import { getCategoryChain, getItemWithId } from "../reducers";
+import Rating from "../components/Rating";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
@@ -71,6 +73,7 @@ class ItemDetailsView extends Component<Props> {
   };
 
   renderInfoItem = (iconName, text) => {
+    const { theme } = this.props;
     if (text) {
       return (
         <View style={styles.contactRow}>
@@ -78,6 +81,7 @@ class ItemDetailsView extends Component<Props> {
             type="material-community"
             style={styles.contactRowIcon}
             name={iconName}
+            color={theme.colors.primary}
           />
           <Text> {text} </Text>
         </View>
@@ -142,7 +146,9 @@ class ItemDetailsView extends Component<Props> {
       address,
       theme,
       coord,
-      navigation: { goBack }
+      price,
+      rating,
+      url
     } = this.props;
     console.log({ coord });
     return (
@@ -194,8 +200,34 @@ class ItemDetailsView extends Component<Props> {
             {this.renderInfoItem("phone", phone)}
             {this.renderInfoItem("email", mail)}
             {this.renderInfoItem("map-marker", address)}
+            {!!price && (
+              <View style={styles.contactRow}>
+                <Icon
+                  type="material-icons"
+                  style={styles.contactRowIcon}
+                  name="attach-money"
+                  color={theme.colors.primary}
+                />
+                <Rating imageSize={12} rating={price} type="circle" />
+              </View>
+            )}
+
+            {!!rating && (
+              <View style={styles.contactRow}>
+                <Icon
+                  type="material-community"
+                  style={styles.contactRowIcon}
+                  name="star"
+                  color={theme.colors.primary}
+                />
+                <Rating imageSize={12} rating={rating} />
+              </View>
+            )}
+            {this.renderInfoItem("link", url)}
           </View>
-          <Text style={styles.description}> {description} </Text>
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.description}> {description} </Text>
+          </View>
           <View style={styles.mapWrapper}>
             <MapboxGL.MapView
               style={styles.map}
@@ -208,6 +240,30 @@ class ItemDetailsView extends Component<Props> {
               scrollEnabled={false}
               rotateEnabled={false}
             />
+          </View>
+          <View style={styles.actionsContainer}>
+            <TouchableOpacity style={styles.actionWrapper}>
+              <Icon
+                raised
+                reverse
+                name="insert-comment"
+                type="material-icons"
+                color={theme.colors.primary}
+                onPress={this.showFiltersModal}
+              />
+              <Text>Calificar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.actionWrapper}>
+              <Icon
+                raised
+                reverse
+                name="navigation"
+                type="material-icons"
+                color={theme.colors.primary}
+                onPress={this.showFiltersModal}
+              />
+              <Text>Llevarme ahí</Text>
+            </TouchableOpacity>
           </View>
           <View>
             <Text>Evaluaciones</Text>
@@ -244,9 +300,14 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 20
   },
+  descriptionContainer: {
+    borderTopWidth: 2,
+    borderTopColor: "lightgray",
+    margin: 10,
+    paddingVertical: 20
+  },
   description: {
-    color: "#939393",
-    padding: 10
+    color: "#939393"
   },
   topBar: {
     height: 40,
@@ -258,11 +319,11 @@ const styles = StyleSheet.create({
   contactRow: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 10
+    paddingVertical: 4
   },
   contactRowIcon: {
-    width: 40,
-    height: 40,
+    width: 42,
+    height: 42,
     borderWidth: 1,
     marginRight: 30
   },
@@ -270,6 +331,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginVertical: 10
+  },
+  actionsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginVertical: 10
+  },
+  actionWrapper: {
+    flexDirection: "row",
+    alignItems: "center"
   },
   mapWrapper: {
     height: 200,
