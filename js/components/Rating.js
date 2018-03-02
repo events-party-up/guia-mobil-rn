@@ -57,15 +57,27 @@ const Rating = ({ rating, style, imageSize, type, ...rest }: Props) => {
             {[1, 2, 3, 4, 5].map(value => {
                 if (value <= rating) {
                     return (
-                        <RatingIcon {...ratingIcons.filled} size={imageSize} />
+                        <RatingIcon
+                            key={value}
+                            {...ratingIcons.filled}
+                            size={imageSize}
+                        />
                     );
                 } else if (value < rating && rating < value + 1) {
                     return (
-                        <RatingIcon {...ratingIcons.semi} size={imageSize} />
+                        <RatingIcon
+                            key={value}
+                            {...ratingIcons.semi}
+                            size={imageSize}
+                        />
                     );
                 } else {
                     return (
-                        <RatingIcon {...ratingIcons.empty} size={imageSize} />
+                        <RatingIcon
+                            key={value}
+                            {...ratingIcons.empty}
+                            size={imageSize}
+                        />
                     );
                 }
             })}

@@ -7,7 +7,8 @@ import {
   Image,
   Dimensions,
   Animated,
-  TouchableOpacity
+  TouchableOpacity,
+  Linking
 } from "react-native";
 import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
@@ -135,6 +136,12 @@ class ItemDetailsView extends Component<Props> {
       </View>
     );
   };
+  callPlace = () => {
+    const { phone } = this.props;
+    Linking.openURL(`tel:${phone}`).catch(err =>
+      console.error("An error occurred", err)
+    );
+  };
 
   render() {
     const {
@@ -193,7 +200,7 @@ class ItemDetailsView extends Component<Props> {
           {this.renderCategoriesBreakdrum()}
           <Text style={styles.title}> {name.toUpperCase()}</Text>
           <View style={styles.actionItems}>
-            <Button title="LLamar" primary />
+            <Button title="LLamar" primary onPress={this.callPlace} />
             <Button title="Ver en mapa" primary />
           </View>
           <View style={styles.contactItems}>
@@ -323,9 +330,9 @@ const styles = StyleSheet.create({
   },
   contactRowIcon: {
     width: 42,
-    height: 42,
+    height: 30,
     borderWidth: 1,
-    marginRight: 30
+    marginRight: 60
   },
   actionItems: {
     flexDirection: "row",
