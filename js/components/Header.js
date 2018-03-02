@@ -7,8 +7,7 @@ import {
   Image,
   ToolbarAndroid,
   Platform,
-  TouchableOpacity,
-  Animated
+  TouchableOpacity
 } from "react-native";
 import { Text, HeaderTitle } from "./common/Text";
 import F8Colors from "./common/F8Colors";
@@ -337,10 +336,6 @@ const styles = StyleSheet.create({
 });
 
 const Header = Platform.OS === "ios" ? F8HeaderIOS : F8HeaderAndroid;
-
-export const AnimatableHeaderBackground = ({ style }) => (
-  <Animated.View style={[styles.header, style]} />
-);
 
 export default Header;
 /* eslint-disable react/no-multi-comp */

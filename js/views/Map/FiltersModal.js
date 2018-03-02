@@ -3,10 +3,10 @@ import React from "react";
 import { View } from "react-native";
 import { withTheme } from "styled-components";
 import { List, ListItem } from "react-native-elements";
+import type NavigationScreenProp from "react-navigation";
 import { connect } from "react-redux";
 import Header from "../../components/Header";
 import type { Filters } from "../../reducers/filters";
-import type NavigationScreenProp from "react-navigation";
 import {
   TOGGLE_EAT_FILTER,
   TOGGLE_SLEEP_FILTER,

@@ -33,11 +33,11 @@ const byId = (state = {}, action) => {
   }
 };
 
-type State = {
+export type State = {
   featuredIds: number[],
   allIds: number[],
   byId: {
-    [key: number]: IItem
+    [key: number]: IItem & { isFavourite: boolean }
   },
   byCategoryId: {
     [key: number]: number[]
@@ -104,5 +104,5 @@ export function getItems(state: State) {
 }
 
 export function getItemWithId(state: State, itemId: number): IItem {
-  return state.byId[itemId] || {};
+  return state.byId[itemId];
 }

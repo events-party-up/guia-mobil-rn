@@ -6,17 +6,14 @@ import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import geoViewport from "@mapbox/geo-viewport";
 import supercluster from "supercluster";
 import { Icon } from "react-native-elements";
+import type NavigationScreenProp from "react-navigation";
 import { withTheme } from "styled-components";
 import sheet from "../../styles/sheet";
 import { IItem } from "../../models";
-import { getItems, getFilteredItems } from "../../reducers";
+import { getFilteredItems } from "../../reducers";
 import Header from "../../components/Header";
 import ItemMapMarker from "../../components/ItemMapMarker";
-import {
-  onSortOptions,
-  itemToGeoJSONPoint,
-  DEFAULT_CENTER_COORDINATE
-} from "../../utils";
+import { itemToGeoJSONPoint, DEFAULT_CENTER_COORDINATE } from "../../utils";
 
 import config from "../../utils/config";
 
@@ -29,20 +26,14 @@ const WINDOW_HEIGHT = Dimensions.get("window").height;
 
 type State = {
   pointsLoaded: boolean,
-  clusteredItems: ?any
-};
-
-type Filters = {
-  sleep: boolean,
-  eat: boolean,
-  services: boolean,
-  activities: boolean
+  clusteredItems: ?any,
+  error: ?string
 };
 
 type Props = {
   items: ?Array<IItem>,
   theme: Object,
-  filters: Filters
+  navigation: NavigationScreenProp
 };
 
 const getItemId = item =>
@@ -56,10 +47,6 @@ class MapView extends React.Component<Props, State> {
     gesturesEnabled: false // no gestures on mapa
   };
 
-  state = {
-    userLocationLoaded: false
-  };
-
   constructor(props) {
     super(props);
     this.clustering = supercluster({
@@ -67,11 +54,14 @@ class MapView extends React.Component<Props, State> {
       maxZoom: MAX_ZOOM,
       minZoom: MIN_ZOOM
     });
-    this.state = {
-      pointsLoaded: false,
-      clusteredItems: []
-    };
   }
+
+  state = {
+    userLocationLoaded: false,
+    clusteredItems: [],
+    pointsLoaded: false,
+    error: null
+  };
 
   clustering: any;
   _map: any;

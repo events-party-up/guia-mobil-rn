@@ -63,8 +63,8 @@ const filters = (state: Filters = initialState, action) => {
 
 export default filters;
 
-export const getActiveCategories = (state: Filters) => {
-  return Object.keys(state).reduce((acc, key) => {
+export const getActiveCategories = (state: Filters) =>
+  Object.keys(state).reduce((acc, key) => {
     if (state[key]) {
       console.log({ key });
       console.log({ val: categoryIdMap[key] });
@@ -72,4 +72,3 @@ export const getActiveCategories = (state: Filters) => {
     }
     return acc;
   }, []);
-};

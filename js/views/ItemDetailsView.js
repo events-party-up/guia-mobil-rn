@@ -4,7 +4,6 @@ import {
   View,
   StyleSheet,
   Text,
-  Image,
   Dimensions,
   Animated,
   TouchableOpacity,
@@ -109,9 +108,7 @@ class ItemDetailsView extends Component<Props> {
                 <Separator key={`sep_${items.length}`} />,
                 category
               ];
-            else {
-              return [...items, category];
-            }
+            return [...items, category];
           }, [])}
       </CategoryBreakdrum>
     );
