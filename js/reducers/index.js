@@ -34,5 +34,5 @@ export function getItems(state) {
 }
 
 export function getItemWithId(state, itemId: number) {
-    return fromItems(state.items, itemId);
+    return fromItems.getItemWithId(state.items, itemId);
 }

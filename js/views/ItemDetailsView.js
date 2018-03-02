@@ -6,7 +6,6 @@ import {
   Text,
   Image,
   Dimensions,
-  ScrollView,
   Animated
 } from "react-native";
 import { connect } from "react-redux";
@@ -14,21 +13,18 @@ import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import { Icon } from "react-native-elements";
 import styled, { withTheme } from "styled-components";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
+import type NavigationScreenProp from "react-navigation";
 import * as actions from "../actions";
 import ReviewsListView from "./ReviewsListView";
 import { IItem, ICategory } from "../models";
 import Header from "../components/Header";
 import Button from "../components/Button";
-import { getCategoryChain, getItem } from "../reducers";
+import { getCategoryChain, getItemWithId } from "../reducers";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
-const WINDOW_HEIGHT = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
 
-const ViewContainer = styled.View`
-  flex: 1;
-  background-color: ${props => props.theme.colors.highContrast};
-`;
+const lakeImage = require("../components/img/lake.jpeg");
 
 const CategoryLabel = styled.Text`
   color: ${props => props.theme.colors.primary};
@@ -42,9 +38,6 @@ const CategoryBreakdrum = styled.View`
   align-items: center;
 `;
 
-const lakeImage =
-  "https://upload.wikimedia.org/wikipedia/commons/2/22/Lago_Nahuel_Huapi%2C_Argentina%2C_2005.jpeg";
-
 const arrowLeft = require("../components/img/header/back.png");
 
 const ThemedImage = styled.Image`
@@ -52,13 +45,10 @@ const ThemedImage = styled.Image`
   height: 10px;
   width: 10px;
 `;
+
 const Separator = () => <ThemedImage source={arrowLeft} />;
 const favouriteIcon = require("./img/favorite.png");
 const favouriteIconOutline = require("./img/favorite-outline.png");
-
-type State = {
-  isSticky: boolean
-};
 
 interface Props extends IItem {
   isFavourite: boolean;
@@ -66,9 +56,11 @@ interface Props extends IItem {
   image: ?string;
   phone: ?string;
   categoryChain: Array<ICategory>;
+  navigation: NavigationScreenProp;
+  theme: Object;
 }
 
-class ItemDetailsView extends Component<Props, State> {
+class ItemDetailsView extends Component<Props> {
   static navigationOptions = ({ name }) => ({
     title: name,
     header: null
@@ -76,10 +68,6 @@ class ItemDetailsView extends Component<Props, State> {
 
   toggleFavourite = id => {
     this.props.dispatch(actions.toggleFavourite(id));
-  };
-
-  state = {
-    isSticky: false
   };
 
   renderInfoItem = (iconName, text) => {
@@ -125,7 +113,7 @@ class ItemDetailsView extends Component<Props, State> {
   };
 
   renderHeader = () => {
-    const { isFavourite, navigation } = this.props;
+    const { isFavourite, navigation, id } = this.props;
     const rightItem = {
       title: "Settings",
       layout: "icon",
@@ -148,54 +136,54 @@ class ItemDetailsView extends Component<Props, State> {
     const {
       name,
       description,
-      id,
       image,
       phone,
       mail,
       address,
       theme,
+      coord,
       navigation: { goBack }
     } = this.props;
-
-    const { isSticky } = this.state;
-
+    console.log({ coord });
     return (
-      <ParallaxScrollView
-        backgroundColor={theme.colors.primary}
-        contentBackgroundColor={theme.colors.highContrast}
-        stickyHeaderHeight={70}
-        backgroundSpeed={10}
-        onChangeHeaderVisibility={isSticky => this.setState({ isSticky })}
-        renderFixedHeader={() => {
-          return this.renderHeader();
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "white"
         }}
-        renderStickyHeader={() => (
-          <View
-            style={{
-              height: 70,
-              backgroundColor: theme.colors.primary
-            }}
-          />
-        )}
-        parallaxHeaderHeight={200}
-        renderForeground={() => (
-          <Animated.Image
-            source={{
-              uri: image
-                ? `https://bariloche.guiasmoviles.com/uploads/${image}`
-                : lakeImage
-            }}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: 200
-            }}
-          />
-        )}
       >
-        <ViewContainer>
+        <ParallaxScrollView
+          backgroundColor={theme.colors.primary}
+          contentBackgroundColor="white"
+          stickyHeaderHeight={70}
+          backgroundSpeed={10}
+          renderFixedHeader={() => this.renderHeader()}
+          renderStickyHeader={() => (
+            <View
+              style={{
+                height: 70,
+                backgroundColor: theme.colors.primary
+              }}
+            />
+          )}
+          parallaxHeaderHeight={IMAGE_HEIGHT}
+          renderBackground={() => (
+            <Animated.Image
+              key="parallax-header"
+              source={
+                image && image.length
+                  ? {
+                      uri: `https://bariloche.guiasmoviles.com/uploads/${image}`
+                    }
+                  : lakeImage
+              }
+              style={{
+                width: WINDOW_WIDTH,
+                height: IMAGE_HEIGHT
+              }}
+            />
+          )}
+        >
           {this.renderCategoriesBreakdrum()}
           <Text style={styles.title}> {name.toUpperCase()}</Text>
           <View style={styles.actionItems}>
@@ -208,25 +196,42 @@ class ItemDetailsView extends Component<Props, State> {
             {this.renderInfoItem("map-marker", address)}
           </View>
           <Text style={styles.description}> {description} </Text>
-
-          <MapboxGL.MapView
-            styleURL={MapboxGL.StyleURL.Street}
-            centerCoordinate={this.props.coord}
-            zoomLevel={16}
-            height={200}
-            zoomEnabled={false}
-            scrollEnabled={false}
-            rotateEnabled={false}
-          />
+          <View style={styles.mapWrapper}>
+            <MapboxGL.MapView
+              style={styles.map}
+              textureMode
+              styleURL={MapboxGL.StyleURL.Street}
+              centerCoordinate={coord}
+              zoomLevel={16}
+              height={200}
+              zoomEnabled={false}
+              scrollEnabled={false}
+              rotateEnabled={false}
+            />
+          </View>
           <View>
             <Text>Evaluaciones</Text>
           </View>
-          <ReviewsListView itemId={id} />
-        </ViewContainer>
-      </ParallaxScrollView>
+          {/*<ReviewsListView itemId={id} />*/}
+        </ParallaxScrollView>
+      </View>
     );
   }
 }
+
+const mapStateToProps = (state, { navigation }) => {
+  const id = navigation.getParam("id");
+
+  const item = getItemWithId(state, id);
+  console.log({ item });
+  return {
+    ...item,
+    comments: state.comments[id],
+    categoryChain: getCategoryChain(state, item.category_id)
+  };
+};
+
+export default withTheme(connect(mapStateToProps)(ItemDetailsView));
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -234,10 +239,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0
-  },
-  scollView: {
-    position: "absolute",
-    flex: 1
   },
   title: {
     padding: 10,
@@ -256,7 +257,8 @@ const styles = StyleSheet.create({
   },
   contactRow: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    paddingVertical: 10
   },
   contactRowIcon: {
     width: 40,
@@ -266,18 +268,16 @@ const styles = StyleSheet.create({
   },
   actionItems: {
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    marginVertical: 10
+  },
+  mapWrapper: {
+    height: 200,
+    width: WINDOW_WIDTH,
+    overflow: "hidden"
+  },
+  map: {
+    width: WINDOW_WIDTH,
+    height: 200
   }
 });
-
-const mapStateToProps = (state, { navigation }) => {
-  const id = navigation.getParam("id");
-  const item = getItem(state, id);
-  return {
-    ...item,
-    comments: state.comments[id],
-    categoryChain: getCategoryChain(state, item.category_id)
-  };
-};
-
-export default withTheme(connect(mapStateToProps)(ItemDetailsView));

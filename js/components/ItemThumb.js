@@ -41,8 +41,7 @@ const IMAGE_ASPECT_RATIO_LARGE = 202 / 344;
 const NUMLINES_SMALL = 3;
 const NUMLINES_LARGE = 2;
 
-const lakeImage =
-  "https://upload.wikimedia.org/wikipedia/commons/2/22/Lago_Nahuel_Huapi%2C_Argentina%2C_2005.jpeg";
+const lakeImage = require("./img/lake.jpeg");
 
 class ItemThumb extends React.Component<Props> {
   static defaultProps = {
@@ -65,11 +64,13 @@ class ItemThumb extends React.Component<Props> {
   renderImage = (src: string, width: number, height: number) => (
     <Image
       style={[styles.image, { width, height }]}
-      source={{
-        uri: src
-          ? `https://bariloche.guiasmoviles.com/uploads/${src}`
+      source={
+        src
+          ? {
+              uri: `https://bariloche.guiasmoviles.com/uploads/${src}`
+            }
           : lakeImage
-      }}
+      }
     />
   );
 
