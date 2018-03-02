@@ -15,4 +15,5 @@ export interface IItem {
   image: ?string;
   rating: ?number;
   price: ?number;
+  url: ?string;
 }

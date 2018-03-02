@@ -72,22 +72,36 @@ class ItemDetailsView extends Component<Props> {
     this.props.dispatch(actions.toggleFavourite(id));
   };
 
-  renderInfoItem = (iconName, text) => {
-    const { theme } = this.props;
-    if (text) {
-      return (
-        <View style={styles.contactRow}>
-          <Icon
-            type="material-community"
-            style={styles.contactRowIcon}
-            name={iconName}
-            color={theme.colors.primary}
-          />
-          <Text> {text} </Text>
-        </View>
+  callPlace = () => {
+    const { phone } = this.props;
+    if (phone) {
+      Linking.openURL(`tel:${phone}`).catch(err =>
+        console.error("An error occurred", err)
       );
     }
-    return null;
+  };
+
+  newReviewHandler = () => {};
+  showRouteHandler = () => {};
+
+  renderHeader = () => {
+    const { isFavourite, navigation, id } = this.props;
+    const rightItem = {
+      title: "Settings",
+      layout: "icon",
+      icon: isFavourite ? favouriteIcon : favouriteIconOutline,
+      onPress: () => this.toggleFavourite(id)
+    };
+
+    return (
+      <View style={styles.headerContainer}>
+        <Header
+          backgroundColor="transparent"
+          navItem={{ back: true, onPress: () => navigation.goBack(null) }}
+          rightItem={rightItem}
+        />
+      </View>
+    );
   };
 
   renderCategoriesBreakdrum = () => {
@@ -114,37 +128,24 @@ class ItemDetailsView extends Component<Props> {
     );
   };
 
-  renderHeader = () => {
-    const { isFavourite, navigation, id } = this.props;
-    const rightItem = {
-      title: "Settings",
-      layout: "icon",
-      icon: isFavourite ? favouriteIcon : favouriteIconOutline,
-      onPress: () => this.toggleFavourite(id)
-    };
-
-    return (
-      <View style={styles.headerContainer}>
-        <Header
-          backgroundColor="transparent"
-          navItem={{ back: true, onPress: () => navigation.goBack(null) }}
-          rightItem={rightItem}
-        />
-      </View>
-    );
-  };
-
-  callPlace = () => {
-    const { phone } = this.props;
-    if (phone) {
-      Linking.openURL(`tel:${phone}`).catch(err =>
-        console.error("An error occurred", err)
+  renderInfoItem = (iconName, text) => {
+    const { theme } = this.props;
+    if (text) {
+      return (
+        <View style={styles.contactRow}>
+          <Icon
+            type="material-community"
+            style={styles.contactRowIcon}
+            name={iconName}
+            color={theme.colors.primary}
+          />
+          <Text> {text} </Text>
+        </View>
       );
     }
+    return null;
   };
 
-  newReviewHandler = () => {};
-  showRouteHandler = () => {};
   render() {
     const {
       name,
@@ -160,7 +161,6 @@ class ItemDetailsView extends Component<Props> {
       url
     } = this.props;
 
-    console.log({ coord });
     return (
       <View
         style={{
