@@ -23,6 +23,7 @@
     "react-native-facebook-login": "^1.6.0",
     "react-native-parallax-scroll-view": "^0.20.1",
     "react-native-push-notification": "^3.0.2",
+    "react-native-swiper": "^1.5.13",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.1.x",
     "react-navigator": "^0.0.0-0",

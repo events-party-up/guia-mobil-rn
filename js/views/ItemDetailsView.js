@@ -130,7 +130,7 @@ class ItemDetailsView extends Component<Props, State> {
   };
 
   renderHeader = () => {
-    const  {isFavourite  } = this.props
+    const  {isFavourite, navigation  } = this.props
     const rightItem = {
       title: "Settings",
       layout: "icon",
@@ -142,7 +142,7 @@ class ItemDetailsView extends Component<Props, State> {
       <View style={styles.headerContainer}>
           <Header
             backgroundColor="transparent"
-            navItem={{ back: true, onPress: () => goBack(null) }}
+            navItem={{ back: true, onPress: () => navigation.goBack(null) }}
             rightItem={rightItem}/>
         </View>
         )
@@ -170,7 +170,7 @@ class ItemDetailsView extends Component<Props, State> {
         backgroundColor={theme.colors.primary}
         contentBackgroundColor={theme.colors.highContrast}
         stickyHeaderHeight={70}
-        backgroundSpeed={10}
+      backgroundSpeed={10}
         onChangeHeaderVisibility={(isSticky) => this.setState({isSticky})}
         renderFixedHeader={()=> {
           return this.renderHeader()
