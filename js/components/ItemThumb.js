@@ -10,11 +10,12 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { ICategory } from "../models";
 import { getCategoryWithId } from "../reducers";
-
+import * as actions from "../actions";
 type ThumbType = "small" | "large";
 
 type Props = {
   categoryId: number,
+  id: number,
   category: ICategory,
   onPress: () => void,
   image: string,
@@ -91,6 +92,10 @@ class ItemThumb extends React.Component<Props> {
     }
     return null;
   };
+
+  toggleFavourite = id => {
+    this.props.dispatch(actions.toggleFavourite(id));
+  };
   render() {
     const {
       category,
@@ -100,6 +105,7 @@ class ItemThumb extends React.Component<Props> {
       activeOpacity,
       isFavorite,
       type,
+      id,
       stars
     } = this.props;
 
@@ -113,7 +119,20 @@ class ItemThumb extends React.Component<Props> {
       >
         <View style={styles.thumb}>
           {this.renderImage(image, imageWidth, imageHeight)}
+          <TouchableOpacity
+            style={styles.favouriteToggle}
+            hitSlop={{ top: 10, bottom: 40, left: 40, right: 10 }}
+            onPress={() => this.toggleFavourite(id)}
+          >
+            <Icon
+              name={isFavorite ? "heart" : "heart-outline"}
+              type="material-community"
+              color="red"
+              size={24}
+            />
+          </TouchableOpacity>
         </View>
+
         <CategoryLabel>{category.name.toUpperCase()} </CategoryLabel>
         {this.renderTitle(type, title)}
 
@@ -127,7 +146,7 @@ const mapStateToProps = (state, { categoryId }) => ({
   category: getCategoryWithId(state, categoryId)
 });
 
-export default connect(mapStateToProps, null)(ItemThumb);
+export default connect(mapStateToProps)(ItemThumb);
 
 /* StyleSheet =============================================================== */
 const styles = StyleSheet.create({
@@ -159,5 +178,11 @@ const styles = StyleSheet.create({
     marginTop: 12,
     fontSize: 17,
     lineHeight: F8Fonts.lineHeight(22)
+  },
+  favouriteToggle: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    padding: 10
   }
 });
