@@ -103,10 +103,18 @@ class ItemDetailsView extends Component<Props> {
     return (
       <CategoryBreakdrum>
         {categoryChain
-          .map(category => category.name)
-          .map(name => <CategoryLabel>{name.toUpperCase()}</CategoryLabel>)
+          .map(category => (
+            <CategoryLabel key={`cat_${category.id}`}>
+              {category.name.toUpperCase()}
+            </CategoryLabel>
+          ))
           .reduce((items, category) => {
-            if (items.length) return [...items, <Separator />, category];
+            if (items.length)
+              return [
+                ...items,
+                <Separator key={`sep_${items.length}`} />,
+                category
+              ];
             else {
               return [...items, category];
             }
