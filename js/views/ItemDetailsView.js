@@ -16,16 +16,14 @@ import styled, { withTheme } from "styled-components";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import * as actions from "../actions";
 import ReviewsListView from "./ReviewsListView";
-import { IItem } from "../models";
-import Header, { AnimatableHeaderBackground } from "../components/Header";
+import { IItem, ICategory } from "../models";
+import Header from "../components/Header";
 import Button from "../components/Button";
-import { getCategoryChain } from "../reducers";
+import { getCategoryChain, getItem } from "../reducers";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
-
-
 
 const ViewContainer = styled.View`
   flex: 1;
@@ -58,10 +56,9 @@ const Separator = () => <ThemedImage source={arrowLeft} />;
 const favouriteIcon = require("./img/favorite.png");
 const favouriteIconOutline = require("./img/favorite-outline.png");
 
-
 type State = {
-  isSticky: boolean;
-}
+  isSticky: boolean
+};
 
 interface Props extends IItem {
   isFavourite: boolean;
@@ -71,9 +68,7 @@ interface Props extends IItem {
   categoryChain: Array<ICategory>;
 }
 
-
 class ItemDetailsView extends Component<Props, State> {
-
   static navigationOptions = ({ name }) => ({
     title: name,
     header: null
@@ -85,7 +80,7 @@ class ItemDetailsView extends Component<Props, State> {
 
   state = {
     isSticky: false
-  }
+  };
 
   renderInfoItem = (iconName, text) => {
     if (text) {
@@ -130,7 +125,7 @@ class ItemDetailsView extends Component<Props, State> {
   };
 
   renderHeader = () => {
-    const  {isFavourite, navigation  } = this.props
+    const { isFavourite, navigation } = this.props;
     const rightItem = {
       title: "Settings",
       layout: "icon",
@@ -140,14 +135,15 @@ class ItemDetailsView extends Component<Props, State> {
 
     return (
       <View style={styles.headerContainer}>
-          <Header
-            backgroundColor="transparent"
-            navItem={{ back: true, onPress: () => navigation.goBack(null) }}
-            rightItem={rightItem}/>
-        </View>
-        )
-    }
-    
+        <Header
+          backgroundColor="transparent"
+          navItem={{ back: true, onPress: () => navigation.goBack(null) }}
+          rightItem={rightItem}
+        />
+      </View>
+    );
+  };
+
   render() {
     const {
       name,
@@ -158,31 +154,29 @@ class ItemDetailsView extends Component<Props, State> {
       mail,
       address,
       theme,
-      navigation: {goBack}
+      navigation: { goBack }
     } = this.props;
 
-    
-    const { isSticky } = this.state
-  
+    const { isSticky } = this.state;
 
     return (
       <ParallaxScrollView
         backgroundColor={theme.colors.primary}
         contentBackgroundColor={theme.colors.highContrast}
         stickyHeaderHeight={70}
-      backgroundSpeed={10}
-        onChangeHeaderVisibility={(isSticky) => this.setState({isSticky})}
-        renderFixedHeader={()=> {
-          return this.renderHeader()
+        backgroundSpeed={10}
+        onChangeHeaderVisibility={isSticky => this.setState({ isSticky })}
+        renderFixedHeader={() => {
+          return this.renderHeader();
         }}
         renderStickyHeader={() => (
-          <View style={
-            {
+          <View
+            style={{
               height: 70,
               backgroundColor: theme.colors.primary
-            }
-          }/>)
-        }
+            }}
+          />
+        )}
         parallaxHeaderHeight={200}
         renderForeground={() => (
           <Animated.Image
@@ -214,7 +208,7 @@ class ItemDetailsView extends Component<Props, State> {
             {this.renderInfoItem("map-marker", address)}
           </View>
           <Text style={styles.description}> {description} </Text>
-          
+
           <MapboxGL.MapView
             styleURL={MapboxGL.StyleURL.Street}
             centerCoordinate={this.props.coord}
@@ -277,8 +271,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state, { navigation }) => {
-  const { id } = navigation.state.params;
-  const item = state.items.byId[id];
+  const id = navigation.getParam("id");
+  const item = getItem(state, id);
   return {
     ...item,
     comments: state.comments[id],

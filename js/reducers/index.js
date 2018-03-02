@@ -32,3 +32,7 @@ export function getItems(state) {
         iconCode: getCategoryWithId(state, item.category_id).icon
     }));
 }
+
+export function getItemWithId(state, itemId: number) {
+    return fromItems(state.items, itemId);
+}

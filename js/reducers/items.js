@@ -102,3 +102,7 @@ export function getItemsForCategoryId(
 export function getItems(state: State) {
   return state.allIds.map(id => state.byId[id]);
 }
+
+export function getItemWithId(state: State, itemId: number): IItem {
+  return state.byId[itemId] || {};
+}
