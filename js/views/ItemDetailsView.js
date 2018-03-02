@@ -133,13 +133,18 @@ class ItemDetailsView extends Component<Props> {
       </View>
     );
   };
+
   callPlace = () => {
     const { phone } = this.props;
-    Linking.openURL(`tel:${phone}`).catch(err =>
-      console.error("An error occurred", err)
-    );
+    if (phone) {
+      Linking.openURL(`tel:${phone}`).catch(err =>
+        console.error("An error occurred", err)
+      );
+    }
   };
 
+  newReviewHandler = () => {};
+  showRouteHandler = () => {};
   render() {
     const {
       name,
@@ -154,6 +159,7 @@ class ItemDetailsView extends Component<Props> {
       rating,
       url
     } = this.props;
+
     console.log({ coord });
     return (
       <View
@@ -253,7 +259,7 @@ class ItemDetailsView extends Component<Props> {
                 name="insert-comment"
                 type="material-icons"
                 color={theme.colors.primary}
-                onPress={this.showFiltersModal}
+                onPress={this.newReviewHandler}
               />
               <Text>Calificar</Text>
             </TouchableOpacity>
@@ -264,7 +270,7 @@ class ItemDetailsView extends Component<Props> {
                 name="navigation"
                 type="material-icons"
                 color={theme.colors.primary}
-                onPress={this.showFiltersModal}
+                onPress={this.showRouteHandler}
               />
               <Text>Llevarme ahí</Text>
             </TouchableOpacity>
@@ -272,7 +278,6 @@ class ItemDetailsView extends Component<Props> {
           <View>
             <Text>Evaluaciones</Text>
           </View>
-          {/*<ReviewsListView itemId={id} />*/}
         </ParallaxScrollView>
       </View>
     );

@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import { Dimensions, View, Text, Image, TouchableOpacity } from "react-native";
+import { Icon } from "react-native-elements";
 import StyleSheet from "./common/F8StyleSheet";
 import F8Colors from "./common/F8Colors";
 import F8Fonts from "./common/F8Fonts";

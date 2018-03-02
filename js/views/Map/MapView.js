@@ -275,7 +275,9 @@ class MapView extends React.Component<Props, State> {
           onDidFinishLoadingMap={this.onDidFinishLoadingStyle}
           centerCoordinate={DEFAULT_CENTER_COORDINATE}
           zoomLevel={DEFAULT_ZOOM_LEVEL}
-          ref={c => (this._map = c)}
+          ref={c => {
+            this._map = c;
+          }}
           maxZoom={MAX_ZOOM}
           minZoom={MIN_ZOOM}
           showUserLocation

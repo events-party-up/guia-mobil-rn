@@ -13,4 +13,6 @@ export interface IItem {
   mail: string;
   description: string;
   image: ?string;
+  rating: ?number;
+  price: ?number;
 }
