@@ -121,7 +121,6 @@ class ItemThumb extends React.Component<Props> {
           {this.renderImage(image, imageWidth, imageHeight)}
           <TouchableOpacity
             style={styles.favouriteToggle}
-            hitSlop={{ top: 10, bottom: 40, left: 40, right: 10 }}
             onPress={() => this.toggleFavourite(id)}
           >
             <Icon

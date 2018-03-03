@@ -9,21 +9,21 @@ import apiCallMiddleware from "./apiCallMiddleware";
 import reducers from "../reducers";
 
 const apiClient = axios.create({
-    baseURL: "https://bariloche.guiasmoviles.com/",
-    timeout: 5000
+  baseURL: "https://bariloche.guiasmoviles.com/",
+  timeout: 5000
 });
 const createGuideStore = applyMiddleware(
-    apiCallMiddleware(apiClient),
-    thunk,
-    logger
+  apiCallMiddleware(apiClient),
+  thunk
+  // logger
 )(createStore);
 
 async function configureStore(onComplete: () => void) {
-    const store = autoRehydrate()(createGuideStore)(reducers);
-    // const store = createGuideStore(reducers);
-    // persistStore(store, { storage: AsyncStorage }, onComplete);
-    onComplete();
-    return store;
+  const store = autoRehydrate()(createGuideStore)(reducers);
+  // const store = createGuideStore(reducers);
+  // persistStore(store, { storage: AsyncStorage }, onComplete);
+  onComplete();
+  return store;
 }
 
 export default configureStore;
