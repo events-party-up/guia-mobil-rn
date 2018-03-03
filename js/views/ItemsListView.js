@@ -5,15 +5,22 @@ import { connect } from "react-redux";
 import type NavigationScreenProp from "react-navigation";
 import styled, { withTheme } from "styled-components";
 import * as actions from "../actions";
+import { itemsSorter } from "../utils";
 import Header from "../components/Header";
 import ItemThumb from "../components/ItemThumb";
 import { ICategory, IItem } from "../models";
 import { getItemsForCategoryId } from "../reducers";
+import SortButtons from "../components/SortButtons";
 
 type Props = {
   items: any[],
   navigation: NavigationScreenProp,
-  category: ICategory
+  category: ICategory,
+  theme: Object
+};
+
+type State = {
+  sortIndex: number
 };
 
 const ViewContainer = styled.View`
@@ -21,7 +28,16 @@ const ViewContainer = styled.View`
   background-color: ${props => props.theme.colors.highContrast};
 `;
 
-class ItemsListView extends Component<Props> {
+class ItemsListView extends Component<Props, State> {
+  state = {
+    sortIndex: 0
+  };
+
+  sortHandler = index => {
+    console.log(index);
+    this.setState({ sortIndex: index });
+  };
+
   renderItemsGrid = (items: IItem[]) => (
     <View style={styles.grid}>
       {items.map(item => (
@@ -46,6 +62,10 @@ class ItemsListView extends Component<Props> {
 
   render() {
     const { items, category, theme } = this.props;
+    const { sortIndex } = this.state;
+    const sorterFunc = itemsSorter[sortIndex]();
+    const sortedItems = items.sort(sorterFunc);
+
     return (
       <ViewContainer style={styles.container}>
         <Header
@@ -58,7 +78,11 @@ class ItemsListView extends Component<Props> {
           }}
         />
         <ScrollView style={styles.scrollView}>
-          {this.renderItemsGrid(items)}
+          <SortButtons
+            activeSorterIndex={this.state.sortIndex}
+            onChangeSorter={this.sortHandler}
+          />
+          {this.renderItemsGrid(sortedItems)}
         </ScrollView>
       </ViewContainer>
     );
