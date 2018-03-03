@@ -96,7 +96,12 @@ export function getItemsForCategoryId(
   state: State,
   categoryId: number
 ): Array<IItem> {
-  return state.byCategoryId[categoryId].map(itemId => state.byId[itemId]) || [];
+  const itemsInCategory = state.byCategoryId[categoryId];
+
+  if (itemsInCategory) {
+    return itemsInCategory.map(itemId => state.byId[itemId]) || [];
+  }
+  return [];
 }
 
 export function getItems(state: State) {
