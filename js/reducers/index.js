@@ -3,7 +3,7 @@ import { combineReducers } from "redux";
 import first from "lodash/first";
 import categories, * as fromCategories from "./categories";
 import items, * as fromItems from "./items";
-import comments from "./comments";
+import reviews, * as fromReviews from "./reviews";
 import auth from "./auth";
 import filters, * as fromFilters from "./filters";
 import weekPics from "./weekpics";
@@ -12,7 +12,7 @@ import { ICategory, IItem } from "../models";
 export default combineReducers({
   categories,
   items,
-  comments,
+  reviews,
   auth,
   weekPics,
   filters
@@ -72,4 +72,8 @@ export function getFilteredItems(state: State) {
 
 export function getItemWithId(state: State, itemId: number): IItem {
   return fromItems.getItemWithId(state.items, itemId);
+}
+
+export function getReviewsForItemId(state: State, itemId: number) {
+  return fromReviews.getReviewsForItemId(state.reviews, itemId);
 }

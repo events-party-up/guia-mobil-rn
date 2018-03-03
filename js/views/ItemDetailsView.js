@@ -20,8 +20,14 @@ import ReviewsListView from "./ReviewsListView";
 import { IItem, ICategory } from "../models";
 import Header from "../components/Header";
 import Button from "../components/Button";
-import { getCategoryChain, getItemWithId } from "../reducers";
+import {
+  getCategoryChain,
+  getItemWithId,
+  getReviewsForItemId
+} from "../reducers";
 import Rating from "../components/Rating";
+import Reviews from "../components/Reviews";
+import { Heading3 } from "../components/common/Text";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
@@ -158,7 +164,8 @@ class ItemDetailsView extends Component<Props> {
       coord,
       price,
       rating,
-      url
+      url,
+      reviews
     } = this.props;
 
     return (
@@ -275,9 +282,7 @@ class ItemDetailsView extends Component<Props> {
               <Text>Llevarme ahí</Text>
             </TouchableOpacity>
           </View>
-          <View>
-            <Text>Evaluaciones</Text>
-          </View>
+          <Reviews reviews={reviews} />
         </ParallaxScrollView>
       </View>
     );
@@ -291,7 +296,7 @@ const mapStateToProps = (state, { navigation }) => {
   console.log({ item });
   return {
     ...item,
-    comments: state.comments[id],
+    reviews: getReviewsForItemId(state, id),
     categoryChain: getCategoryChain(state, item.category_id)
   };
 };
