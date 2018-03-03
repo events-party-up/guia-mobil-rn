@@ -44,8 +44,9 @@ function setup() {
     //   PushNotification.requestPermissions();
     // }
 
-    onTokenReceived = (token: string) => {
-      console.log("TOKEN:", token);
+    onTokenReceived = ( {token, os}: {token:string, os: string}) => {
+      debugger;
+      console.log("TOKEN PUSH:", token);
     };
 
     onNotification = notification => {
