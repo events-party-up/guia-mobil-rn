@@ -9,6 +9,7 @@ import HomeView from "./views/HomeView";
 import MapStack from "./views/Map";
 import TabsNavigator from "./views/TabsNavigator";
 import * as actions from "./actions";
+import SettingsStack from "./views/settings";
 
 MapboxGL.setAccessToken(config.get("MAPBOX_ACCESS_TOKEN"));
 
@@ -20,6 +21,7 @@ type State = {
   isFetchingAndroidPermission: boolean,
   isAndroidPermissionGranted: boolean
 };
+
 const NavigationStack = StackNavigator(
   {
     Home: {
@@ -36,6 +38,21 @@ const NavigationStack = StackNavigator(
     navigationOptions: {
       header: null
     }
+  }
+);
+
+const RootStack = StackNavigator(
+  {
+    Main: {
+      screen: NavigationStack
+    },
+    Settings: {
+      screen: SettingsStack
+    }
+  },
+  {
+    mode: "modal",
+    headerMode: "none"
   }
 );
 
@@ -71,7 +88,7 @@ class App extends React.Component<Props, State> {
       return null;
     }
 
-    return <NavigationStack />;
+    return <RootStack />;
   }
 }
 
