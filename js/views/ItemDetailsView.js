@@ -16,7 +16,6 @@ import styled, { withTheme } from "styled-components";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import type NavigationScreenProp from "react-navigation";
 import * as actions from "../actions";
-import ReviewsListView from "./ReviewsListView";
 import { IItem, ICategory } from "../models";
 import Header from "../components/Header";
 import Button from "../components/Button";
@@ -27,7 +26,7 @@ import {
 } from "../reducers";
 import Rating from "../components/Rating";
 import Reviews from "../components/Reviews";
-import { Heading3 } from "../components/common/Text";
+import ItemMapMarker from "../components/ItemMapMarker";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
@@ -74,6 +73,18 @@ class ItemDetailsView extends Component<Props> {
     header: null
   });
 
+  componentDidMount() {
+    const { coord } = this.props;
+    setTimeout(
+      () =>
+        this.map.setCamera({
+          centerCoordinate: coord,
+          zoom: 14,
+          duration: 0
+        }),
+      500
+    );
+  }
   toggleFavourite = id => {
     this.props.dispatch(actions.toggleFavourite(id));
   };
@@ -165,6 +176,7 @@ class ItemDetailsView extends Component<Props> {
       price,
       rating,
       url,
+      id,
       reviews
     } = this.props;
 
@@ -247,16 +259,27 @@ class ItemDetailsView extends Component<Props> {
           </View>
           <View style={styles.mapWrapper}>
             <MapboxGL.MapView
+              ref={c => {
+                this.map = c;
+              }}
               style={styles.map}
               textureMode
               styleURL={MapboxGL.StyleURL.Street}
               centerCoordinate={coord}
-              zoomLevel={16}
+              zoomLevel={14}
               height={200}
               zoomEnabled={false}
               scrollEnabled={false}
               rotateEnabled={false}
-            />
+            >
+              <MapboxGL.PointAnnotation
+                id={`${id}`}
+                coordinate={coord}
+                anchor={{ x: 0.5, y: 1.0 }}
+              >
+                <ItemMapMarker />
+              </MapboxGL.PointAnnotation>
+            </MapboxGL.MapView>
           </View>
           <View style={styles.actionsContainer}>
             <TouchableOpacity style={styles.actionWrapper}>
