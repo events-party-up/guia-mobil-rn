@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@mapbox/geo-viewport": "^0.2.2",
-    "@mapbox/react-native-mapbox-gl": "6.0.0",
+    "@mapbox/react-native-mapbox-gl": "6.1.0-beta",
     "@turf/along": "^5.1.5",
     "@turf/helpers": "^6.0.1",
     "axios": "^0.17.1",
@@ -27,7 +27,7 @@
     "react-native-push-notification": "^3.0.2",
     "react-native-swiper": "^1.5.13",
     "react-native-vector-icons": "^4.5.0",
-    "react-navigation": "^1.1.x",
+    "react-navigation": "^1.4.0",
     "react-navigator": "^0.0.0-0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",

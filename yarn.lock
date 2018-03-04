@@ -85,9 +85,9 @@
   dependencies:
     "@mapbox/sphericalmercator" "~1.0.2"
 
-"@mapbox/react-native-mapbox-gl@6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@mapbox/react-native-mapbox-gl/-/react-native-mapbox-gl-6.0.0.tgz#33ecaef1e8292d6150c1c3d46ee74cc7466072ca"
+"@mapbox/react-native-mapbox-gl@6.1.0-beta":
+  version "6.1.0-beta"
+  resolved "https://registry.yarnpkg.com/@mapbox/react-native-mapbox-gl/-/react-native-mapbox-gl-6.1.0-beta.tgz#380c28349d5b56e10a4e9cbc05c39109d7113d61"
   dependencies:
     "@turf/helpers" "4.6.0"
 
@@ -4516,9 +4516,9 @@ react-native@0.53.0:
     xmldoc "^0.4.0"
     yargs "^9.0.0"
 
-react-navigation@^1.1.x:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-1.1.2.tgz#6e041b8a3cd0f5266072df0b52a55117892875f2"
+react-navigation@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-1.4.0.tgz#2e1ec70a5d37af78d4b2cab588caf179b2b16859"
   dependencies:
     clamp "^1.0.1"
     hoist-non-react-statics "^2.2.0"
