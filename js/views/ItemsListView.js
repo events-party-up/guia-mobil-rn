@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, FlatList } from "react-native";
 import { connect } from "react-redux";
 import type NavigationScreenProp from "react-navigation";
 import styled, { withTheme } from "styled-components";
@@ -38,26 +38,34 @@ class ItemsListView extends Component<Props, State> {
     this.setState({ sortIndex: index });
   };
 
+  keyExtractor = item => item.id;
+
+  renderItem = ({ item }) => (
+    <ItemThumb
+      key={item.id}
+      id={item.id}
+      type="small"
+      categoryId={item.category_id}
+      image={item.image}
+      title={item.name}
+      isFavorite={false}
+      onPress={() =>
+        this.props.navigation &&
+        this.props.navigation.navigate("ItemDetailsView", {
+          id: item.id
+        })
+      }
+    />
+  );
   renderItemsGrid = (items: IItem[]) => (
-    <View style={styles.grid}>
-      {items.map(item => (
-        <ItemThumb
-          key={item.id}
-          id={item.id}
-          type="small"
-          categoryId={item.category_id}
-          image={item.image}
-          title={item.name}
-          isFavorite={false}
-          onPress={() =>
-            this.props.navigation &&
-            this.props.navigation.navigate("ItemDetailsView", {
-              id: item.id
-            })
-          }
-        />
-      ))}
-    </View>
+    <FlatList
+      numColumns={2}
+      style={styles.grid}
+      data={items}
+      extraData={this.state}
+      keyExtractor={this.keyExtractor}
+      renderItem={this.renderItem}
+    />
   );
 
   render() {
@@ -98,11 +106,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10
   },
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between"
-  }
+  grid: {}
 });
 
 const mapStateToProps = (state, { navigation }) => {

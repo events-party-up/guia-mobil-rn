@@ -49,6 +49,7 @@ class CategoriesList extends Component<Props> {
 
   renderRow = category => (
     <ListItem
+      underlayColor="#939393"
       onPress={() => this.navigateTo(category)}
       key={category.id}
       title={category.name}

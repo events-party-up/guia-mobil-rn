@@ -10,14 +10,13 @@ const Paragraph = styled.Text`
   color: ${props => props.theme.colors.lightText};
 `;
 
-const ItemReview = ({ profile_name, rtext, date }) => (
+const ItemReview = ({ profile_name, rtext, date, profile_img }) => (
   <View style={styles.reviewContainer}>
     <View style={styles.row}>
       <Image
         style={styles.avatar}
         source={{
-          uri:
-            "http://www.newsshare.in/wp-content/uploads/2017/04/Miniclip-8-Ball-Pool-Avatar-16.png"
+          uri: profile_img
         }}
       />
       <View style={styles.info}>

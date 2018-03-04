@@ -131,10 +131,8 @@ class ItemThumb extends React.Component<Props> {
             />
           </TouchableOpacity>
         </View>
-
         <CategoryLabel>{category.name.toUpperCase()} </CategoryLabel>
         {this.renderTitle(type, title)}
-
         <Rating imageSize={14} rating={stars} />
       </TouchableOpacity>
     );

@@ -12,7 +12,7 @@ type RatingType = "star" | "circle";
 
 type Props = {
   type: RatingType,
-  style: ?any,
+  style?: any,
   imageSize: number,
   rating: number
 };
