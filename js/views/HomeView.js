@@ -142,14 +142,16 @@ class HomeView extends React.Component<Props> {
     const rightItem = {
       title: "Map",
       layout: "icon",
-      icon: require("../components/img/header/map.png"),
+      icon: "map",
+      type: "map",
       onPress: this.navigateToMap
     };
 
     const leftItem = {
       title: "Menu",
       layout: "icon",
-      icon: require("../components/img/header/settings.png"),
+      icon: "settings",
+      iconType: "material-icons",
       onPress: () =>
         this.props.navigation && this.props.navigation.navigate("Settings")
     };

@@ -106,7 +106,8 @@ class ItemDetailsView extends Component<Props> {
     const rightItem = {
       title: "Settings",
       layout: "icon",
-      icon: isFavourite ? favouriteIcon : favouriteIconOutline,
+      iconType: "material-community",
+      icon: isFavourite ? "heart" : "heart-outline",
       onPress: () => this.toggleFavourite(id)
     };
 
@@ -116,6 +117,7 @@ class ItemDetailsView extends Component<Props> {
           backgroundColor="transparent"
           navItem={{ back: true, onPress: () => navigation.goBack(null) }}
           rightItem={rightItem}
+          itemsColor="white"
         />
       </View>
     );

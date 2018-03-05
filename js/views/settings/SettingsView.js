@@ -16,10 +16,12 @@ const SettingsView = ({ toggleNotifications, theme, navigation }: Props) => (
   <View style={styles.container}>
     <Header
       title={"Settings"}
-      navItem={{
-        icon: require("../../components/img/header/x.png"),
+      leftItem={{
+        icon: "window-close",
+        iconType: "material-community",
         onPress: () => navigation.goBack(null)
       }}
+      itemsColor="white"
       backgroundColor={theme.colors.primary}
       titleColor={theme.colors.highContrast}
     />

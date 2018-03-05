@@ -69,6 +69,7 @@ class CategoriesList extends Component<Props> {
           }}
           backgroundColor={theme.colors.primary}
           titleColor={theme.colors.highContrast}
+          itemsColor={"white"}
         />
         <ScrollView>
           <List style={styles.list}>{categories.map(this.renderRow)}</List>

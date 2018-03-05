@@ -69,7 +69,7 @@ class MapView extends React.Component<Props, State> {
 
   componentDidMount() {
     this.setItems(this.props.items);
-    navigator.geolocation.requestAuthorization();
+
     navigator.geolocation.getCurrentPosition(
       pos => {
         const { coords } = pos;
@@ -262,6 +262,7 @@ class MapView extends React.Component<Props, State> {
             back: true,
             onPress: () => navigation.goBack(null)
           }}
+          itemsColor="white"
           backgroundColor={theme.colors.primary}
           titleColor={theme.colors.highContrast}
         />
