@@ -157,7 +157,10 @@ const styles = StyleSheet.create({
     width: WIDTH_SMALL + GUTTER,
     paddingHorizontal: GUTTER / 2
   },
-
+  thumb: {
+    overflow: "hidden",
+    borderRadius: 10
+  },
   image: {
     backgroundColor: F8Colors.tangaroa,
     resizeMode: "cover",
