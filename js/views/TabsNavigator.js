@@ -22,30 +22,37 @@ export default TabNavigator(
   {
     EatTab: {
       screen: CategoriesStack(EAT_CATEGORIES_ID),
-      navigationOptions: { tabBarLabel: "COMER" }
+      navigationOptions: { tabBarLabel: "Comer" }
     },
     SleepTab: {
       screen: CategoriesStack(SLEEP_CATEGORIES_ID),
-      navigationOptions: { tabBarLabel: "DORMIR" }
+      navigationOptions: { tabBarLabel: "Dormir" }
     },
     TodoTab: {
       screen: CategoriesStack(TODO_CATEGORIES_ID),
-      navigationOptions: { tabBarLabel: "ACTIVIDADES" }
+      navigationOptions: { tabBarLabel: "Actividades" }
     },
     ServicesTab: {
       screen: CategoriesStack(SERVICES_CATEGORIES_ID),
-      navigationOptions: { tabBarLabel: "SERVICIOS" }
+      navigationOptions: { tabBarLabel: "Servicios" }
     }
   },
   {
     backBehavior: "none",
     swipeEnabled: false,
     animationEnabled: false,
+    tabBarPosition: "bottom",
     tabBarOptions: {
-      activeTintColor: ACTIVE_TINT_COLOR
+      upperCaseLabel: false,
+      showIcon: true,
+      indicatorStyle: { height: 0, margin: 0 },
+      activeTintColor: ACTIVE_TINT_COLOR,
+      labelStyle: {
+        fontSize: 10,
+        margin: 4
+      }
     },
     navigationOptions: ({ navigation }) => ({
-      tabBarPosition: "bottom",
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
         if (routeName === "EatTab") {
