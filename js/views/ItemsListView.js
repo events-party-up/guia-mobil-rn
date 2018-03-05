@@ -34,8 +34,7 @@ class ItemsListView extends Component<Props, State> {
   };
 
   sortHandler = index => {
-    console.log(index);
-    this.setState({ sortIndex: index });
+    if (index != this.state.sortIndex) this.setState({ sortIndex: index });
   };
 
   keyExtractor = item => item.id;
