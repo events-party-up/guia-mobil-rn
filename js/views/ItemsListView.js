@@ -61,7 +61,7 @@ class ItemsListView extends Component<Props, State> {
       numColumns={2}
       style={styles.grid}
       data={items}
-      extraData={this.state}
+      extraData={this.state.sortIndex}
       keyExtractor={this.keyExtractor}
       renderItem={this.renderItem}
     />
@@ -83,6 +83,7 @@ class ItemsListView extends Component<Props, State> {
             back: true,
             onPress: () => this.props.navigation.goBack()
           }}
+          itemsColor="white"
         />
         <ScrollView style={styles.scrollView}>
           <SortButtons
