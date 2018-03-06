@@ -8,7 +8,7 @@ export interface IItem {
   is_published: number;
   is_special: number;
   address: number;
-  coord: string;
+  coord: number[];
   name: string;
   mail: string;
   description: string;

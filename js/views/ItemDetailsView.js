@@ -12,7 +12,7 @@ import {
   Platform
 } from "react-native";
 import { connect } from "react-redux";
-import MapboxGL from "@mapbox/react-native-mapbox-gl";
+
 import { Icon } from "react-native-elements";
 import styled, { withTheme } from "styled-components";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
@@ -30,7 +30,7 @@ import {
 } from "../reducers";
 import Rating from "../components/Rating";
 import Reviews from "../components/Reviews";
-import ItemMapMarker from "../components/ItemMapMarker";
+import MapPreview from '../components/MapPreview';
 import { toLatLong, getAppleMapsUri, getGoogleMapsUri } from "../utils/maps";
 import { DEFAULT_CENTER_COORDINATE } from "../utils";
 
@@ -100,7 +100,7 @@ class ItemDetailsView extends Component<Props> {
   showRouteHandler = () => {
     const { coord, userLocation } = this.props;
     let uri: string;
-    if(Platform.OS === "ios") {
+    if (Platform.OS === "ios") {
       uri = getAppleMapsUri(toLatLong(coord), toLatLong(userLocation));
     } else {
       uri = getGoogleMapsUri(toLatLong(coord), toLatLong(userLocation));
@@ -325,28 +325,7 @@ class ItemDetailsView extends Component<Props> {
             <Text style={styles.description}> {description} </Text>
           </View>
           <View style={styles.mapWrapper}>
-            <MapboxGL.MapView
-              ref={c => {
-                this.map = c;
-              }}
-              style={styles.map}
-              textureMode
-              styleURL={MapboxGL.StyleURL.Street}
-              centerCoordinate={coord}
-              zoomLevel={14}
-              height={200}
-              zoomEnabled={false}
-              scrollEnabled={false}
-              rotateEnabled={false}
-            >
-              <MapboxGL.PointAnnotation
-                id={`${id}`}
-                coordinate={coord}
-                anchor={{ x: 0.5, y: 1.0 }}
-              >
-                <ItemMapMarker />
-              </MapboxGL.PointAnnotation>
-            </MapboxGL.MapView>
+            <MapPreview marker={coord} id={id} />
           </View>
           <View style={styles.actionsContainer}>
             <TouchableOpacity style={styles.actionWrapper}>
@@ -453,9 +432,5 @@ const styles = StyleSheet.create({
     height: 200,
     width: WINDOW_WIDTH,
     overflow: "hidden"
-  },
-  map: {
-    width: WINDOW_WIDTH,
-    height: 200
   }
 });
