@@ -2,7 +2,7 @@
 import { combineReducers } from "redux";
 import * as actions from "../actions";
 
-type GalleryPic = {
+export type GalleryPic = {
   id: number,
   item_id: number,
   image: string,
@@ -10,7 +10,7 @@ type GalleryPic = {
   height: number
 };
 
-type Gallery = GalleryPic[];
+export type Gallery = GalleryPic[];
 
 export type State = {
   allIds: number[],

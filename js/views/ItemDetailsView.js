@@ -32,7 +32,8 @@ import Reviews from "../components/Reviews";
 import MapPreview from "../components/MapPreview";
 import CategoriesBreakdrum from "../components/CategoriesBrackdrum";
 import ItemInfoBlock from "../components/ItemInfoBlock";
-
+import ImageGalleryPreview from "../components/ImageGalleryPreview";
+import type { Gallery } from "../reducers/galleries";
 import { toLatLong, getAppleMapsUri, getGoogleMapsUri } from "../utils/maps";
 import { DEFAULT_CENTER_COORDINATE, getImageUrl } from "../utils";
 
@@ -51,6 +52,7 @@ interface Props extends IItem {
   categoryChain: Array<ICategory>;
   navigation: NavigationScreenProp;
   theme: Object;
+  itemGallery: Gallery;
 }
 
 class ItemDetailsView extends Component<Props> {
@@ -137,22 +139,32 @@ class ItemDetailsView extends Component<Props> {
             />
           )}
           parallaxHeaderHeight={IMAGE_HEIGHT}
-          renderBackground={() => (
-            <Animated.Image
-              key="parallax-header"
-              source={
-                image && image.length
-                  ? {
-                      uri: getImageUrl(image)
-                    }
-                  : lakeImage
-              }
-              style={{
-                width: WINDOW_WIDTH,
-                height: IMAGE_HEIGHT
-              }}
-            />
-          )}
+          renderBackground={() => {
+            // if (this.props.itemGallery && this.props.itemGallery.length > 0) {
+            //   return (
+            //     <ImageGalleryPreview
+            //       key="parallax-header"
+            //       gallery={this.props.itemGallery}
+            //     />
+            //   );
+            // }
+            return (
+              <Animated.Image
+                key="parallax-header"
+                source={
+                  image && image.length
+                    ? {
+                        uri: getImageUrl(image)
+                      }
+                    : lakeImage
+                }
+                style={{
+                  width: WINDOW_WIDTH,
+                  height: IMAGE_HEIGHT
+                }}
+              />
+            );
+          }}
         >
           <CategoriesBreakdrum categoryChain={this.props.categoryChain} />
           <Text style={styles.title}> {name.toUpperCase()}</Text>
@@ -239,9 +251,6 @@ const styles = StyleSheet.create({
   topBar: {
     height: 40,
     padding: 10
-  },
-  contactItems: {
-    margin: 10
   },
   actionItems: {
     flexDirection: "row",

@@ -34,7 +34,7 @@ const InfoItem = ({ iconName, text, theme }: InfoItemProps) => {
 const ItemInfoBlock = props => {
   const { phone, mail, address, rating, theme, price, itemChars, url } = props;
   return (
-    <View style={styles.contactItems}>
+    <View style={styles.infoItems}>
       <InfoItem iconName="phone" text={phone} theme={theme} />
       <InfoItem iconName="email" text={mail} theme={theme} />
       <InfoItem iconName="map-marker" text={address} theme={theme} />
@@ -74,6 +74,9 @@ export default withTheme(ItemInfoBlock);
 // ====================================
 
 const styles = StyleSheet.create({
+  infoItems: {
+    margin: 10
+  },
   contactRow: {
     flexDirection: "row",
     alignItems: "center",
