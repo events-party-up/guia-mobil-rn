@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':realm')
     compile project(':mapbox-react-native-mapbox-gl')
     compile project(':react-native-device-info')
     compile project(':react-native-push-notification')
