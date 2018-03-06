@@ -17,7 +17,8 @@ const apiClient = axios.create({
 
 const persistConfig = {
   key: "root",
-  storage: AsyncStorage
+  storage: AsyncStorage,
+  blacklist: ["items"]
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -25,7 +26,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 async function configureStore(onComplete: () => void) {
   const store = Reactotron.createStore(
     persistedReducer,
-    applyMiddleware(apiCallMiddleware(apiClient), thunk, logger)
+    applyMiddleware(apiCallMiddleware(apiClient), thunk)
   );
 
   persistStore(store, null, onComplete);

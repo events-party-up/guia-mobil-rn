@@ -10,6 +10,7 @@ import Reactotron from "./ReactotronConfig";
 import configureStore from "./store/configureStore";
 import App from "./App";
 import theme from "./theme";
+
 type State = {
   storeCreated: boolean,
   store: ?Store,
