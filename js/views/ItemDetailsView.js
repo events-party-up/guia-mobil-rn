@@ -8,7 +8,8 @@ import {
   Animated,
   TouchableOpacity,
   Linking,
-  WebView
+  WebView,
+  Platform
 } from "react-native";
 import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
@@ -30,6 +31,8 @@ import {
 import Rating from "../components/Rating";
 import Reviews from "../components/Reviews";
 import ItemMapMarker from "../components/ItemMapMarker";
+import { toLatLong, getAppleMapsUri, getGoogleMapsUri } from "../utils/maps";
+import { DEFAULT_CENTER_COORDINATE } from "../utils";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
@@ -94,7 +97,18 @@ class ItemDetailsView extends Component<Props> {
   };
 
   newReviewHandler = () => {};
-  showRouteHandler = () => {};
+  showRouteHandler = () => {
+    const { coord, userLocation } = this.props;
+    let uri: string;
+    if(Platform.OS === "ios") {
+      uri = getAppleMapsUri(toLatLong(coord), toLatLong(userLocation));
+    } else {
+      uri = getGoogleMapsUri(toLatLong(coord), toLatLong(userLocation));
+    }
+    Linking.openURL(uri).catch(err =>
+      console.error("An error occurred opening maps", err)
+    );
+  };
 
   renderHeader = () => {
     const { isFavourite, navigation, id } = this.props;
@@ -346,14 +360,16 @@ class ItemDetailsView extends Component<Props> {
               />
               <Text>Calificar</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.actionWrapper}>
+            <TouchableOpacity
+              style={styles.actionWrapper}
+              onPress={this.showRouteHandler}
+            >
               <Icon
                 raised
                 reverse
                 name="navigation"
                 type="material-icons"
                 color={theme.colors.primary}
-                onPress={this.showRouteHandler}
               />
               <Text>Llevarme ahí</Text>
             </TouchableOpacity>
@@ -374,7 +390,8 @@ const mapStateToProps = (state, { navigation }) => {
     reviews: getReviewsForItemId(state, id),
     categoryChain: getCategoryChain(state, item.category_id),
     itemChars: getCharsWithIds(state, item.chars),
-    itemGallery: getGalleryForItem(state, item.id)
+    itemGallery: getGalleryForItem(state, item.id),
+    userLocation: DEFAULT_CENTER_COORDINATE
   };
 };
 
