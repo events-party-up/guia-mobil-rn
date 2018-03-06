@@ -8,7 +8,8 @@ import {
   Animated,
   TouchableOpacity,
   Linking,
-  Platform
+  Platform,
+  Share
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -77,8 +78,23 @@ class ItemDetailsView extends Component<Props> {
       );
     }
   };
+  shareItemHandler = () => {
+    const { name } = this.props;
+    Share.share(
+      {
+        message: `Me gustó ${name}! Encuentra esta información y más en la Guía de Bariloche, descargala ya mismo desde Play Store! https://play.google.com/store/apps/details?id=com.animus.guideapp`,
+        title: name
+      },
+      {
+        subject: "",
+        tintColor: this.props.theme.colors.primary,
+        dialogTitle: "Share"
+      }
+    );
+  };
 
   newReviewHandler = () => {};
+
   showRouteHandler = () => {
     const { coord, userLocation } = this.props;
     let uri: string;
@@ -109,6 +125,13 @@ class ItemDetailsView extends Component<Props> {
           navItem={{ back: true, onPress: () => navigation.goBack(null) }}
           rightItem={rightItem}
           itemsColor="white"
+          extraItems={[
+            {
+              icon: "share",
+              iconType: "material-icons",
+              onPress: this.shareItemHandler
+            }
+          ]}
         />
       </View>
     );
