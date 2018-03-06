@@ -7,7 +7,8 @@ import {
   Dimensions,
   Animated,
   TouchableOpacity,
-  Linking
+  Linking,
+  WebView
 } from "react-native";
 import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
@@ -166,9 +167,56 @@ class ItemDetailsView extends Component<Props> {
   };
 
   renderItemChars = () => {
-    const { itemChars } = this.props;
+    const { itemChars, theme } = this.props;
     if (itemChars.length) {
-      return <View>{itemChars.map(char => <Text>{char.name} </Text>)}</View>;
+      const icons = itemChars.map(char => char.icon).join(" ");
+      console.log({ icons });
+      return (
+        <WebView
+          scrollEnable={false}
+          bounces={false}
+          javaScriptEnabled={false}
+          scalesPageToFit={false}
+          style={{
+            width: WINDOW_WIDTH - 20,
+            height: 80
+          }}
+          source={{
+            html: `
+                <html>
+                <head>
+                  <meta name="viewport" content="width=device-width, initial-scale=1">
+                </head>
+                <body>
+                <style>
+                svg {
+                  width: 30px;
+                  height: 30px;
+                  fill: blue;
+                  display: inline-block;
+                  margin: 10px;
+                  fill: ${theme.colors.primary};
+                }
+                svg path {
+                  fill: ${theme.colors.primary};
+                }
+                svg circle {
+                  fill: ${theme.colors.primary};
+                }
+                body {
+                  height: 60px;
+                  display: flex;
+                  align-items: center;
+                  overflow: auto;
+                }
+              </style>
+               
+                  ${icons}
+               </body>
+               <html>`
+          }}
+        />
+      );
     }
     return null;
   };

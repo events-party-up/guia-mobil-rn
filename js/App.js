@@ -82,6 +82,7 @@ class App extends React.Component<Props, State> {
     this.props.dispatch(actions.itemsLoadFeatured());
     this.props.dispatch(actions.weekPicsUpdate());
     this.props.dispatch(actions.reviewsUpdate());
+    this.props.dispatch(actions.charsUpdate());
   }
 
   render() {

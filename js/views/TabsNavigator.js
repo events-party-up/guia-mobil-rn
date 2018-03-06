@@ -50,7 +50,9 @@ export default TabNavigator(
       labelStyle: {
         fontSize: 10,
         margin: 4
-      }
+      },
+      activeBackgroundColor: "white",
+      inactiveBackgroundColor: "white",
     },
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {

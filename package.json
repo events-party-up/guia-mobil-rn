@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@mapbox/geo-viewport": "^0.2.2",
-    "@mapbox/react-native-mapbox-gl": "6.1.0-beta",
+    "@mapbox/react-native-mapbox-gl": "^6.1.0",
     "@turf/along": "^5.1.5",
     "@turf/helpers": "^6.0.1",
     "axios": "^0.17.1",

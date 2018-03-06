@@ -14,8 +14,8 @@ const apiClient = axios.create({
 });
 const createGuideStore = applyMiddleware(
   apiCallMiddleware(apiClient),
-  thunk
-  // logger
+  thunk,
+  logger
 )(createStore);
 
 async function configureStore(onComplete: () => void) {
