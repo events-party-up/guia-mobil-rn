@@ -8,13 +8,12 @@ import {
   Animated,
   TouchableOpacity,
   Linking,
-  WebView,
   Platform
 } from "react-native";
 import { connect } from "react-redux";
 
 import { Icon } from "react-native-elements";
-import styled, { withTheme } from "styled-components";
+import { withTheme } from "styled-components";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import type NavigationScreenProp from "react-navigation";
 import * as actions from "../actions";
@@ -28,38 +27,19 @@ import {
   getCharsWithIds,
   getGalleryForItem
 } from "../reducers";
-import Rating from "../components/Rating";
+
 import Reviews from "../components/Reviews";
-import MapPreview from '../components/MapPreview';
+import MapPreview from "../components/MapPreview";
+import CategoriesBreakdrum from "../components/CategoriesBrackdrum";
+import ItemInfoBlock from "../components/ItemInfoBlock";
+
 import { toLatLong, getAppleMapsUri, getGoogleMapsUri } from "../utils/maps";
-import { DEFAULT_CENTER_COORDINATE } from "../utils";
+import { DEFAULT_CENTER_COORDINATE, getImageUrl } from "../utils";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
 
 const lakeImage = require("../components/img/lake.jpeg");
-
-const CategoryLabel = styled.Text`
-  color: ${props => props.theme.colors.primary};
-  padding-horizontal: 10px;
-`;
-
-const CategoryBreakdrum = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding-vertical: 10px;
-  align-items: center;
-`;
-
-const arrowLeft = require("../components/img/header/back.png");
-
-const ThemedImage = styled.Image`
-  tint-color: ${props => props.theme.colors.primary};
-  height: 10px;
-  width: 10px;
-`;
-
-const Separator = () => <ThemedImage source={arrowLeft} />;
 
 interface Props extends IItem {
   isFavourite: boolean;
@@ -132,118 +112,8 @@ class ItemDetailsView extends Component<Props> {
     );
   };
 
-  renderCategoriesBreakdrum = () => {
-    const { categoryChain } = this.props;
-    return (
-      <CategoryBreakdrum>
-        {categoryChain
-          .map(category => (
-            <CategoryLabel key={`cat_${category.id}`}>
-              {category.name.toUpperCase()}
-            </CategoryLabel>
-          ))
-          .reduce((items, category) => {
-            if (items.length)
-              return [
-                ...items,
-                <Separator key={`sep_${items.length}`} />,
-                category
-              ];
-            return [...items, category];
-          }, [])}
-      </CategoryBreakdrum>
-    );
-  };
-
-  renderInfoItem = (iconName, text) => {
-    const { theme } = this.props;
-    if (text) {
-      return (
-        <View style={styles.contactRow}>
-          <Icon
-            type="material-community"
-            style={styles.contactRowIcon}
-            name={iconName}
-            color={theme.colors.primary}
-          />
-          <Text> {text} </Text>
-        </View>
-      );
-    }
-    return null;
-  };
-
-  renderItemChars = () => {
-    const { itemChars, theme } = this.props;
-    if (itemChars.length) {
-      const icons = itemChars.map(char => char.icon).join(" ");
-      console.log({ icons });
-      return (
-        <WebView
-          scrollEnable={false}
-          bounces={false}
-          javaScriptEnabled={false}
-          scalesPageToFit={false}
-          style={{
-            width: WINDOW_WIDTH - 20,
-            height: 80
-          }}
-          source={{
-            html: `
-                <html>
-                <head>
-                  <meta name="viewport" content="width=device-width, initial-scale=1">
-                </head>
-                <body>
-                <style>
-                svg {
-                  width: 30px;
-                  height: 30px;
-                  fill: blue;
-                  display: inline-block;
-                  margin: 10px;
-                  fill: ${theme.colors.primary};
-                }
-                svg path {
-                  fill: ${theme.colors.primary};
-                }
-                svg circle {
-                  fill: ${theme.colors.primary};
-                }
-                body {
-                  height: 60px;
-                  display: flex;
-                  align-items: center;
-                  overflow: auto;
-                }
-              </style>
-               
-                  ${icons}
-               </body>
-               <html>`
-          }}
-        />
-      );
-    }
-    return null;
-  };
-
   render() {
-    const {
-      name,
-      description,
-      image,
-      phone,
-      mail,
-      address,
-      theme,
-      coord,
-      price,
-      rating,
-      url,
-      id,
-      reviews
-    } = this.props;
+    const { name, description, image, theme, coord, id, reviews } = this.props;
 
     return (
       <View
@@ -273,7 +143,7 @@ class ItemDetailsView extends Component<Props> {
               source={
                 image && image.length
                   ? {
-                      uri: `https://bariloche.guiasmoviles.com/uploads/${image}`
+                      uri: getImageUrl(image)
                     }
                   : lakeImage
               }
@@ -284,43 +154,13 @@ class ItemDetailsView extends Component<Props> {
             />
           )}
         >
-          {this.renderCategoriesBreakdrum()}
+          <CategoriesBreakdrum categoryChain={this.props.categoryChain} />
           <Text style={styles.title}> {name.toUpperCase()}</Text>
           <View style={styles.actionItems}>
             <Button title="LLamar" primary onPress={this.callPlace} />
             <Button title="Ver en mapa" primary />
           </View>
-          <View style={styles.contactItems}>
-            {this.renderInfoItem("phone", phone)}
-            {this.renderInfoItem("email", mail)}
-            {this.renderInfoItem("map-marker", address)}
-            {!!price && (
-              <View style={styles.contactRow}>
-                <Icon
-                  type="material-icons"
-                  style={styles.contactRowIcon}
-                  name="attach-money"
-                  color={theme.colors.primary}
-                />
-                <Rating imageSize={12} rating={price} type="circle" />
-              </View>
-            )}
-
-            {!!rating && (
-              <View style={styles.contactRow}>
-                <Icon
-                  type="material-community"
-                  style={styles.contactRowIcon}
-                  name="star"
-                  color={theme.colors.primary}
-                />
-                <Rating imageSize={12} rating={rating} />
-              </View>
-            )}
-            {this.renderItemChars()}
-
-            {this.renderInfoItem("link", url)}
-          </View>
+          <ItemInfoBlock {...this.props} />
           <View style={styles.descriptionContainer}>
             <Text style={styles.description}> {description} </Text>
           </View>
@@ -402,17 +242,6 @@ const styles = StyleSheet.create({
   },
   contactItems: {
     margin: 10
-  },
-  contactRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 4
-  },
-  contactRowIcon: {
-    width: 42,
-    height: 30,
-    borderWidth: 1,
-    marginRight: 60
   },
   actionItems: {
     flexDirection: "row",
