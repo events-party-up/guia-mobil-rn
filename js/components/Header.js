@@ -55,13 +55,14 @@ export type Props = {
   itemsColor: ?string /* eslint-disable-line react/no-unused-prop-types */
 };
 
+const ICON_ACTIVE_OPACITY = 0.7;
+
 const Header = ({
   title,
   leftItem,
   rightItem,
-  style,
-  children,
   navItem,
+  extraItems,
   backgroundColor,
   titleColor,
   itemsColor
@@ -89,13 +90,19 @@ const Header = ({
       );
     }
     _leftItem = (
-      <TouchableOpacity activeOpacity={0.8} onPress={navItem.onPress}>
+      <TouchableOpacity
+        activeOpacity={ICON_ACTIVE_OPACITY}
+        onPress={navItem.onPress}
+      >
         {leftIcon}
       </TouchableOpacity>
     );
   } else if (leftItem) {
     _leftItem = (
-      <TouchableOpacity activeOpacity={0.8} onPress={leftItem.onPress}>
+      <TouchableOpacity
+        activeOpacity={ICON_ACTIVE_OPACITY}
+        onPress={leftItem.onPress}
+      >
         <Icon
           name={leftItem.icon}
           type={leftItem.iconType}
@@ -118,11 +125,41 @@ const Header = ({
       />
     );
     _rightItem = (
-      <TouchableOpacity onPress={rightItem.onPress}>
+      <TouchableOpacity
+        activeOpacity={ICON_ACTIVE_OPACITY}
+        onPress={rightItem.onPress}
+        style={[
+          styles.iconWrapper,
+          {
+            paddingRight: 0
+          }
+        ]}
+      >
         {_rightIcon}
       </TouchableOpacity>
     );
   }
+  const rightComponent = (
+    <View style={styles.row}>
+      {extraItems &&
+        extraItems.map((item, idx) => (
+          <TouchableOpacity
+            key={idx}
+            onPress={item.onPress}
+            style={styles.iconWrapper}
+            activeOpacity={ICON_ACTIVE_OPACITY}
+          >
+            <Icon
+              name={item.icon}
+              type={item.iconType}
+              color={itemsColor}
+              containerStyle={styles.icon}
+            />
+          </TouchableOpacity>
+        ))}
+      {_rightItem}
+    </View>
+  );
 
   return (
     <RNEHeader
@@ -134,7 +171,7 @@ const Header = ({
         </View>
       }
       outerContainerStyles={{ borderBottomWidth: 0 }}
-      rightComponent={_rightItem}
+      rightComponent={rightComponent}
     />
   );
 };
@@ -143,9 +180,15 @@ export default Header;
 /* eslint-disable react/no-multi-comp */
 
 const styles = {
+  row: {
+    flexDirection: "row"
+  },
   icon: {
     justifyContent: "center",
     alignItems: "center"
+  },
+  iconWrapper: {
+    paddingHorizontal: 10
   },
   title: {
     flex: 1,
