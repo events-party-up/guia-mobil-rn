@@ -6,6 +6,7 @@ import { ThemeProvider } from "styled-components";
 // $FlowIssue
 import PushNotification from "react-native-push-notification";
 import type Store from "redux";
+import Reactotron from "./ReactotronConfig";
 import configureStore from "./store/configureStore";
 import App from "./App";
 import theme from "./theme";
@@ -36,6 +37,7 @@ function setup() {
       ).then(
         // creation callback (after async compatibility)
         store => {
+          Reactotron.connect();
           this.setState({ store, storeCreated: true });
         }
       );
@@ -44,7 +46,7 @@ function setup() {
     //   PushNotification.requestPermissions();
     // }
 
-    onTokenReceived = ( {token, os}: {token:string, os: string}) => {
+    onTokenReceived = ({ token, os }: { token: string, os: string }) => {
       debugger;
       console.log("TOKEN PUSH:", token);
     };
