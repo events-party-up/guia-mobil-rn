@@ -5,3 +5,4 @@ export * from "./notifications";
 export * from "./weekpics";
 export * from "./reviews";
 export * from "./chars";
+export * from "./gallery";
