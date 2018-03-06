@@ -164,6 +164,23 @@ class HomeView extends React.Component<Props> {
           backgroundColor="transparent"
           rightItem={rightItem}
           leftItem={leftItem}
+          extraItems={[
+            {
+              icon: "sun",
+              iconType: "feather",
+              onPress: this.navigateToMap
+            },
+            {
+              icon: "notifications-none",
+              iconType: "material-icons",
+              onPress: this.navigateToMap
+            },
+            {
+              icon: "favorite-border",
+              iconType: "material-icons",
+              onPress: this.navigateToMap
+            }
+          ]}
           itemsColor={theme.colors.primary}
         />
         <ScrollView>
