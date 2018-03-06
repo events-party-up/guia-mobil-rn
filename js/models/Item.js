@@ -16,4 +16,5 @@ export interface IItem {
   rating: ?number;
   price: ?number;
   url: ?string;
+  chars: number[];
 }

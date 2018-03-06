@@ -16,13 +16,14 @@ import styled, { withTheme } from "styled-components";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import type NavigationScreenProp from "react-navigation";
 import * as actions from "../actions";
-import { IItem, ICategory } from "../models";
+import { IItem, ICategory, IReview, IChar } from "../models";
 import Header from "../components/Header";
 import Button from "../components/Button";
 import {
   getCategoryChain,
   getItemWithId,
-  getReviewsForItemId
+  getReviewsForItemId,
+  getCharsWithIds
 } from "../reducers";
 import Rating from "../components/Rating";
 import Reviews from "../components/Reviews";
@@ -54,14 +55,14 @@ const ThemedImage = styled.Image`
 `;
 
 const Separator = () => <ThemedImage source={arrowLeft} />;
-const favouriteIcon = require("./img/favorite.png");
-const favouriteIconOutline = require("./img/favorite-outline.png");
 
 interface Props extends IItem {
   isFavourite: boolean;
   dispatch: Function;
   image: ?string;
   phone: ?string;
+  reviews: IReview[];
+  itemChars: IChar[];
   categoryChain: Array<ICategory>;
   navigation: NavigationScreenProp;
   theme: Object;
@@ -125,7 +126,6 @@ class ItemDetailsView extends Component<Props> {
 
   renderCategoriesBreakdrum = () => {
     const { categoryChain } = this.props;
-    console.log({ categoryChain });
     return (
       <CategoryBreakdrum>
         {categoryChain
@@ -161,6 +161,14 @@ class ItemDetailsView extends Component<Props> {
           <Text> {text} </Text>
         </View>
       );
+    }
+    return null;
+  };
+
+  renderItemChars = () => {
+    const { itemChars } = this.props;
+    if (itemChars.length) {
+      return <View>{itemChars.map(char => <Text>{char.name} </Text>)}</View>;
     }
     return null;
   };
@@ -254,6 +262,8 @@ class ItemDetailsView extends Component<Props> {
                 <Rating imageSize={12} rating={rating} />
               </View>
             )}
+            {this.renderItemChars()}
+
             {this.renderInfoItem("link", url)}
           </View>
           <View style={styles.descriptionContainer}>
@@ -316,13 +326,13 @@ class ItemDetailsView extends Component<Props> {
 
 const mapStateToProps = (state, { navigation }) => {
   const id = navigation.getParam("id");
-
   const item = getItemWithId(state, id);
-  console.log({ item });
+
   return {
     ...item,
     reviews: getReviewsForItemId(state, id),
-    categoryChain: getCategoryChain(state, item.category_id)
+    categoryChain: getCategoryChain(state, item.category_id),
+    itemChars: getCharsWithIds(state, item.chars)
   };
 };
 

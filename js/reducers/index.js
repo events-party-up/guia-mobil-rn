@@ -6,6 +6,7 @@ import items, * as fromItems from "./items";
 import reviews, * as fromReviews from "./reviews";
 import auth from "./auth";
 import filters, * as fromFilters from "./filters";
+import chars, * as fromChars from "./chars";
 import weekPics from "./weekpics";
 import { ICategory, IItem } from "../models";
 
@@ -15,13 +16,15 @@ export default combineReducers({
   reviews,
   auth,
   weekPics,
-  filters
+  filters,
+  chars
 });
 
 type State = {
   categories: fromCategories.State,
   items: fromItems.State,
-  filters: fromFilters.Filters
+  filters: fromFilters.Filters,
+  chars: fromChars.State
 };
 
 export function getCategoriesWithParentId(state: State, id: number) {
@@ -76,4 +79,14 @@ export function getItemWithId(state: State, itemId: number): IItem {
 
 export function getReviewsForItemId(state: State, itemId: number) {
   return fromReviews.getReviewsForItemId(state.reviews, itemId);
+}
+
+export function getCharWithId(state: State, id: number) {
+  return fromChars.getCharWithId(state.chars, id);
+}
+
+export function getCharsWithIds(state: State, idList: number[]) {
+  return idList
+    .map(id => getCharWithId(state, id))
+    .filter(char => Boolean(char));
 }

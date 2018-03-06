@@ -1,9 +1,11 @@
+// @flow
 import { Platform } from "react-native";
+import { IItem } from "../models";
 
 export const IS_ANDROID = Platform.OS === "android";
 export const DEFAULT_CENTER_COORDINATE = [-71.3111203, -41.1339525];
 
-export function parseCoordinate(coordinateStr) {
+export function parseCoordinate(coordinateStr: string): number[] {
   return coordinateStr
     .replace(/[\)\(]/g, "")
     .split(",")
@@ -11,19 +13,17 @@ export function parseCoordinate(coordinateStr) {
     .reverse();
 }
 
-export function onSortOptions(a, b) {
-  if (a.label < b.label) {
-    return -1;
+export function parseChars(chars: ?string): number[] {
+  if (chars) {
+    const stringItems = chars.split(",");
+    if (stringItems.length) {
+      return stringItems.map(char => parseInt(char, 10));
+    }
   }
-
-  if (a.label > b.label) {
-    return 1;
-  }
-
-  return 0;
+  return [];
 }
 
-export function itemToGeoJSONPoint(item) {
+export function itemToGeoJSONPoint(item: IItem) {
   return {
     type: "Feature",
     geometry: {
@@ -37,7 +37,7 @@ export function itemToGeoJSONPoint(item) {
 export const getImageUrl = (image: string) =>
   `https://bariloche.guiasmoviles.com/uploads/${image}`;
 
-export const distanceToUser = (item, userLocation) => {
+export const distanceToUser = (item: IItem, userLocation: number[]) => {
   return Math.random() * 10;
 };
 
