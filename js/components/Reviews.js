@@ -11,7 +11,11 @@ const Reviews = ({ reviews }) => {
         {reviews.map(review => <ItemReview key={review.id} {...review} />)}
       </View>
     );
-  return null;
+  return (
+    <View style={{ paddingHorizontal: 20 }}>
+      <Heading3>No hay evaluaciones aun. Sé el primero en hacerlo.</Heading3>
+    </View>
+  );
 };
 
 export default Reviews;
