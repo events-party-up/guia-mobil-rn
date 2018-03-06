@@ -8,6 +8,7 @@ import auth from "./auth";
 import filters, * as fromFilters from "./filters";
 import chars, * as fromChars from "./chars";
 import weekPics from "./weekpics";
+import galleries, * as fromGalleries from "./galleries";
 import { ICategory, IItem } from "../models";
 
 export default combineReducers({
@@ -17,15 +18,21 @@ export default combineReducers({
   auth,
   weekPics,
   filters,
-  chars
+  chars,
+  galleries
 });
 
 type State = {
   categories: fromCategories.State,
   items: fromItems.State,
+  reviews: fromReviews.State,
   filters: fromFilters.Filters,
-  chars: fromChars.State
+  chars: fromChars.State,
+  galleries: fromGalleries.State
 };
+
+// state selectors
+// ==============================================
 
 export function getCategoriesWithParentId(state: State, id: number) {
   return fromCategories.getCategoriesWithParentId(state.categories, id);
@@ -89,4 +96,8 @@ export function getCharsWithIds(state: State, idList: number[]) {
   return idList
     .map(id => getCharWithId(state, id))
     .filter(char => Boolean(char));
+}
+
+export function getGalleryForItem(state: State, itemId: number) {
+  return fromGalleries.getGalleryForItem(state.galleries, itemId);
 }

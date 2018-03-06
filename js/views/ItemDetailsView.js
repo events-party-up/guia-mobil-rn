@@ -24,7 +24,8 @@ import {
   getCategoryChain,
   getItemWithId,
   getReviewsForItemId,
-  getCharsWithIds
+  getCharsWithIds,
+  getGalleryForItem
 } from "../reducers";
 import Rating from "../components/Rating";
 import Reviews from "../components/Reviews";
@@ -76,16 +77,8 @@ class ItemDetailsView extends Component<Props> {
   });
 
   componentDidMount() {
-    const { coord } = this.props;
-    setTimeout(
-      () =>
-        this.map.setCamera({
-          centerCoordinate: coord,
-          zoom: 14,
-          duration: 0
-        }),
-      500
-    );
+    const { id } = this.props;
+    this.props.dispatch(actions.galleryLoad(id));
   }
   toggleFavourite = id => {
     this.props.dispatch(actions.toggleFavourite(id));
@@ -380,7 +373,8 @@ const mapStateToProps = (state, { navigation }) => {
     ...item,
     reviews: getReviewsForItemId(state, id),
     categoryChain: getCategoryChain(state, item.category_id),
-    itemChars: getCharsWithIds(state, item.chars)
+    itemChars: getCharsWithIds(state, item.chars),
+    itemGallery: getGalleryForItem(state, item.id)
   };
 };
 
