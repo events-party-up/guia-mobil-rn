@@ -7,14 +7,13 @@ export interface IItem {
   price: number;
   is_published: number;
   is_special: number;
-  address: number;
+  address: string;
   coord: number[];
   name: string;
   mail: string;
   description: string;
   image: ?string;
   rating: ?number;
-  price: ?number;
   url: ?string;
   chars: number[];
 }
