@@ -8,6 +8,7 @@ import auth from "./auth";
 import filters, * as fromFilters from "./filters";
 import chars, * as fromChars from "./chars";
 import weekPics from "./weekpics";
+import weather from "./weather";
 import galleries, * as fromGalleries from "./galleries";
 import { ICategory, IItem } from "../models";
 
@@ -19,7 +20,8 @@ export default combineReducers({
   weekPics,
   filters,
   chars,
-  galleries
+  galleries,
+  weather
 });
 
 type State = {

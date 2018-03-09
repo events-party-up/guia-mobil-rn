@@ -10,6 +10,7 @@ import MapStack from "./views/Map";
 import TabsNavigator from "./views/TabsNavigator";
 import * as actions from "./actions";
 import SettingsStack from "./views/settings";
+import WeatherView from "./views/WeatherView";
 
 MapboxGL.setAccessToken(config.get("MAPBOX_ACCESS_TOKEN"));
 
@@ -48,6 +49,9 @@ const RootStack = StackNavigator(
     },
     Settings: {
       screen: SettingsStack
+    },
+    Weather: {
+      screen: WeatherView
     }
   },
   {

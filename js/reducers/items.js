@@ -2,6 +2,7 @@
 import groupBy from "lodash/groupBy";
 import * as actions from "../actions";
 import { IItem } from "../models";
+import getRealm from "../database";
 
 const byId = (state = {}, action) => {
   switch (action.type) {
@@ -61,13 +62,22 @@ function groupByCategory(items) {
 
 const items = (state: State = initialState, action) => {
   switch (action.type) {
-    case actions.ITEMS_UPDATE_SUCCESS:
-      return {
-        ...state,
-        allIds: action.response.data.map(item => item.id),
-        byCategoryId: groupByCategory(action.response.data),
-        byId: byId(state.byId, action)
-      };
+    case actions.ITEMS_UPDATE_SUCCESS: {
+      getRealm().then(realm => {
+        realm.write(() => {
+          action.response.data.forEach(item => {
+            realm.create(
+              "Item",
+              {
+                ...item
+              },
+              true // update is exists
+            );
+          });
+        });
+      });
+      return state;
+    }
     case actions.ITEMS_UPDATE_FEATURED_SUCCESS:
       return {
         ...state,
