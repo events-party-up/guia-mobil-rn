@@ -19,6 +19,7 @@ const SettingsContentView = ({ theme, navigation }: Props) => (
         back: true,
         onPress: () => navigation.goBack(null)
       }}
+      itemsColor="white"
       backgroundColor={theme.colors.primary}
       titleColor={theme.colors.highContrast}
     />

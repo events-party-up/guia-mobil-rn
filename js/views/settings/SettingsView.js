@@ -42,21 +42,15 @@ const SettingsView = ({ toggleNotifications, theme, navigation }: Props) => (
         <ListItem hideChevron title="Version" />
         <ListItem
           title="Terminos y condiciones"
-          onPress={() =>
-            navigation.navigate("SettingContent", { title: "Terms" })
-          }
+          onPress={() => navigation.navigate("Details", { title: "Terms" })}
         />
         <ListItem
           title="Acerca de nosotros"
-          onPress={() =>
-            navigation.navigate("SettingContent", { title: "About" })
-          }
+          onPress={() => navigation.navigate("Details", { title: "About" })}
         />
         <ListItem
           title="Licencias de software libre"
-          onPress={() =>
-            navigation.navigate("SettingContent", { title: "Licences" })
-          }
+          onPress={() => navigation.navigate("Details", { title: "Licences" })}
         />
       </List>
     </ScrollView>
