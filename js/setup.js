@@ -10,6 +10,7 @@ import Reactotron from "./ReactotronConfig";
 import configureStore from "./store/configureStore";
 import App from "./App";
 import theme from "./theme";
+import getRealm from "./database";
 
 type State = {
   storeCreated: boolean,
@@ -38,17 +39,20 @@ function setup() {
       ).then(
         // creation callback (after async compatibility)
         store => {
-          Reactotron.connect();
+          // Reactotron.connect();
           this.setState({ store, storeCreated: true });
         }
       );
+
+      // initialize realm
+      getRealm().then(realm => {
+        console.log(
+          `Realm initialized. Schema Version: ${realm.schemaVersion}`
+        );
+      });
     }
-    // componentDidUpdate() {
-    //   PushNotification.requestPermissions();
-    // }
 
     onTokenReceived = ({ token, os }: { token: string, os: string }) => {
-      debugger;
       console.log("TOKEN PUSH:", token);
     };
 

@@ -37,6 +37,7 @@ import ImageGalleryPreview from "../components/ImageGalleryPreview";
 import type { Gallery } from "../reducers/galleries";
 import { toLatLong, getAppleMapsUri, getGoogleMapsUri } from "../utils/maps";
 import { DEFAULT_CENTER_COORDINATE, getImageUrl } from "../utils";
+import getRealm from "../database";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
@@ -64,6 +65,7 @@ class ItemDetailsView extends Component<Props> {
 
   componentDidMount() {
     const { id } = this.props;
+
     this.props.dispatch(actions.galleryLoad(id));
   }
   toggleFavourite = id => {
@@ -236,12 +238,10 @@ class ItemDetailsView extends Component<Props> {
 }
 
 const mapStateToProps = (state, { navigation }) => {
-  const id = navigation.getParam("id");
-  const item = getItemWithId(state, id);
-
+  const item = navigation.getParam("item");
   return {
     ...item,
-    reviews: getReviewsForItemId(state, id),
+    reviews: getReviewsForItemId(state, item.id),
     categoryChain: getCategoryChain(state, item.category_id),
     itemChars: getCharsWithIds(state, item.chars),
     itemGallery: getGalleryForItem(state, item.id),

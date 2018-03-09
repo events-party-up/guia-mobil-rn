@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { View, StyleSheet, ScrollView, FlatList } from "react-native";
+import { View, StyleSheet, ScrollView, FlatList, Text } from "react-native";
 import { connect } from "react-redux";
 import type NavigationScreenProp from "react-navigation";
 import styled, { withTheme } from "styled-components";
@@ -11,16 +11,19 @@ import ItemThumb from "../components/ItemThumb";
 import { ICategory, IItem } from "../models";
 import { getItemsForCategoryId } from "../reducers";
 import SortButtons from "../components/SortButtons";
+import getRealm, { itemsToArray } from "../database";
 
 type Props = {
-  items: any[],
   navigation: NavigationScreenProp,
   category: ICategory,
   theme: Object
 };
 
 type State = {
-  sortIndex: number
+  sortIndex: number,
+  items?: Object,
+  loading: boolean,
+  itemCount: number
 };
 
 const ViewContainer = styled.View`
@@ -30,9 +33,24 @@ const ViewContainer = styled.View`
 
 class ItemsListView extends Component<Props, State> {
   state = {
-    sortIndex: 0
+    sortIndex: 0,
+    itemCount: 0,
+    loading: true
   };
 
+  componentDidMount() {
+    const { category } = this.props;
+    getRealm().then(realm => {
+      const items = realm
+        .objects("Item")
+        .filtered(`category_id = ${category.id}`);
+      this.setState({
+        itemCount: items.length,
+        items,
+        loading: false
+      });
+    });
+  }
   sortHandler = index => {
     if (index != this.state.sortIndex) this.setState({ sortIndex: index });
   };
@@ -51,32 +69,37 @@ class ItemsListView extends Component<Props, State> {
       onPress={() =>
         this.props.navigation &&
         this.props.navigation.navigate("ItemDetailsView", {
-          id: item.id
+          item
         })
       }
     />
   );
-  renderItemsGrid = (items: IItem[]) => (
-    <FlatList
-      numColumns={2}
-      style={styles.grid}
-      data={items}
-      extraData={this.state.sortIndex}
-      keyExtractor={this.keyExtractor}
-      renderItem={this.renderItem}
-    />
-  );
+  renderItemsGrid = () => {
+    const { loading } = this.state;
+    if (loading) {
+      return <Text>Loading...</Text>;
+    }
+    const { sortIndex, items } = this.state;
+    const sorterFunc = itemsSorter[sortIndex]();
+    const sortedItems = itemsToArray(items.sorted("name"));
+    return (
+      <FlatList
+        numColumns={2}
+        style={styles.grid}
+        data={sortedItems}
+        extraData={this.state.sortIndex}
+        keyExtractor={this.keyExtractor}
+        renderItem={this.renderItem}
+      />
+    );
+  };
 
   render() {
-    const { items, category, theme } = this.props;
-    const { sortIndex } = this.state;
-    const sorterFunc = itemsSorter[sortIndex]();
-    const sortedItems = items.sort(sorterFunc);
-
+    const { category, theme } = this.props;
     return (
       <ViewContainer style={styles.container}>
         <Header
-          title={category.name}
+          title={`${category.name} ${this.state.itemCount}`}
           backgroundColor={theme.colors.primary}
           titleColor={theme.colors.highContrast}
           navItem={{
@@ -90,7 +113,7 @@ class ItemsListView extends Component<Props, State> {
             activeSorterIndex={this.state.sortIndex}
             onChangeSorter={this.sortHandler}
           />
-          {this.renderItemsGrid(sortedItems)}
+          {this.renderItemsGrid()}
         </ScrollView>
       </ViewContainer>
     );
@@ -113,13 +136,9 @@ const mapStateToProps = (state, { navigation }) => {
   if (navigation.getParam("category")) {
     const category = navigation.getParam("category");
     return {
-      category,
-      items: getItemsForCategoryId(state, category.id)
+      category
     };
   }
-  return {
-    items: []
-  };
 };
 
 export default withTheme(connect(mapStateToProps)(ItemsListView));
