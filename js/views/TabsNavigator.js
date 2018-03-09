@@ -52,7 +52,7 @@ export default TabNavigator(
         margin: 4
       },
       activeBackgroundColor: "white",
-      inactiveBackgroundColor: "white",
+      inactiveBackgroundColor: "white"
     },
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
@@ -79,7 +79,7 @@ export default TabNavigator(
           return (
             <TabIcon
               focused={focused}
-              name="marker"
+              name="map-marker"
               type="material-community"
               inactiveTintColor={tintColor}
             />
