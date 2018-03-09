@@ -17,7 +17,7 @@ import { Header as RNEHeader, Icon } from "react-native-elements";
 /* Config
 ============================================================================= */
 
-let STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 20 : 25;
+let STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 35 : 40;
 if (Platform.OS === "android") {
   STATUS_BAR_HEIGHT = 0;
 }
@@ -102,8 +102,10 @@ const Header = ({
       <TouchableOpacity
         activeOpacity={ICON_ACTIVE_OPACITY}
         onPress={leftItem.onPress}
+        style={{ alignItems: "baseline", flowDirection: "row" }}
       >
         <Icon
+          size={26}
           name={leftItem.icon}
           type={leftItem.iconType}
           color={itemsColor}
@@ -166,11 +168,15 @@ const Header = ({
       backgroundColor={backgroundColor}
       leftComponent={_leftItem}
       centerComponent={
-        <View style={styles.title}>
-          <Text style={[{ color: titleColor, fontSize: 16 }]}> {title} </Text>
-        </View>
+        <Text style={[{ color: titleColor, fontSize: 16, lineHeight: 32 }]}>
+          {title}
+        </Text>
       }
-      outerContainerStyles={{ borderBottomWidth: 0 }}
+      outerContainerStyles={{
+        borderBottomWidth: 0,
+        paddingTop: STATUS_BAR_HEIGHT
+      }}
+      innerContainerStyles={{ alignItems: "center" }}
       rightComponent={rightComponent}
     />
   );
@@ -192,8 +198,11 @@ const styles = {
   },
   title: {
     flex: 1,
-    marginTop: 8,
+    height: 45,
+    backgroundColor: "red",
+    borderWitdth: 1,
+    borderColor: "black",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "baseline"
   }
 };
