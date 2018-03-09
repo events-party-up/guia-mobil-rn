@@ -102,7 +102,7 @@ const Header = ({
       <TouchableOpacity
         activeOpacity={ICON_ACTIVE_OPACITY}
         onPress={leftItem.onPress}
-        style={{ alignItems: "baseline", flowDirection: "row" }}
+        style={{ alignItems: "baseline", flexDirection: "row" }}
       >
         <Icon
           size={26}

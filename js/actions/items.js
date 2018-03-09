@@ -31,7 +31,6 @@ export const itemsLoadFeatured = options => ({
   apiCall: apiClient =>
     apiClient.get("update/featured/0").then(res => {
       const itemList = res.data.map(item => item.item_id);
-      console.log(itemList);
       return {
         data: itemList
       };

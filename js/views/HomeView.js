@@ -10,23 +10,30 @@ import {
   TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
 import type NavigationScreenProp from "react-navigation";
-import { withTheme } from "styled-components";
+import flatten from "lodash/flatten";
+import Reactotron from "reactotron-react-native";
 import { getImageUrl } from "../utils";
 import { FacebookLoginButton } from "../components/FacebookLoginButton";
 import Header from "../components/Header";
-import { Heading2, Heading4 } from "../components/common/Text";
-import { getFeaturedItems } from "../reducers";
+import { Heading2 } from "../components/common/Text";
+import { getFeaturedItemIds } from "../reducers";
 import ItemThumb from "../components/ItemThumb";
 import { IItem } from "../models";
 import CategoryCard from "../components/CategoryCard";
 import WeekPicsCarrousel from "../components/WeekPicsCarrousel";
 import StyleSheet from "../components/common/F8StyleSheet";
+import getRealm, { itemsToArray } from "../database";
 
 type Props = {
   navigation: NavigationScreenProp,
-  featuredItems: IItem[]
+  featuredIds: number[]
+};
+
+type State = {
+  featuredItems: IItem[],
+  loading: boolean
 };
 
 const Subtitle = styled.Text`
@@ -53,13 +60,43 @@ const WeekImagesHeader = styled(Heading2)`
   padding-vertical: 10px;
 `;
 
-class HomeView extends React.Component<Props> {
+class HomeView extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.loadFeaturedItems(this.props.featuredIds);
+  }
+  state: State = {
+    featuredItems: [],
+    loading: true
+  };
+
+  componentWillReceiveProps(nextProps: Props) {
+    this.loadFeaturedItems(nextProps.featuredIds);
+  }
+
+  loadFeaturedItems = featuredItemIds => {
+    getRealm().then(realm => {
+      const items = realm.objects("Item");
+      Reactotron.log("HomeView: got realm");
+      const featuredItems = flatten(
+        featuredItemIds.map(id => itemsToArray(items.filtered(`id = ${id}`)))
+      );
+      Reactotron.log("HomeView: got items", { featuredItems });
+      Reactotron.log(featuredItemIds);
+
+      this.setState({
+        featuredItems,
+        loading: false
+      });
+    });
+  };
+
   navigateToMap = () => {
     this.props.navigation.navigate("MapStack");
   };
 
-  renderFeaturedList = (featuredItems: IItem[]) => {
-    console.log({ featuredItems });
+  renderFeaturedList = () => {
+    const { featuredItems } = this.state;
     return (
       <View style={styles.featuredList}>
         {featuredItems.map(item => (
@@ -130,15 +167,7 @@ class HomeView extends React.Component<Props> {
   };
 
   render() {
-    const {
-      userName,
-      isAuthenticated,
-      profilePic,
-      featuredItems,
-      theme,
-      weekPics,
-      navigation
-    } = this.props;
+    const { theme, weekPics, navigation } = this.props;
 
     const rightItem = {
       title: "Map",
@@ -204,7 +233,7 @@ class HomeView extends React.Component<Props> {
             <Subtitle>
               Conocé los lugares que recomendamos para visitar y disfrutar.
             </Subtitle>
-            {this.renderFeaturedList(featuredItems)}
+            {this.renderFeaturedList()}
           </View>
 
           {showWeekPics && (
@@ -254,9 +283,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  featuredItems: getFeaturedItems(state),
   isAuthenticated: state.auth.isAuthenticated,
   weekPics: state.weekPics,
+  featuredIds: getFeaturedItemIds(state),
   userName:
     state.auth.isAuthenticated && state.auth.userProfile
       ? `${state.auth.userProfile.firstName} ${state.auth.userProfile.lastName}`

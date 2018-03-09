@@ -1,123 +1,84 @@
 // @flow
-import groupBy from "lodash/groupBy";
 import * as actions from "../actions";
-import { IItem } from "../models";
+import { combineReducers } from "redux";
 import getRealm from "../database";
+
+// store a lot less data in memory
+
+type TinyItem = {
+  id: number,
+  category_id: number,
+  coord: [number, number]
+};
+
+export type State = {
+  featuredIds: number[],
+  favouriteIds: number[],
+  byId: {
+    [id: number]: TinyItem
+  }
+};
 
 const byId = (state = {}, action) => {
   switch (action.type) {
     case actions.ITEMS_UPDATE_SUCCESS: {
       const nextState = { ...state };
+
       action.response.data.forEach(item => {
-        const oldItem = nextState[item.id];
         nextState[item.id] = {
-          ...item,
-          isFavourite: oldItem ? oldItem.isFavourite : false
+          id: item.id,
+          category_id: item.category_id,
+          coord: item.coord
         };
       });
       return nextState;
     }
-    case actions.ITEM_TOGGLE_FAVOURITE: {
-      const id = action.payload;
-      const item = state[id];
-      const updatedItem = {
-        ...item,
-        isFavourite: !item.isFavourite
-      };
-      return {
-        ...state,
-        [id]: updatedItem
-      };
-    }
     default:
       return state;
   }
 };
 
-export type State = {
-  featuredIds: number[],
-  allIds: number[],
-  byId: {
-    [key: number]: IItem & { isFavourite: boolean }
-  },
-  byCategoryId: {
-    [key: number]: number[]
-  }
-};
-
-const initialState = {
-  featuredIds: [],
-  allIds: [],
-  byId: {},
-  byCategoryId: {}
-};
-
-function groupByCategory(items) {
-  const byCategory = groupBy(items, item => item.category_id);
-  return Object.keys(byCategory).reduce((acc, key) => {
-    acc[key] = byCategory[key].map(item => item.id);
-    return acc;
-  }, {});
-}
-
-const items = (state: State = initialState, action) => {
+const favoritesIds = (state = [], action) => {
   switch (action.type) {
-    case actions.ITEMS_UPDATE_SUCCESS: {
-      getRealm().then(realm => {
-        realm.write(() => {
-          action.response.data.forEach(item => {
-            realm.create(
-              "Item",
-              {
-                ...item
-              },
-              true // update is exists
-            );
-          });
-        });
-      });
-      return state;
+    case actions.ITEM_TOGGLE_FAVOURITE: {
+      const itemId = action.payload;
+      const idx = state.indexOf(itemId);
+      if (idx < 0) {
+        // add the item, now it is favourite
+        return [...state, itemId];
+      }
+      // remove the item, no favorite anymore
+      return [...state.slice(0, idx), ...state.slice(idx + 1)];
     }
-    case actions.ITEMS_UPDATE_FEATURED_SUCCESS:
-      return {
-        ...state,
-        featuredIds: action.response.data
-      };
-    case actions.ITEM_TOGGLE_FAVOURITE:
-      return {
-        ...state,
-        byId: byId(state.byId, action)
-      };
     default:
       return state;
   }
 };
+
+const featuredIds = (state = [], action) => {
+  switch (action.type) {
+    case actions.ITEMS_UPDATE_FEATURED_SUCCESS:
+      return action.response.data;
+    default:
+      return state;
+  }
+};
+
+const items = combineReducers({
+  featuredIds,
+  favoritesIds,
+  byId
+});
 
 export default items;
 
 // selectors
-export function getFeaturedItems(state: State) {
-  return state.featuredIds
-    .map(id => state.byId[id])
-    .filter(item => item !== undefined);
-}
+// ================
+export const getItems = (state: State) => {
+  return Object.keys(state.byId).reduce((acc, id) => {
+    acc.push(state.byId[parseInt(id, 10)]);
+    return acc;
+  }, []);
+};
 
-export function getItemsForCategoryId(
-  state: State,
-  categoryId: number
-): Array<IItem> {
-  const itemsInCategory = state.byCategoryId[categoryId];
-
-  if (itemsInCategory) {
-    return itemsInCategory.map(itemId => state.byId[itemId]) || [];
-  }
-  return [];
-}
-
-export function getItems(state: State) {
-  return state.allIds.map(id => state.byId[id]);
-}
-
-export function getItemWithId(state: State, itemId: number): IItem {
-  return state.byId[itemId];
-}
+export const getFeaturedItemIds = (state: State) => state.featuredIds;

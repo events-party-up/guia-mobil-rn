@@ -8,7 +8,7 @@ import Reactotron, {
 import { reactotronRedux } from "reactotron-redux";
 
 const configuredReactotron = Reactotron.configure({
-  host: "143.169.149.202",
+  host: "192.168.0.142",
   name: "React Native Demo"
 })
   .use(trackGlobalErrors())

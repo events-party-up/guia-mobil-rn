@@ -39,7 +39,7 @@ function setup() {
       ).then(
         // creation callback (after async compatibility)
         store => {
-          // Reactotron.connect();
+          Reactotron.connect();
           this.setState({ store, storeCreated: true });
         }
       );

@@ -43,11 +43,8 @@ export function getCategoryWithId(state: State, id: number): ?ICategory {
   return fromCategories.getCategoryWithId(state.categories, id);
 }
 
-export function getFeaturedItems(state: State) {
-  return fromItems.getFeaturedItems(state.items);
-}
-export function getItemsForCategoryId(state: State, id: number) {
-  return fromItems.getItemsForCategoryId(state.items, id);
+export function getFeaturedItemIds(state: State) {
+  return fromItems.getFeaturedItemIds(state.items);
 }
 
 export function getCategoryChain(state: State, childCategoryId: number) {
@@ -80,10 +77,6 @@ export function getFilteredItems(state: State) {
   return allItems.filter(
     item => activeCategories.indexOf(item.rootCategoryId) >= 0
   );
-}
-
-export function getItemWithId(state: State, itemId: number): IItem {
-  return fromItems.getItemWithId(state.items, itemId);
 }
 
 export function getReviewsForItemId(state: State, itemId: number) {
