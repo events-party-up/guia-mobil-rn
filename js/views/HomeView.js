@@ -136,7 +136,8 @@ class HomeView extends React.Component<Props> {
       profilePic,
       featuredItems,
       theme,
-      weekPics
+      weekPics,
+      navigation
     } = this.props;
 
     const rightItem = {
@@ -168,7 +169,7 @@ class HomeView extends React.Component<Props> {
             {
               icon: "sun",
               iconType: "feather",
-              onPress: this.navigateToMap
+              onPress: () => navigation.navigate("Weather")
             },
             {
               icon: "notifications-none",
