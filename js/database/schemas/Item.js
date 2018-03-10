@@ -31,5 +31,6 @@ export const itemsToArray = items =>
     for (const property in ItemSchema.properties) {
       object[property] = item[property];
     }
+    object.coord = [item.coord[0], item.coord[1]];
     return object;
   });
