@@ -79,6 +79,9 @@ export function getFilteredItems(state: State) {
   );
 }
 
+export function isItemFavourite(state: State, itemId: number) {
+  return fromItems.isItemFavourite(state.items, itemId);
+}
 export function getReviewsForItemId(state: State, itemId: number) {
   return fromReviews.getReviewsForItemId(state.reviews, itemId);
 }

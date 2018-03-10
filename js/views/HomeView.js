@@ -111,7 +111,7 @@ class HomeView extends React.Component<Props, State> {
             onPress={() =>
               this.props.navigation &&
               this.props.navigation.navigate("ItemDetailsView", {
-                id: item.id
+                item
               })
             }
           />

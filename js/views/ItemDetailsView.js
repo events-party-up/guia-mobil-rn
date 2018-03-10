@@ -26,7 +26,8 @@ import {
   getItemWithId,
   getReviewsForItemId,
   getCharsWithIds,
-  getGalleryForItem
+  getGalleryForItem,
+  isItemFavourite
 } from "../reducers";
 
 import Reviews from "../components/Reviews";
@@ -45,7 +46,7 @@ const IMAGE_HEIGHT = 200;
 const lakeImage = require("../components/img/lake.jpeg");
 
 interface Props extends IItem {
-  isFavourite: boolean;
+  isFavorite: boolean;
   dispatch: Function;
   image: ?string;
   phone: ?string;
@@ -111,12 +112,12 @@ class ItemDetailsView extends Component<Props> {
   };
 
   renderHeader = () => {
-    const { isFavourite, navigation, id } = this.props;
+    const { isFavorite, navigation, id } = this.props;
     const rightItem = {
       title: "Settings",
       layout: "icon",
       iconType: "material-community",
-      icon: isFavourite ? "heart" : "heart-outline",
+      icon: isFavorite ? "heart" : "heart-outline",
       onPress: () => this.toggleFavourite(id)
     };
 
@@ -239,14 +240,17 @@ class ItemDetailsView extends Component<Props> {
 
 const mapStateToProps = (state, { navigation }) => {
   const item = navigation.getParam("item");
-  return {
-    ...item,
-    reviews: getReviewsForItemId(state, item.id),
-    categoryChain: getCategoryChain(state, item.category_id),
-    itemChars: getCharsWithIds(state, item.chars),
-    itemGallery: getGalleryForItem(state, item.id),
-    userLocation: DEFAULT_CENTER_COORDINATE
-  };
+  if (item) {
+    return {
+      ...item,
+      isFavorite: isItemFavourite(state, item.id),
+      reviews: getReviewsForItemId(state, item.id),
+      categoryChain: getCategoryChain(state, item.category_id),
+      itemChars: getCharsWithIds(state, item.chars),
+      itemGallery: getGalleryForItem(state, item.id),
+      userLocation: DEFAULT_CENTER_COORDINATE
+    };
+  }
 };
 
 export default withTheme(connect(mapStateToProps)(ItemDetailsView));

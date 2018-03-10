@@ -13,7 +13,7 @@ type TinyItem = {
 
 export type State = {
   featuredIds: number[],
-  favouriteIds: number[],
+  favoritesIds: number[],
   byId: {
     [id: number]: TinyItem
   }
@@ -74,6 +74,7 @@ export default items;
 
 // selectors
 // ================
+
 export const getItems = (state: State) => {
   return Object.keys(state.byId).reduce((acc, id) => {
     acc.push(state.byId[parseInt(id, 10)]);
@@ -82,3 +83,7 @@ export const getItems = (state: State) => {
 };
 
 export const getFeaturedItemIds = (state: State) => state.featuredIds;
+
+export function isItemFavourite(state: State, itemId: number) {
+  return state.favoritesIds.indexOf(itemId) >= 0;
+}
