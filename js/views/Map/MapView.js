@@ -14,6 +14,7 @@ import { getFilteredItems } from "../../reducers";
 import Header from "../../components/Header";
 import ItemMapMarker from "../../components/ItemMapMarker";
 import { itemToGeoJSONPoint, DEFAULT_CENTER_COORDINATE } from "../../utils";
+import { geolocationSettings } from "../../config";
 
 import config from "../../utils/config";
 
@@ -26,8 +27,13 @@ const WINDOW_HEIGHT = Dimensions.get("window").height;
 
 type State = {
   pointsLoaded: boolean,
+  accuracy?: number,
+  altitude?: number,
+  longitude?: number,
   clusteredItems: ?any,
-  error: ?string
+  error: ?string,
+  selectedItem: ?Object,
+  userLocationLoaded: boolean
 };
 
 type Props = {
@@ -56,16 +62,13 @@ class MapView extends React.Component<Props, State> {
     });
   }
 
-  state = {
+  state: State = {
     userLocationLoaded: false,
     clusteredItems: [],
     pointsLoaded: false,
-    error: null
+    error: null,
+    selectedItem: null
   };
-
-  clustering: any;
-  _map: any;
-  count: number = 0;
 
   componentDidMount() {
     this.setItems(this.props.items);
@@ -83,21 +86,17 @@ class MapView extends React.Component<Props, State> {
       error => {
         this.setState({ error: error.message });
       },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000
-      }
+      geolocationSettings
     );
   }
 
   renderUserLocationMarker() {
-    const { latitude, longitude, error, userLocationLoaded } = this.state;
+    const { altitude, longitude, error, userLocationLoaded } = this.state;
     if (error || !userLocationLoaded) return null;
     return (
       <MapboxGL.PointAnnotation
-        id={`user-location-marker`}
-        coordinate={[longitude, latitude]}
+        id="user-location-marker"
+        coordinate={[longitude, altitude]}
       >
         <View style={{ width: 50, height: 50, backgroundColor: "yellow" }} />
       </MapboxGL.PointAnnotation>
@@ -162,10 +161,13 @@ class MapView extends React.Component<Props, State> {
       const geoJSONItems = items.map(itemToGeoJSONPoint);
       console.log("!!!! loading points");
       this.clustering.load(geoJSONItems);
-
       this.setState({ pointsLoaded: true });
     }
   };
+
+  count: number = 0;
+  clustering: Object;
+  _map: any;
 
   recomputeClusters = regionFeature => {
     if (!regionFeature) return undefined;
@@ -242,9 +244,9 @@ class MapView extends React.Component<Props, State> {
   };
 
   centerOnUser = () => {
-    const { latitude, longitude, error, userLocationLoaded } = this.state;
+    const { altitude, longitude, error, userLocationLoaded } = this.state;
     if (!error && userLocationLoaded)
-      this._map.flyTo([longitude, latitude], 2000);
+      this._map.flyTo([longitude, altitude], 2000);
   };
 
   showFiltersModal = () => {
@@ -257,7 +259,7 @@ class MapView extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <Header
-          title={"Mapa"}
+          title="Mapa"
           navItem={{
             back: true,
             onPress: () => navigation.goBack(null)
