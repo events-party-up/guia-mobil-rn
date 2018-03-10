@@ -126,7 +126,7 @@ class ItemThumb extends React.Component<Props> {
             <Icon
               name={isFavorite ? "heart" : "heart-outline"}
               type="material-community"
-              color="red"
+              color="white"
               size={24}
             />
           </TouchableOpacity>
