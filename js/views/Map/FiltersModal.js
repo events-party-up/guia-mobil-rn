@@ -45,8 +45,9 @@ class FiltersModal extends React.Component<Props> {
       <View>
         <Header
           title="Filtros"
-          navItem={{
-            icon: require("../../components/img/header/x.png"),
+          leftItem={{
+            icon: "window-close",
+            iconType: "material-community",
             onPress: () => navigation.goBack(null)
           }}
           rightItem={{
@@ -54,6 +55,7 @@ class FiltersModal extends React.Component<Props> {
             layout: "title",
             onPress: resetFilters
           }}
+          itemsColor="white"
           backgroundColor={theme.colors.primary}
           titleColor={theme.colors.highContrast}
         />

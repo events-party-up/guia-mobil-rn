@@ -140,6 +140,21 @@ const Header = ({
         {_rightIcon}
       </TouchableOpacity>
     );
+  } else if (rightItem && rightItem.layout === "title") {
+    _rightItem = (
+      <TouchableOpacity
+        activeOpacity={ICON_ACTIVE_OPACITY}
+        onPress={rightItem.onPress}
+        style={[
+          styles.iconWrapper,
+          {
+            paddingRight: 0
+          }
+        ]}
+      >
+        <Text style={{ color: itemsColor }}>{rightItem.title}</Text>
+      </TouchableOpacity>
+    );
   }
   const rightComponent = (
     <View style={styles.row}>
