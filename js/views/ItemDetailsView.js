@@ -153,12 +153,13 @@ class ItemDetailsView extends Component<Props, State> {
 
   render() {
     const { name, description, image, theme, coord, id, reviews } = this.props;
-    const { showSlider } = this.state;
     const photos = [
       {
+        id: 0,
         source: image ? { uri: getImageUrl(image) } : lakeImage
       },
       ...this.props.itemGallery.map(galleryPic => ({
+        id: galleryPic.id,
         source: {
           uri: getImageUrl(galleryPic.image)
         }
@@ -175,9 +176,7 @@ class ItemDetailsView extends Component<Props, State> {
           backgroundColor={theme.colors.primary}
           contentBackgroundColor="white"
           stickyHeaderHeight={70}
-          fadeOutForeground={false}
           backgroundSpeed={10}
-          onScroll={this.onScroll}
           renderFixedHeader={() => this.renderHeader()}
           renderStickyHeader={() => (
             <View
@@ -190,6 +189,7 @@ class ItemDetailsView extends Component<Props, State> {
           renderForeground={() => (
             <ImageGalleryPreview
               key="parallax-header"
+              onPress={() => this.setState({ galleryVisible: true })}
               onChangeActiveImage={idx =>
                 this.setState({ activeImageIndex: idx })
               }
@@ -275,6 +275,7 @@ class ItemDetailsView extends Component<Props, State> {
   }
 }
 ItemDetailsView.navigatorStyle = { navBarHidden: true };
+
 const mapStateToProps = (state, { item }) => {
   if (item) {
     return {

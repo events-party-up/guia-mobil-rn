@@ -1,37 +1,35 @@
 // @flow
 import React from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity
-} from "react-native";
+import { TouchableOpacity, Image, StyleSheet, Dimensions } from "react-native";
 import Swiper from "react-native-swiper";
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
 
 type Props = {
-  gallery: { source: number | { uri: string } }[],
+  gallery: { id: number, source: number | { uri: string } }[],
   onChangeActiveImage: number => void
 };
 
-const ImageGalleryPreview = ({ gallery, onChangeActiveImage }: Props) => {
+const ImageGalleryPreview = ({
+  gallery,
+  onChangeActiveImage,
+  onPress
+}: Props) => {
   return (
-    <TouchableOpacity style={{ width: WINDOW_WIDTH, height: IMAGE_HEIGHT }}>
-      <Swiper
-        height={IMAGE_HEIGHT}
-        dotStyle={styles.dotStyle}
-        loop
-        activeDotStyle={styles.activeDotStyle}
-        paginationStyle={{
-          bottom: 10,
-          left: 0,
-          right: 0
-        }}
-        onIndexChanged={onChangeActiveImage}
-      >
-        {gallery.map(picture => (
+    <Swiper
+      height={IMAGE_HEIGHT}
+      dotStyle={styles.dotStyle}
+      loop={false}
+      activeDotStyle={styles.activeDotStyle}
+      paginationStyle={{
+        bottom: 10,
+        left: 0,
+        right: 0
+      }}
+      onIndexChanged={onChangeActiveImage}
+    >
+      {gallery.map(picture => (
+        <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
           <Image
             key={picture.id}
             source={picture.source}
@@ -41,9 +39,9 @@ const ImageGalleryPreview = ({ gallery, onChangeActiveImage }: Props) => {
               height: IMAGE_HEIGHT
             }}
           />
-        ))}
-      </Swiper>
-    </TouchableOpacity>
+        </TouchableOpacity>
+      ))}
+    </Swiper>
   );
 };
 
