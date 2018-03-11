@@ -1,4 +1,5 @@
 import { parseCoordinate, parseChars } from "../utils";
+import getRealm from "../database";
 
 export const ITEMS_UPDATE = "ITEMS_UPDATE";
 export const ITEMS_UPDATE_SUCCESS = "ITEMS_UPDATE_SUCCESS";
@@ -15,8 +16,14 @@ export const itemsUpdate = options => ({
         coord: parseCoordinate(item.coord),
         chars: parseChars(item.chars)
       }));
+      const filteredItems = itemList.filter(item => item.coord.length === 2);
+      getRealm().then(realm => {
+        realm.write(() => {
+          filteredItems.forEach(item => realm.create("Item", item, true));
+        });
+      });
       return {
-        data: itemList.filter(item => item.coord.length === 2)
+        data: filteredItems
       };
     }),
   options

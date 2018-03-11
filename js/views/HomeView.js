@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import styled, { withTheme } from "styled-components";
-import type NavigationScreenProp from "react-navigation";
 import flatten from "lodash/flatten";
 import Reactotron from "reactotron-react-native";
 import { getImageUrl } from "../utils";
@@ -26,8 +25,13 @@ import WeekPicsCarrousel from "../components/WeekPicsCarrousel";
 import StyleSheet from "../components/common/F8StyleSheet";
 import getRealm, { itemsToArray } from "../database";
 
+const EAT_CATEGORIES_ID = 30;
+const SLEEP_CATEGORIES_ID = 1;
+const TODO_CATEGORIES_ID = 36;
+const SERVICES_CATEGORIES_ID = 46;
+
 type Props = {
-  navigation: NavigationScreenProp,
+  navigator: Object,
   featuredIds: number[]
 };
 
@@ -61,6 +65,27 @@ const WeekImagesHeader = styled(Heading2)`
 `;
 
 class HomeView extends React.Component<Props, State> {
+  static navigatorStyle = {
+    drawUnderNavBar: false,
+    navBarTranslucent: true
+  };
+
+  static navigatorButtons = {
+    rightButtons: [
+      {
+        title: "Edit", // for a textual button, provide the button title (label)
+        id: "edit", // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
+        testID: "e2e_rules", // optional, used to locate this view in end-to-end tests
+        disabled: true, // optional, used to disable the button (appears faded and doesn't interact)
+        disableIconTint: true, // optional, by default the image colors are overridden and tinted to navBarButtonColor, set to true to keep the original image colors
+        showAsAction: "ifRoom", // optional, Android only. Control how the button is displayed in the Toolbar. Accepted valued: 'ifRoom' (default) - Show this item as a button in an Action Bar if the system decides there is room for it. 'always' - Always show this item as a button in an Action Bar. 'withText' - When this item is in the action bar, always show it with a text label even if it also has an icon specified. 'never' - Never show this item as a button in an Action Bar.
+        buttonColor: "blue", // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
+        buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
+        buttonFontWeight: "600" // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
+      }
+    ]
+  };
+
   constructor(props: Props) {
     super(props);
     this.loadFeaturedItems(this.props.featuredIds);
@@ -92,11 +117,21 @@ class HomeView extends React.Component<Props, State> {
   };
 
   navigateToMap = () => {
-    this.props.navigation.navigate("MapStack");
+    this.props.navigator.push({ screen: "animus.MapView" });
+  };
+
+  navigateToCategory = id => {
+    this.props.navigator.push({
+      screen: "animus.CategoriesList",
+      passProps: { id }
+    });
   };
 
   renderFeaturedList = () => {
-    const { featuredItems } = this.state;
+    const { featuredItems, isLoading } = this.state;
+    if (isLoading) {
+      return <Text>Cargando...</Text>;
+    }
     return (
       <View style={styles.featuredList}>
         {featuredItems.map(item => (
@@ -109,9 +144,11 @@ class HomeView extends React.Component<Props, State> {
             isFavorite={item.isFavourite}
             stars={item.rating}
             onPress={() =>
-              this.props.navigation &&
-              this.props.navigation.navigate("ItemDetailsView", {
-                item
+              this.props.navigator.push({
+                screen: "animus.ItemDetailsView",
+                passProps: {
+                  item
+                }
               })
             }
           />
@@ -123,21 +160,25 @@ class HomeView extends React.Component<Props, State> {
   renderCategoriesPreviews = () => {
     const categories = [
       {
+        id: SLEEP_CATEGORIES_ID,
         name: "Alojamientos",
         tab: "SleepTab",
         image: require("./img/cover-hotel.png")
       },
       {
+        id: EAT_CATEGORIES_ID,
         name: "Gastronomia",
         tab: "EatTab",
         image: require("./img/cover-cake.png")
       },
       {
+        id: TODO_CATEGORIES_ID,
         name: "Experiencias",
         tab: "TodoTab",
         image: require("./img/cover-gondolas.png")
       },
       {
+        id: SERVICES_CATEGORIES_ID,
         name: "Servicios",
         tab: "ServicesTab",
         image: require("./img/cover-gondolas.png")
@@ -156,10 +197,8 @@ class HomeView extends React.Component<Props, State> {
         {categories.map(category => (
           <CategoryCard
             key={category.tab}
+            onPress={() => this.navigateToCategory(category.id)}
             {...category}
-            onPress={() => {
-              this.props.navigation.navigate(category.tab);
-            }}
           />
         ))}
       </ScrollView>
@@ -167,7 +206,7 @@ class HomeView extends React.Component<Props, State> {
   };
 
   render() {
-    const { theme, weekPics, navigation } = this.props;
+    const { theme, weekPics, navigator } = this.props;
 
     const rightItem = {
       title: "Map",
@@ -183,7 +222,7 @@ class HomeView extends React.Component<Props, State> {
       icon: "settings",
       iconType: "material-icons",
       onPress: () =>
-        this.props.navigation && this.props.navigation.navigate("Settings")
+        this.props.navigator.showModal({ screen: "animus.SettingsView" })
     };
 
     const showWeekPics: boolean = weekPics.length > 0;
@@ -198,7 +237,8 @@ class HomeView extends React.Component<Props, State> {
             {
               icon: "sun",
               iconType: "feather",
-              onPress: () => navigation.navigate("Weather")
+              onPress: () =>
+                navigator.showModal({ screen: "animus.WeatherView" })
             },
             {
               icon: "notifications-none",
@@ -247,20 +287,6 @@ class HomeView extends React.Component<Props, State> {
     );
   }
 }
-/*
-{isAuthenticated && (
-  <View>
-    <Text>{userName} </Text>
-    <Image
-      style={{ width: 50, height: 50 }}
-      source={{
-        uri: profilePic
-      }}
-    />
-  </View>
-)}
-<FacebookLoginButton />
-*/
 
 const styles = StyleSheet.create({
   featuredList: {

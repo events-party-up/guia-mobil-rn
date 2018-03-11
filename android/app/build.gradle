@@ -137,6 +137,10 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-navigation')
+    compile project(':react-native-facebook-login')
+    compile project(':@merryjs/photo-viewer')
+    compile project(':@mapbox/react-native-mapbox-gl')
     compile project(':realm')
     compile project(':mapbox-react-native-mapbox-gl')
     compile project(':react-native-device-info')

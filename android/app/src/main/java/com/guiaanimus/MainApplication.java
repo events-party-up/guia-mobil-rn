@@ -5,6 +5,10 @@ import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.facebook.react.ReactApplication;
+import com.reactnativenavigation.NavigationReactPackage;
+import com.magus.fblogin.FacebookLoginPackage;
+import com.merryjs.PhotoViewer.MerryPhotoViewPackage;
+import com.mapbox.rctmgl.RCTMGLPackage;
 import io.fabric.sdk.android.Fabric;
 import io.realm.react.RealmReactPackage;
 import com.facebook.react.ReactNativeHost;
@@ -30,6 +34,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new NavigationReactPackage(),
+            new FacebookLoginPackage(),
+            new MerryPhotoViewPackage(),
+            new RCTMGLPackage(),
             new RealmReactPackage(),
             new RNDeviceInfo(),
             new ReactNativePushNotificationPackage(),

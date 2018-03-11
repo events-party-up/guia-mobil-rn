@@ -12,11 +12,11 @@ import {
   Share
 } from "react-native";
 import { connect } from "react-redux";
-
+import PhotoView from "@merryjs/photo-viewer";
 import { Icon } from "react-native-elements";
 import { withTheme } from "styled-components";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
-import type NavigationScreenProp from "react-navigation";
+
 import * as actions from "../actions";
 import { IItem, ICategory, IReview, IChar } from "../models";
 import Header from "../components/Header";
@@ -29,7 +29,6 @@ import {
   getGalleryForItem,
   isItemFavourite
 } from "../reducers";
-
 import Reviews from "../components/Reviews";
 import MapPreview from "../components/MapPreview";
 import CategoriesBreakdrum from "../components/CategoriesBrackdrum";
@@ -38,7 +37,6 @@ import ImageGalleryPreview from "../components/ImageGalleryPreview";
 import type { Gallery } from "../reducers/galleries";
 import { toLatLong, getAppleMapsUri, getGoogleMapsUri } from "../utils/maps";
 import { DEFAULT_CENTER_COORDINATE, getImageUrl } from "../utils";
-import getRealm from "../database";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
@@ -53,25 +51,28 @@ interface Props extends IItem {
   reviews: IReview[];
   itemChars: IChar[];
   categoryChain: Array<ICategory>;
-  navigation: NavigationScreenProp;
+  navigator: Object;
   theme: Object;
   itemGallery: Gallery;
 }
+type State = {
+  galleryVisible: boolean,
+  showSlider: boolean,
+  activeImageIndex: number
+};
 
-class ItemDetailsView extends Component<Props> {
-  static navigationOptions = ({ name }) => ({
-    title: name,
-    header: null
-  });
+class ItemDetailsView extends Component<Props, State> {
+  state: State = {
+    galleryVisible: false,
+    showSlider: true,
+    activeImageIndex: 0
+  };
 
   componentDidMount() {
     const { id } = this.props;
 
     this.props.dispatch(actions.galleryLoad(id));
   }
-  toggleFavourite = id => {
-    this.props.dispatch(actions.toggleFavourite(id));
-  };
 
   callPlace = () => {
     const { phone } = this.props;
@@ -98,6 +99,16 @@ class ItemDetailsView extends Component<Props> {
 
   newReviewHandler = () => {};
 
+  // onScroll = evt => {
+  //   if (evt.nativeEvent.contentOffset.y <= -20) {
+  //     this.setState({ galleryVisible: true });
+  //   }
+  // };
+
+  toggleFavourite = id => {
+    this.props.dispatch(actions.toggleFavourite(id));
+  };
+
   showRouteHandler = () => {
     const { coord, userLocation } = this.props;
     let uri: string;
@@ -112,7 +123,7 @@ class ItemDetailsView extends Component<Props> {
   };
 
   renderHeader = () => {
-    const { isFavorite, navigation, id } = this.props;
+    const { isFavorite, navigator, id } = this.props;
     const rightItem = {
       title: "Settings",
       layout: "icon",
@@ -125,7 +136,7 @@ class ItemDetailsView extends Component<Props> {
       <View style={styles.headerContainer}>
         <Header
           backgroundColor="transparent"
-          navItem={{ back: true, onPress: () => navigation.goBack(null) }}
+          navItem={{ back: true, onPress: () => navigator.pop() }}
           rightItem={rightItem}
           itemsColor="white"
           extraItems={[
@@ -142,7 +153,17 @@ class ItemDetailsView extends Component<Props> {
 
   render() {
     const { name, description, image, theme, coord, id, reviews } = this.props;
-
+    const { showSlider } = this.state;
+    const photos = [
+      {
+        source: image ? { uri: getImageUrl(image) } : lakeImage
+      },
+      ...this.props.itemGallery.map(galleryPic => ({
+        source: {
+          uri: getImageUrl(galleryPic.image)
+        }
+      }))
+    ];
     return (
       <View
         style={{
@@ -154,7 +175,9 @@ class ItemDetailsView extends Component<Props> {
           backgroundColor={theme.colors.primary}
           contentBackgroundColor="white"
           stickyHeaderHeight={70}
+          fadeOutForeground={false}
           backgroundSpeed={10}
+          onScroll={this.onScroll}
           renderFixedHeader={() => this.renderHeader()}
           renderStickyHeader={() => (
             <View
@@ -164,33 +187,35 @@ class ItemDetailsView extends Component<Props> {
               }}
             />
           )}
+          renderForeground={() => (
+            <ImageGalleryPreview
+              key="parallax-header"
+              onChangeActiveImage={idx =>
+                this.setState({ activeImageIndex: idx })
+              }
+              height={IMAGE_HEIGHT}
+              gallery={photos}
+            />
+          )}
           parallaxHeaderHeight={IMAGE_HEIGHT}
-          renderBackground={() => {
-            // if (this.props.itemGallery && this.props.itemGallery.length > 0) {
-            //   return (
-            //     <ImageGalleryPreview
-            //       key="parallax-header"
-            //       gallery={this.props.itemGallery}
-            //     />
-            //   );
-            // }
-            return (
-              <Animated.Image
-                key="parallax-header"
-                source={
-                  image && image.length
-                    ? {
-                        uri: getImageUrl(image)
-                      }
-                    : lakeImage
-                }
-                style={{
-                  width: WINDOW_WIDTH,
-                  height: IMAGE_HEIGHT
-                }}
-              />
-            );
-          }}
+          // renderBackground={() => {
+          //   return (
+          //     <Animated.Image
+          //       key="parallax-header"
+          //       source={
+          //         image && image.length
+          //           ? {
+          //               uri: getImageUrl(image)
+          //             }
+          //           : lakeImage
+          //       }
+          //       style={{
+          //         width: WINDOW_WIDTH,
+          //         height: IMAGE_HEIGHT
+          //       }}
+          //     />
+          //   );
+          // }}
         >
           <CategoriesBreakdrum categoryChain={this.props.categoryChain} />
           <Text style={styles.title}> {name.toUpperCase()}</Text>
@@ -232,14 +257,25 @@ class ItemDetailsView extends Component<Props> {
             </TouchableOpacity>
           </View>
           <Reviews reviews={reviews} />
+          {photos.length > 0 && (
+            <PhotoView
+              visible={this.state.galleryVisible}
+              data={photos}
+              hideStatusBar
+              initial={this.state.activeImageIndex}
+              onDismiss={() => {
+                // don't forgot set state back.
+                this.setState({ galleryVisible: false });
+              }}
+            />
+          )}
         </ParallaxScrollView>
       </View>
     );
   }
 }
-
-const mapStateToProps = (state, { navigation }) => {
-  const item = navigation.getParam("item");
+ItemDetailsView.navigatorStyle = { navBarHidden: true };
+const mapStateToProps = (state, { item }) => {
   if (item) {
     return {
       ...item,

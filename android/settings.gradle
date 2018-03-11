@@ -1,4 +1,12 @@
 rootProject.name = 'GuiaAnimus'
+include ':react-native-navigation'
+project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/android/app')
+include ':react-native-facebook-login'
+project(':react-native-facebook-login').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-facebook-login/android')
+include ':@merryjs/photo-viewer'
+project(':@merryjs/photo-viewer').projectDir = new File(rootProject.projectDir, '../node_modules/@merryjs/photo-viewer/android')
+include ':@mapbox/react-native-mapbox-gl'
+project(':@mapbox/react-native-mapbox-gl').projectDir = new File(rootProject.projectDir, '../node_modules/@mapbox/react-native-mapbox-gl/android/rctmgl')
 include ':realm'
 project(':realm').projectDir = new File(rootProject.projectDir, '../node_modules/realm/android')
 include ':react-native-device-info'

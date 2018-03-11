@@ -1,8 +1,7 @@
 // @flow
 import React, { Component } from "react";
-import { View, StyleSheet, ScrollView, FlatList, Text } from "react-native";
+import { StyleSheet, ScrollView, FlatList, Text } from "react-native";
 import { connect } from "react-redux";
-import type NavigationScreenProp from "react-navigation";
 import styled, { withTheme } from "styled-components";
 import * as actions from "../actions";
 import { itemsSorter } from "../utils";
@@ -14,7 +13,7 @@ import SortButtons from "../components/SortButtons";
 import getRealm, { itemsToArray } from "../database";
 
 type Props = {
-  navigation: NavigationScreenProp,
+  navigator: Object,
   category: ICategory,
   theme: Object
 };
@@ -67,9 +66,11 @@ class ItemsListView extends Component<Props, State> {
       title={item.name}
       isFavorite={false}
       onPress={() =>
-        this.props.navigation &&
-        this.props.navigation.navigate("ItemDetailsView", {
-          item
+        this.props.navigator.push({
+          screen: "animus.ItemDetailsView",
+          passProps: {
+            item
+          }
         })
       }
     />
@@ -99,12 +100,12 @@ class ItemsListView extends Component<Props, State> {
     return (
       <ViewContainer style={styles.container}>
         <Header
-          title={`${category.name} ${this.state.itemCount}`}
+          title={`${category.name} (${this.state.itemCount})`}
           backgroundColor={theme.colors.primary}
           titleColor={theme.colors.highContrast}
           navItem={{
             back: true,
-            onPress: () => this.props.navigation.goBack()
+            onPress: () => this.props.navigator.pop()
           }}
           itemsColor="white"
         />
@@ -119,7 +120,7 @@ class ItemsListView extends Component<Props, State> {
     );
   }
 }
-
+ItemsListView.navigatorStyle = { navBarHidden: true };
 const styles = StyleSheet.create({
   container: {
     flex: 1
@@ -132,13 +133,4 @@ const styles = StyleSheet.create({
   grid: {}
 });
 
-const mapStateToProps = (state, { navigation }) => {
-  if (navigation.getParam("category")) {
-    const category = navigation.getParam("category");
-    return {
-      category
-    };
-  }
-};
-
-export default withTheme(connect(mapStateToProps)(ItemsListView));
+export default withTheme(connect()(ItemsListView));

@@ -17,14 +17,14 @@ class WeatherView extends Component<Props> {
     this.props.dispatch(weatherUpdate());
   }
   render() {
-    const { theme, navigation, lastUpdate, temperature, loaded } = this.props;
+    const { theme, navigator, lastUpdate, temperature, loaded } = this.props;
     return (
       <View style={styles.container}>
         <Header
           leftItem={{
             icon: "window-close",
             iconType: "material-community",
-            onPress: () => navigation.goBack(null)
+            onPress: () => navigator.dismissModal()
           }}
           title="Clima"
           backgroundColor={theme.colors.primary}
@@ -38,6 +38,8 @@ class WeatherView extends Component<Props> {
     );
   }
 }
+
+WeatherView.navigatorStyle = { navBarHidden: true };
 
 const mapStateToProps = state => {
   let props = {

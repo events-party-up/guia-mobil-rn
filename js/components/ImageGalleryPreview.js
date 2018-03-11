@@ -8,40 +8,34 @@ import {
   TouchableOpacity
 } from "react-native";
 import Swiper from "react-native-swiper";
-import { getImageUrl } from "../utils";
-import type { Gallery } from "../reducers/galleries";
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
-const lakeImage = require("./img/lake.jpeg");
 
 type Props = {
-  gallery: Gallery
+  gallery: { source: number | { uri: string } }[],
+  onChangeActiveImage: number => void
 };
 
-const ImageGalleryPreview = ({ gallery }: Props) => {
+const ImageGalleryPreview = ({ gallery, onChangeActiveImage }: Props) => {
   return (
     <TouchableOpacity style={{ width: WINDOW_WIDTH, height: IMAGE_HEIGHT }}>
       <Swiper
         height={IMAGE_HEIGHT}
-        dot={<View style={styles.dotStyle} />}
-        activeDot={<View style={styles.activeDotStyle} />}
+        dotStyle={styles.dotStyle}
+        loop
+        activeDotStyle={styles.activeDotStyle}
         paginationStyle={{
-          bottom: 20,
+          bottom: 10,
           left: 0,
           right: 0
         }}
-        loop
+        onIndexChanged={onChangeActiveImage}
       >
         {gallery.map(picture => (
           <Image
             key={picture.id}
-            source={
-              picture.image
-                ? {
-                    uri: getImageUrl(picture.image)
-                  }
-                : lakeImage
-            }
+            source={picture.source}
+            resizeMode="cover"
             style={{
               width: WINDOW_WIDTH,
               height: IMAGE_HEIGHT

@@ -4,22 +4,28 @@ import { View, ScrollView, StyleSheet } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import { withTheme } from "styled-components";
 import Header from "../../components/Header";
-import type NavigationScreenProp from "react-navigation";
+import { connect } from "react-redux";
 
 type Props = {
-  navigation: NavigationScreenProp,
+  navigator: Object,
   theme: Object,
+  activeLangName: string,
   toggleNotifications: () => void
 };
 
-const SettingsView = ({ toggleNotifications, theme, navigation }: Props) => (
+const SettingsView = ({
+  toggleNotifications,
+  theme,
+  navigator,
+  activeLangName
+}: Props) => (
   <View style={styles.container}>
     <Header
       title={"Settings"}
       leftItem={{
         icon: "window-close",
         iconType: "material-community",
-        onPress: () => navigation.goBack(null)
+        onPress: () => navigator.dismissModal()
       }}
       itemsColor="white"
       backgroundColor={theme.colors.primary}
@@ -27,11 +33,20 @@ const SettingsView = ({ toggleNotifications, theme, navigation }: Props) => (
     />
     <ScrollView style={styles.container}>
       <List>
-        <ListItem title="Idioma" />
+        <ListItem
+          title="Idioma"
+          onPress={() =>
+            navigator.push({
+              screen: "animus.LanguageSelectorView",
+              passProps: { title: "Licences" }
+            })
+          }
+          rightTitle={activeLangName}
+        />
         <ListItem
           switchButton
           hideChevron
-          switched={true}
+          switched
           title="Notificaciones"
           onSwitch={toggleNotifications}
           switchOnTintColor={theme.colors.primary}
@@ -42,25 +57,47 @@ const SettingsView = ({ toggleNotifications, theme, navigation }: Props) => (
         <ListItem hideChevron title="Version" />
         <ListItem
           title="Terminos y condiciones"
-          onPress={() => navigation.navigate("Details", { title: "Terms" })}
+          onPress={() =>
+            navigator.push({
+              screen: "animus.SettingsContentView",
+              passProps: { title: "Terms" }
+            })
+          }
         />
         <ListItem
           title="Acerca de nosotros"
-          onPress={() => navigation.navigate("Details", { title: "About" })}
+          onPress={() =>
+            navigator.push({
+              screen: "animus.SettingsContentView",
+              passProps: { title: "About" }
+            })
+          }
         />
         <ListItem
           title="Licencias de software libre"
-          onPress={() => navigation.navigate("Details", { title: "Licences" })}
+          onPress={() =>
+            navigator.push({
+              screen: "animus.SettingsContentView",
+              passProps: { title: "Licences" }
+            })
+          }
         />
       </List>
     </ScrollView>
   </View>
 );
 
-export default withTheme(SettingsView);
+SettingsView.navigatorStyle = { navBarHidden: true };
+
+const mapStateToProps = state => ({
+  activeLangName: state.lang.name
+});
+
+export default withTheme(connect(mapStateToProps)(SettingsView));
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#ebe9f1"
   }
 });

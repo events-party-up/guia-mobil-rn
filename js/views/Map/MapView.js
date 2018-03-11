@@ -6,7 +6,6 @@ import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import geoViewport from "@mapbox/geo-viewport";
 import supercluster from "supercluster";
 import { Icon } from "react-native-elements";
-import type NavigationScreenProp from "react-navigation";
 import { withTheme } from "styled-components";
 import sheet from "../../styles/sheet";
 import { IItem } from "../../models";
@@ -39,7 +38,7 @@ type State = {
 type Props = {
   items: ?Array<IItem>,
   theme: Object,
-  navigation: NavigationScreenProp
+  navigator: Object
 };
 
 const getItemId = item =>
@@ -214,7 +213,12 @@ class MapView extends React.Component<Props, State> {
             </View>
           );
         } else {
-          markerView = <ItemMapMarker icon={item.properties.iconCode} />;
+          markerView = (
+            <ItemMapMarker
+              icon={item.properties.iconCode}
+              isActive={selectedItemId === item.properties.id}
+            />
+          );
         }
         return (
           <MapboxGL.PointAnnotation
@@ -250,11 +254,11 @@ class MapView extends React.Component<Props, State> {
   };
 
   showFiltersModal = () => {
-    this.props.navigation.navigate("FiltersModal");
+    this.props.navigator.navigate("FiltersModal");
   };
 
   render() {
-    const { theme, navigation } = this.props;
+    const { theme, navigator } = this.props;
     const { error, userLocationLoaded } = this.state;
     return (
       <View style={styles.container}>
@@ -262,7 +266,7 @@ class MapView extends React.Component<Props, State> {
           title="Mapa"
           navItem={{
             back: true,
-            onPress: () => navigation.goBack(null)
+            onPress: () => navigator.pop()
           }}
           itemsColor="white"
           backgroundColor={theme.colors.primary}
@@ -321,6 +325,8 @@ class MapView extends React.Component<Props, State> {
     );
   }
 }
+
+MapView.navigatorStyle = { navBarHidden: true };
 
 const mapStateToProps = state => ({
   items: getFilteredItems(state)

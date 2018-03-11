@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -34,11 +33,31 @@
 		7F0D82F018674285B76C0D1E /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1346FEE8FE5F4478943AF7A0 /* Foundation.ttf */; };
 		7F5F127CF14C4F3E878EF3E2 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A21346C926284F6E8F2182FC /* Feather.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		8618C9B4204F5EB200878409 /* libRCTMGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8618C9B3204F5EA300878409 /* libRCTMGL.a */; };
-		8618C9B6204F60FE00878409 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8618C9B5204F60FE00878409 /* Mapbox.framework */; };
-		8618C9B7204F60FE00878409 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8618C9B5204F60FE00878409 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8619E59C20462EBA00A8CF66 /* guide-v01.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8619E59B20462EBA00A8CF66 /* guide-v01.ttf */; };
+		862DBED02054B70700B71271 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 862DBECB2054B6E400B71271 /* libReactNativeNavigation.a */; };
+		862DBEDF2054CCCA00B71271 /* libRCTMGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 862DBEDE2054CCA800B71271 /* libRCTMGL.a */; };
+		862DBEE32054CF2000B71271 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 862DBEE22054CF2000B71271 /* Mapbox.framework */; };
+		862DBEE42054CF2000B71271 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 862DBEE22054CF2000B71271 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		86665B162033772C0072FEC1 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86665AF9203377100072FEC1 /* libRCTPushNotification.a */; };
+		8666AC9F2053620F00BB65C3 /* libMerryPhotoViewer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8666AC6B205361C600BB65C3 /* libMerryPhotoViewer.a */; };
+		8666ACB7205367F700BB65C3 /* Nunito-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACA92053678A00BB65C3 /* Nunito-Italic.ttf */; };
+		8666ACB8205367F700BB65C3 /* Nunito-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACAA2053679000BB65C3 /* Nunito-SemiBold.ttf */; };
+		8666ACB9205367F700BB65C3 /* Nunito-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACAB2053679700BB65C3 /* Nunito-ExtraBoldItalic.ttf */; };
+		8666ACBA205367F700BB65C3 /* Nunito-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACAC205367A200BB65C3 /* Nunito-Black.ttf */; };
+		8666ACBB205367F700BB65C3 /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACAD205367A900BB65C3 /* Nunito-Regular.ttf */; };
+		8666ACBC205367F700BB65C3 /* Nunito-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACAE205367B100BB65C3 /* Nunito-SemiBoldItalic.ttf */; };
+		8666ACBD205367F700BB65C3 /* Nunito-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACAF205367B900BB65C3 /* Nunito-LightItalic.ttf */; };
+		8666ACBE205367F700BB65C3 /* Nunito-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACB0205367C500BB65C3 /* Nunito-ExtraLight.ttf */; };
+		8666ACBF205367F700BB65C3 /* Nunito-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACB1205367D000BB65C3 /* Nunito-Light.ttf */; };
+		8666ACC0205367F700BB65C3 /* Nunito-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACB2205367DA00BB65C3 /* Nunito-ExtraLightItalic.ttf */; };
+		8666ACC1205367F700BB65C3 /* Nunito-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACB3205367E100BB65C3 /* Nunito-BlackItalic.ttf */; };
+		8666ACC2205367F700BB65C3 /* Nunito-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACB4205367E800BB65C3 /* Nunito-BoldItalic.ttf */; };
+		8666ACC3205367F700BB65C3 /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACB5205367EF00BB65C3 /* Nunito-Bold.ttf */; };
+		8666ACC4205367F700BB65C3 /* Nunito-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACB6205367F600BB65C3 /* Nunito-ExtraBold.ttf */; };
+		8666AD2120536DAA00BB65C3 /* NYTPhotoViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8666AD1B20536CC600BB65C3 /* NYTPhotoViewer.framework */; };
+		8666AD2220536DAA00BB65C3 /* NYTPhotoViewer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8666AD1B20536CC600BB65C3 /* NYTPhotoViewer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8666AD25205372E200BB65C3 /* FLAnimatedImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8666AD1820536CB700BB65C3 /* FLAnimatedImage.framework */; };
+		8666AD26205372E200BB65C3 /* FLAnimatedImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8666AD1820536CB700BB65C3 /* FLAnimatedImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8688F8D920320A5D00E23736 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86709E702030979D007450E8 /* libRNVectorIcons.a */; };
 		86F54B452034EEDC00B036AB /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F54B172034EEDC00B036AB /* FBSDKCoreKit.framework */; };
 		86F54B462034EEDC00B036AB /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F54B432034EEDC00B036AB /* FBSDKShareKit.framework */; };
@@ -254,9 +273,16 @@
 			remoteGlobalIDString = F60690131CA2766F0003FB26;
 			remoteInfo = RealmReact;
 		};
-		8618C9B2204F5EA300878409 /* PBXContainerItemProxy */ = {
+		862DBECA2054B6E400B71271 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8618C9AE204F5EA300878409 /* RCTMGL.xcodeproj */;
+			containerPortal = 862DBE9C2054B6E300B71271 /* ReactNativeNavigation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D8AFADBD1BEE6F3F00A4592D;
+			remoteInfo = ReactNativeNavigation;
+		};
+		862DBEDD2054CCA800B71271 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 862DBED92054CCA700B71271 /* RCTMGL.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C4D1443D1F4E16F600396F26;
 			remoteInfo = RCTMGL;
@@ -288,6 +314,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = E72EC1401F7ABB5A0001BC90;
 			remoteInfo = "RNDeviceInfo-tvOS";
+		};
+		8666AC6A205361C600BB65C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8666AC66205361C500BB65C3 /* MerryPhotoViewer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = MerryPhotoViewer;
 		};
 		86709E6F2030979D007450E8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -375,7 +408,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8618C9B7204F60FE00878409 /* Mapbox.framework in Embed Frameworks */,
+				8666AD2220536DAA00BB65C3 /* NYTPhotoViewer.framework in Embed Frameworks */,
+				8666AD26205372E200BB65C3 /* FLAnimatedImage.framework in Embed Frameworks */,
+				862DBEE42054CF2000B71271 /* Mapbox.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,11 +450,30 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		8618C9AE204F5EA300878409 /* RCTMGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTMGL.xcodeproj; path = "../node_modules/@mapbox/react-native-mapbox-gl/ios/RCTMGL.xcodeproj"; sourceTree = "<group>"; };
-		8618C9B5204F60FE00878409 /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = "../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework"; sourceTree = "<group>"; };
 		8619E59B20462EBA00A8CF66 /* guide-v01.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "guide-v01.ttf"; sourceTree = "<group>"; };
+		862DBE9C2054B6E300B71271 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
+		862DBED92054CCA700B71271 /* RCTMGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTMGL.xcodeproj; path = "../node_modules/@mapbox/react-native-mapbox-gl/ios/RCTMGL.xcodeproj"; sourceTree = "<group>"; };
+		862DBEE22054CF2000B71271 /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = "../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework"; sourceTree = "<group>"; };
 		86665AE62033770F0072FEC1 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		86665B17203378DF0072FEC1 /* GuiaAnimus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = GuiaAnimus.entitlements; path = GuiaAnimus/GuiaAnimus.entitlements; sourceTree = "<group>"; };
+		8666AC66205361C500BB65C3 /* MerryPhotoViewer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MerryPhotoViewer.xcodeproj; path = "../node_modules/@merryjs/photo-viewer/ios/MerryPhotoViewer.xcodeproj"; sourceTree = "<group>"; };
+		8666ACA92053678A00BB65C3 /* Nunito-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Italic.ttf"; sourceTree = "<group>"; };
+		8666ACAA2053679000BB65C3 /* Nunito-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-SemiBold.ttf"; sourceTree = "<group>"; };
+		8666ACAB2053679700BB65C3 /* Nunito-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		8666ACAC205367A200BB65C3 /* Nunito-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Black.ttf"; sourceTree = "<group>"; };
+		8666ACAD205367A900BB65C3 /* Nunito-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Regular.ttf"; sourceTree = "<group>"; };
+		8666ACAE205367B100BB65C3 /* Nunito-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		8666ACAF205367B900BB65C3 /* Nunito-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-LightItalic.ttf"; sourceTree = "<group>"; };
+		8666ACB0205367C500BB65C3 /* Nunito-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-ExtraLight.ttf"; sourceTree = "<group>"; };
+		8666ACB1205367D000BB65C3 /* Nunito-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Light.ttf"; sourceTree = "<group>"; };
+		8666ACB2205367DA00BB65C3 /* Nunito-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		8666ACB3205367E100BB65C3 /* Nunito-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-BlackItalic.ttf"; sourceTree = "<group>"; };
+		8666ACB4205367E800BB65C3 /* Nunito-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-BoldItalic.ttf"; sourceTree = "<group>"; };
+		8666ACB5205367EF00BB65C3 /* Nunito-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Bold.ttf"; sourceTree = "<group>"; };
+		8666ACB6205367F600BB65C3 /* Nunito-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-ExtraBold.ttf"; sourceTree = "<group>"; };
+		8666AD1820536CB700BB65C3 /* FLAnimatedImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FLAnimatedImage.framework; sourceTree = "<group>"; };
+		8666AD1B20536CC600BB65C3 /* NYTPhotoViewer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NYTPhotoViewer.framework; sourceTree = "<group>"; };
+		8666AD1C20536CC700BB65C3 /* NYTPhotoViewerCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NYTPhotoViewerCore.framework; sourceTree = "<group>"; };
 		86F54B172034EEDC00B036AB /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		86F54B432034EEDC00B036AB /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKShareKit.framework"; sourceTree = "<group>"; };
 		86F54B442034EEDC00B036AB /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../node_modules/react-native-facebook-login/FacebookSDK/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
@@ -442,19 +496,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8618C9B4204F5EB200878409 /* libRCTMGL.a in Frameworks */,
+				862DBEDF2054CCCA00B71271 /* libRCTMGL.a in Frameworks */,
+				862DBED02054B70700B71271 /* libReactNativeNavigation.a in Frameworks */,
+				8666AD25205372E200BB65C3 /* FLAnimatedImage.framework in Frameworks */,
+				8666AC9F2053620F00BB65C3 /* libMerryPhotoViewer.a in Frameworks */,
 				86F54B4E2034EFBC00B036AB /* libRCTFBLogin.a in Frameworks */,
 				86665B162033772C0072FEC1 /* libRCTPushNotification.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				86F54B452034EEDC00B036AB /* FBSDKCoreKit.framework in Frameworks */,
+				8666AD2120536DAA00BB65C3 /* NYTPhotoViewer.framework in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
-				8618C9B6204F60FE00878409 /* Mapbox.framework in Frameworks */,
 				86F54B472034EEDC00B036AB /* FBSDKLoginKit.framework in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
+				862DBEE32054CF2000B71271 /* Mapbox.framework in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
@@ -624,7 +682,9 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				8618C9AE204F5EA300878409 /* RCTMGL.xcodeproj */,
+				862DBED92054CCA700B71271 /* RCTMGL.xcodeproj */,
+				862DBE9C2054B6E300B71271 /* ReactNativeNavigation.xcodeproj */,
+				8666AC66205361C500BB65C3 /* MerryPhotoViewer.xcodeproj */,
 				86F54B482034EF9500B036AB /* RCTFBLogin.xcodeproj */,
 				86665AE62033770F0072FEC1 /* RCTPushNotification.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -658,8 +718,25 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				8618C9B5204F60FE00878409 /* Mapbox.framework */,
+				862DBEE22054CF2000B71271 /* Mapbox.framework */,
+				8666AD1B20536CC600BB65C3 /* NYTPhotoViewer.framework */,
+				8666AD1C20536CC700BB65C3 /* NYTPhotoViewerCore.framework */,
+				8666AD1820536CB700BB65C3 /* FLAnimatedImage.framework */,
 				8619E59B20462EBA00A8CF66 /* guide-v01.ttf */,
+				8666ACAC205367A200BB65C3 /* Nunito-Black.ttf */,
+				8666ACB3205367E100BB65C3 /* Nunito-BlackItalic.ttf */,
+				8666ACB5205367EF00BB65C3 /* Nunito-Bold.ttf */,
+				8666ACB4205367E800BB65C3 /* Nunito-BoldItalic.ttf */,
+				8666ACB6205367F600BB65C3 /* Nunito-ExtraBold.ttf */,
+				8666ACAB2053679700BB65C3 /* Nunito-ExtraBoldItalic.ttf */,
+				8666ACB0205367C500BB65C3 /* Nunito-ExtraLight.ttf */,
+				8666ACB2205367DA00BB65C3 /* Nunito-ExtraLightItalic.ttf */,
+				8666ACA92053678A00BB65C3 /* Nunito-Italic.ttf */,
+				8666ACB1205367D000BB65C3 /* Nunito-Light.ttf */,
+				8666ACAF205367B900BB65C3 /* Nunito-LightItalic.ttf */,
+				8666ACAD205367A900BB65C3 /* Nunito-Regular.ttf */,
+				8666ACAA2053679000BB65C3 /* Nunito-SemiBold.ttf */,
+				8666ACAE205367B100BB65C3 /* Nunito-SemiBoldItalic.ttf */,
 				13B07FAE1A68108700A75B9A /* GuiaAnimus */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* GuiaAnimusTests */,
@@ -689,10 +766,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8618C9AF204F5EA300878409 /* Products */ = {
+		862DBE9D2054B6E300B71271 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8618C9B3204F5EA300878409 /* libRCTMGL.a */,
+				862DBECB2054B6E400B71271 /* libReactNativeNavigation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		862DBEDA2054CCA700B71271 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				862DBEDE2054CCA800B71271 /* libRCTMGL.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -711,6 +796,14 @@
 			children = (
 				86665B5520339E470072FEC1 /* libRNDeviceInfo.a */,
 				86665B5720339E470072FEC1 /* libRNDeviceInfo-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8666AC67205361C500BB65C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8666AC6B205361C600BB65C3 /* libMerryPhotoViewer.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -824,6 +917,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 8666AC67205361C500BB65C3 /* Products */;
+					ProjectRef = 8666AC66205361C500BB65C3 /* MerryPhotoViewer.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
@@ -852,8 +949,8 @@
 					ProjectRef = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
 				},
 				{
-					ProductGroup = 8618C9AF204F5EA300878409 /* Products */;
-					ProjectRef = 8618C9AE204F5EA300878409 /* RCTMGL.xcodeproj */;
+					ProductGroup = 862DBEDA2054CCA700B71271 /* Products */;
+					ProjectRef = 862DBED92054CCA700B71271 /* RCTMGL.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
@@ -882,6 +979,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 862DBE9D2054B6E300B71271 /* Products */;
+					ProjectRef = 862DBE9C2054B6E300B71271 /* ReactNativeNavigation.xcodeproj */;
 				},
 				{
 					ProductGroup = 8618C952204F560F00878409 /* Products */;
@@ -1107,11 +1208,18 @@
 			remoteRef = 8618C955204F561000878409 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8618C9B3204F5EA300878409 /* libRCTMGL.a */ = {
+		862DBECB2054B6E400B71271 /* libReactNativeNavigation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativeNavigation.a;
+			remoteRef = 862DBECA2054B6E400B71271 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		862DBEDE2054CCA800B71271 /* libRCTMGL.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRCTMGL.a;
-			remoteRef = 8618C9B2204F5EA300878409 /* PBXContainerItemProxy */;
+			remoteRef = 862DBEDD2054CCA800B71271 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		86665AF9203377100072FEC1 /* libRCTPushNotification.a */ = {
@@ -1140,6 +1248,13 @@
 			fileType = archive.ar;
 			path = "libRNDeviceInfo-tvOS.a";
 			remoteRef = 86665B5620339E470072FEC1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8666AC6B205361C600BB65C3 /* libMerryPhotoViewer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMerryPhotoViewer.a;
+			remoteRef = 8666AC6A205361C600BB65C3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		86709E702030979D007450E8 /* libRNVectorIcons.a */ = {
@@ -1227,19 +1342,33 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				8666ACB7205367F700BB65C3 /* Nunito-Italic.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				8666ACBB205367F700BB65C3 /* Nunito-Regular.ttf in Resources */,
+				8666ACC1205367F700BB65C3 /* Nunito-BlackItalic.ttf in Resources */,
+				8666ACBD205367F700BB65C3 /* Nunito-LightItalic.ttf in Resources */,
+				8666ACB9205367F700BB65C3 /* Nunito-ExtraBoldItalic.ttf in Resources */,
 				8781E6FB75A0442ABA17D431 /* Entypo.ttf in Resources */,
 				7F03030365304B52BAAA299F /* EvilIcons.ttf in Resources */,
 				7F5F127CF14C4F3E878EF3E2 /* Feather.ttf in Resources */,
+				8666ACBC205367F700BB65C3 /* Nunito-SemiBoldItalic.ttf in Resources */,
 				7A5991B8F59646BEA9810842 /* FontAwesome.ttf in Resources */,
+				8666ACC2205367F700BB65C3 /* Nunito-BoldItalic.ttf in Resources */,
 				7F0D82F018674285B76C0D1E /* Foundation.ttf in Resources */,
+				8666ACB8205367F700BB65C3 /* Nunito-SemiBold.ttf in Resources */,
 				8619E59C20462EBA00A8CF66 /* guide-v01.ttf in Resources */,
 				595354B09D1B4758A7C244E4 /* Ionicons.ttf in Resources */,
+				8666ACBE205367F700BB65C3 /* Nunito-ExtraLight.ttf in Resources */,
+				8666ACBF205367F700BB65C3 /* Nunito-Light.ttf in Resources */,
 				46BDE873790D4CFAA859A93F /* MaterialCommunityIcons.ttf in Resources */,
 				377DF25C397245A8BB88C5C3 /* MaterialIcons.ttf in Resources */,
+				8666ACC0205367F700BB65C3 /* Nunito-ExtraLightItalic.ttf in Resources */,
+				8666ACC3205367F700BB65C3 /* Nunito-Bold.ttf in Resources */,
 				545F5FB5A1104DA28321CD70 /* Octicons.ttf in Resources */,
 				FA4340A4CBE24E89A301E19E /* SimpleLineIcons.ttf in Resources */,
 				45EB676484DA4B8989546357 /* Zocial.ttf in Resources */,
+				8666ACBA205367F700BB65C3 /* Nunito-Black.ttf in Resources */,
+				8666ACC4205367F700BB65C3 /* Nunito-ExtraBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1311,10 +1440,10 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/../node_modules/@mapbox/react-native-mapbox-gl/ios",
+					"$(SRCROOT)/../node_modules/@mapbox/react-native-mapbox-gl/ios",
 					"$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK",
 				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+				"FRAMEWORK_SEARCH_PATHS[sdk=*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/../node_modules/@mapbox/react-native-mapbox-gl/ios",
@@ -1326,6 +1455,7 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(PROJECT_DIR)/../node_modules/@mapbox/react-native-mapbox-gl/ios",
 					"$(SRCROOT)/../node_modules/realm/src/**",
+					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 				);
 				INFOPLIST_FILE = GuiaAnimus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1359,7 +1489,7 @@
 					"$(PROJECT_DIR)/../node_modules/@mapbox/react-native-mapbox-gl/ios",
 					"$(SRCROOT)/../node_modules/react-native-facebook-login/FacebookSDK",
 				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+				"FRAMEWORK_SEARCH_PATHS[sdk=*]" = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/../node_modules/@mapbox/react-native-mapbox-gl/ios",
@@ -1371,6 +1501,7 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(PROJECT_DIR)/../node_modules/@mapbox/react-native-mapbox-gl/ios",
 					"$(SRCROOT)/../node_modules/realm/src/**",
+					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 				);
 				INFOPLIST_FILE = GuiaAnimus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

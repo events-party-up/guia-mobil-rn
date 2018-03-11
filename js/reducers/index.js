@@ -10,6 +10,8 @@ import chars, * as fromChars from "./chars";
 import weekPics from "./weekpics";
 import weather from "./weather";
 import galleries, * as fromGalleries from "./galleries";
+import lang from "./lang";
+
 import { ICategory, IItem } from "../models";
 
 export default combineReducers({
@@ -21,7 +23,8 @@ export default combineReducers({
   filters,
   chars,
   galleries,
-  weather
+  weather,
+  lang
 });
 
 type State = {

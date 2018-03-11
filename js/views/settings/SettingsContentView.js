@@ -2,22 +2,22 @@
 import React from "react";
 import { View, ScrollView, StyleSheet, Text } from "react-native";
 import { withTheme } from "styled-components";
-import type NavigationScreenProp from "react-navigation";
 import Hyperlink from "react-native-hyperlink";
 import Header from "../../components/Header";
 
 type Props = {
   theme: Object,
-  navigation: NavigationScreenProp
+  title: string,
+  navigator: Object
 };
 
-const SettingsContentView = ({ theme, navigation }: Props) => (
+const SettingsContentView = ({ theme, title, navigator }: Props) => (
   <View style={styles.container}>
     <Header
-      title={navigation.getParam("title", "")}
+      title={title}
       navItem={{
         back: true,
-        onPress: () => navigation.goBack(null)
+        onPress: () => navigator.pop()
       }}
       itemsColor="white"
       backgroundColor={theme.colors.primary}
@@ -33,11 +33,13 @@ const SettingsContentView = ({ theme, navigation }: Props) => (
   </View>
 );
 
+SettingsContentView.navigatorStyle = { navBarHidden: true };
 export default withTheme(SettingsContentView);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#ebe9f1"
   },
   text: {
     fontSize: 20,

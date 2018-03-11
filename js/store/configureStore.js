@@ -17,8 +17,8 @@ const apiClient = axios.create({
 
 const persistConfig = {
   key: "root",
-  storage: AsyncStorage,
-  blacklist: ["items"]
+  storage: AsyncStorage
+  // blacklist: ["items"]
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

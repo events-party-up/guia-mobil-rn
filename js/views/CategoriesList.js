@@ -2,8 +2,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, ScrollView, Text } from "react-native";
 import { List, ListItem } from "react-native-elements";
-import type NavigationScreenProp from "react-navigation";
-import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
 import { withTheme } from "styled-components";
 import * as actions from "../actions";
@@ -15,9 +13,10 @@ import styled from "styled-components";
 
 type Props = {
   categories: ICategory[],
-  navigation: NavigationScreenProp,
+  navigator: Object,
   updateCategoriesData: Function,
   categoryName: string,
+  theme: Object,
   isRoot: boolean
 };
 
@@ -36,13 +35,20 @@ class CategoriesList extends Component<Props> {
 
   navigateTo = (selectedCategory: ICategory) => {
     if (selectedCategory.children.length) {
-      this.props.navigation.navigate("CategoriesList", {
-        categories: selectedCategory.children,
-        parentCategory: selectedCategory
+      this.props.navigator.push({
+        screen: "animus.CategoriesList",
+        passProps: {
+          id: selectedCategory.id,
+          categories: selectedCategory.children,
+          parentCategory: selectedCategory
+        }
       });
     } else {
-      this.props.navigation.navigate("ItemsList", {
-        category: selectedCategory
+      this.props.navigator.push({
+        screen: "animus.ItemsListView",
+        passProps: {
+          category: selectedCategory
+        }
       });
     }
   };
@@ -58,18 +64,18 @@ class CategoriesList extends Component<Props> {
   );
 
   render() {
-    const { categoryName, categories, navigation, theme } = this.props;
+    const { categoryName, categories, navigator, theme } = this.props;
     return (
       <View style={styles.container}>
         <Header
           title={categoryName}
           navItem={{
             back: true,
-            onPress: () => navigation.goBack(null)
+            onPress: () => navigator.pop()
           }}
           backgroundColor={theme.colors.primary}
           titleColor={theme.colors.highContrast}
-          itemsColor={"white"}
+          itemsColor="white"
         />
         <ScrollView>
           <List style={styles.list}>{categories.map(this.renderRow)}</List>
@@ -81,7 +87,8 @@ class CategoriesList extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#ebe9f1"
   },
   list: {
     flex: 1,
@@ -98,20 +105,15 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = (state, { navigation, id }) => {
+// hide native nabvar
+CategoriesList.navigatorStyle = { navBarHidden: true };
+
+const mapStateToProps = (state, { id, categories }) => {
   const category = getCategoryWithId(state, id);
   const isRoot = category && category.parent_id === 0;
-  console.log({ category });
-  if (navigation.getParam("categories")) {
-    return {
-      isRoot,
-      categoryName: navigation.getParam("name", "Categories"),
-      categories: navigation.getParam("categories")
-    };
-  }
   return {
     isRoot,
-    categories: getCategoriesWithParentId(state, id),
+    categories: categories || getCategoriesWithParentId(state, id),
     categoryName: category ? category.name : "Unknow category"
   };
 };

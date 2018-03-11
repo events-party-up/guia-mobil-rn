@@ -4,15 +4,13 @@ import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import { connect } from "react-redux";
 import { StackNavigator } from "react-navigation";
 import { IS_ANDROID } from "./utils";
-import config from "./utils/config";
+
 import HomeView from "./views/HomeView";
 import MapStack from "./views/Map";
 import TabsNavigator from "./views/TabsNavigator";
 import * as actions from "./actions";
 import SettingsStack from "./views/settings";
 import WeatherView from "./views/WeatherView";
-
-MapboxGL.setAccessToken(config.get("MAPBOX_ACCESS_TOKEN"));
 
 type Props = {
   dispatch: Function
