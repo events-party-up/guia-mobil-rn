@@ -14,6 +14,7 @@ import { registerScreens } from "./views";
 import theme from "./theme";
 import getRealm from "./database";
 import config from "./utils/config";
+import I18n from "./i18n";
 
 function setup() {
   MapboxGL.setAccessToken(config.get("MAPBOX_ACCESS_TOKEN"));
@@ -28,6 +29,7 @@ function setup() {
     // eslint-disable-next-line
     ([store, realm]) => {
       setupPush(store);
+      setupLocale(store);
       Reactotron.connect();
       const AppProvider = ({ children, ...props }) => (
         <Provider {...props}>
@@ -49,6 +51,13 @@ function setup() {
     }
   );
 
+  const setupLocale = store => {
+    // configure the app locale from the redux store
+    I18n.locale = store.getState().lang.code;
+    store.subscribe(() => {
+      I18n.locale = store.getState().lang.code;
+    });
+  };
   const onTokenReceived = ({ token, os }: { token: string, os: string }) => {
     console.log("TOKEN PUSH:", token);
   };

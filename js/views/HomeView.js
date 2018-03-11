@@ -24,6 +24,7 @@ import CategoryCard from "../components/CategoryCard";
 import WeekPicsCarrousel from "../components/WeekPicsCarrousel";
 import StyleSheet from "../components/common/F8StyleSheet";
 import getRealm, { itemsToArray } from "../database";
+import I18n from "../i18n";
 
 const EAT_CATEGORIES_ID = 30;
 const SLEEP_CATEGORIES_ID = 1;
@@ -265,14 +266,12 @@ class HomeView extends React.Component<Props, State> {
               source={require("./img/logo.png")}
             />
 
-            <Heading2>Descubrí Bariloche.</Heading2>
+            <Heading2>{I18n.t("discoverPlace")}</Heading2>
             {this.renderCategoriesPreviews()}
             <Heading2 style={{ paddingTop: 20 }}>
-              Las mejores actividades para disfrutar.
+              {I18n.t("activitiesHeadline")}
             </Heading2>
-            <Subtitle>
-              Conocé los lugares que recomendamos para visitar y disfrutar.
-            </Subtitle>
+            <Subtitle>{I18n.t("activitiesHeadlineSub")}</Subtitle>
             {this.renderFeaturedList()}
           </View>
 

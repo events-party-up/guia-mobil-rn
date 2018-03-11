@@ -196,8 +196,6 @@ class MapView extends React.Component<Props, State> {
     const { clusteredItems, selectedItem } = this.state;
     const selectedItemId = selectedItem ? getItemId(selectedItem) : "";
 
-    console.log({ selectedItemId });
-
     if (clusteredItems) {
       return clusteredItems.map(item => {
         const id = getItemId(item);

@@ -16,7 +16,7 @@ export const availableLangs = [
     name: "Español"
   },
   {
-    code: "pl",
+    code: "pt",
     name: "Portuguese"
   }
 ];

@@ -5,6 +5,7 @@ import { List, ListItem } from "react-native-elements";
 import { withTheme } from "styled-components";
 import Header from "../../components/Header";
 import { connect } from "react-redux";
+import I18n from "../../i18n";
 
 type Props = {
   navigator: Object,
@@ -21,7 +22,7 @@ const SettingsView = ({
 }: Props) => (
   <View style={styles.container}>
     <Header
-      title={"Settings"}
+      title={I18n.t("navigation.settings.title")}
       leftItem={{
         icon: "window-close",
         iconType: "material-community",

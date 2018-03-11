@@ -5,6 +5,7 @@ import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.facebook.react.ReactApplication;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.reactnativenavigation.NavigationReactPackage;
 import com.magus.fblogin.FacebookLoginPackage;
 import com.merryjs.PhotoViewer.MerryPhotoViewPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNI18nPackage(),
             new NavigationReactPackage(),
             new FacebookLoginPackage(),
             new MerryPhotoViewPackage(),

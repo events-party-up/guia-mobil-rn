@@ -6,6 +6,7 @@ import { withTheme } from "styled-components";
 import { connect } from "react-redux";
 import Header from "../../components/Header";
 import { availableLangs } from "../../config";
+import I18n from "../../i18n";
 
 type Props = {
   theme: Object,
@@ -60,6 +61,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setActiveLang({ code, name }) {
+    I18n.locale = "code";
     dispatch({
       type: "SET_ACTIVE_LANG",
       code,
