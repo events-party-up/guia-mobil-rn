@@ -140,6 +140,8 @@ class MapView extends React.Component<Props, State> {
 
   onAnnotationSelected = item => {
     this.setState({ selectedItem: item });
+    console.log(`item: ${item.id}`);
+    console.log("Selected annotation");
     if (item.properties.cluster) {
       const zoom = this.clustering.getClusterExpansionZoom(
         item.properties.cluster_id
@@ -214,7 +216,7 @@ class MapView extends React.Component<Props, State> {
           markerView = (
             <ItemMapMarker
               icon={item.properties.iconCode}
-              isActive={selectedItemId === item.properties.id}
+              isActive={selectedItemId === id}
             />
           );
         }
@@ -222,7 +224,6 @@ class MapView extends React.Component<Props, State> {
           <MapboxGL.PointAnnotation
             key={id}
             id={`${item.properties.id}`}
-            selected={selectedItemId === id}
             coordinate={item.geometry.coordinates}
             onSelected={() => this.onAnnotationSelected(item)}
             onDeselected={() => this.onAnnotationDeselected()}
