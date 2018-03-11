@@ -27,6 +27,10 @@ const WINDOW_HEIGHT = Dimensions.get("window").height;
 type State = {
   pointsLoaded: boolean,
   accuracy?: number,
+  heading?: number,
+  altitudeAccuracy?: number,
+  latitude?: number,
+  speed?: number,
   altitude?: number,
   longitude?: number,
   clusteredItems: ?any,
@@ -75,7 +79,7 @@ class MapView extends React.Component<Props, State> {
     navigator.geolocation.getCurrentPosition(
       pos => {
         const { coords } = pos;
-        console.log({ coords });
+
         this.setState({
           ...coords,
           error: null,
@@ -86,19 +90,6 @@ class MapView extends React.Component<Props, State> {
         this.setState({ error: error.message });
       },
       geolocationSettings
-    );
-  }
-
-  renderUserLocationMarker() {
-    const { altitude, longitude, error, userLocationLoaded } = this.state;
-    if (error || !userLocationLoaded) return null;
-    return (
-      <MapboxGL.PointAnnotation
-        id="user-location-marker"
-        coordinate={[longitude, altitude]}
-      >
-        <View style={{ width: 50, height: 50, backgroundColor: "yellow" }} />
-      </MapboxGL.PointAnnotation>
     );
   }
 
@@ -247,14 +238,27 @@ class MapView extends React.Component<Props, State> {
   };
 
   centerOnUser = () => {
-    const { altitude, longitude, error, userLocationLoaded } = this.state;
+    const { latitude, longitude, error, userLocationLoaded } = this.state;
     if (!error && userLocationLoaded)
-      this._map.flyTo([longitude, altitude], 2000);
+      this._map.flyTo([longitude, latitude], 2000);
   };
 
   showFiltersModal = () => {
     this.props.navigator.navigate("FiltersModal");
   };
+
+  renderUserLocationMarker() {
+    const { altitude, longitude, error, userLocationLoaded } = this.state;
+    if (error || !userLocationLoaded) return null;
+    return (
+      <MapboxGL.PointAnnotation
+        id="user-location-marker"
+        coordinate={[longitude, altitude]}
+      >
+        <View style={{ width: 50, height: 50, backgroundColor: "yellow" }} />
+      </MapboxGL.PointAnnotation>
+    );
+  }
 
   render() {
     const { theme, navigator } = this.props;
