@@ -20,3 +20,5 @@ export const availableLangs = [
     name: "Portuguese"
   }
 ];
+
+export const GCM_SENDER_ID = "342741371055";
