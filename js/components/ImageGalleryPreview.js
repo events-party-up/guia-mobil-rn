@@ -29,9 +29,12 @@ const ImageGalleryPreview = ({
       onIndexChanged={onChangeActiveImage}
     >
       {gallery.map(picture => (
-        <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+        <TouchableOpacity
+          onPress={onPress}
+          activeOpacity={0.8}
+          key={picture.id}
+        >
           <Image
-            key={picture.id}
             source={picture.source}
             resizeMode="cover"
             style={{

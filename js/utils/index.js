@@ -1,6 +1,9 @@
 // @flow
 import { Platform } from "react-native";
 import { IItem } from "../models";
+import * as fromMaps from "./maps";
+
+export * from "./maps";
 
 export const IS_ANDROID = Platform.OS === "android";
 export const DEFAULT_CENTER_COORDINATE = [-71.3111203, -41.1339525];
@@ -38,7 +41,7 @@ export const getImageUrl = (image: string) =>
   `https://bariloche.guiasmoviles.com/uploads/${image}`;
 
 export const distanceToUser = (item: IItem, userLocation: number[]) => {
-  return Math.random() * 10;
+  return fromMaps.computeDistanceBetweenPoints(item.coord, userLocation);
 };
 
 export const SORT_AZ = 0;
@@ -50,8 +53,8 @@ export const itemsSorter = {
   [SORT_AZ]: () => (item1, item2) =>
     item1.name.toLowerCase().localeCompare(item2.name.toLowerCase()),
 
-  [SORT_POPULAR]: () => (item1, item2) => item1.rating > item2.rating,
-  [SORT_PRICE]: () => (item1, item2) => item1.price > item2.price,
+  [SORT_POPULAR]: () => (item1, item2) => item1.rating - item2.rating,
+  [SORT_PRICE]: () => (item1, item2) => item1.price - item2.price,
 
   [SORT_DISTANCE]: userLocation => (item1, item2) =>
     distanceToUser(item1, userLocation) < distanceToUser(item2, userLocation)

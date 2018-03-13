@@ -11,6 +11,7 @@ import weekPics from "./weekpics";
 import weather from "./weather";
 import galleries, * as fromGalleries from "./galleries";
 import lang from "./lang";
+import location from "./location";
 
 import { ICategory, IItem } from "../models";
 
@@ -24,7 +25,8 @@ export default combineReducers({
   chars,
   galleries,
   weather,
-  lang
+  lang,
+  location
 });
 
 type State = {
@@ -42,6 +44,7 @@ type State = {
 export function getCategoriesWithParentId(state: State, id: number) {
   return fromCategories.getCategoriesWithParentId(state.categories, id);
 }
+
 export function getCategoryWithId(state: State, id: number): ?ICategory {
   return fromCategories.getCategoryWithId(state.categories, id);
 }
@@ -54,7 +57,8 @@ export function getCategoryChain(state: State, childCategoryId: number) {
   return fromCategories.getCategoryChain(state.categories, childCategoryId);
 }
 
-type ItemWithIcon = IItem & { iconCode: string };
+type ItemWithIcon = { id: number, coord: [number, number], iconCode: string };
+
 export function getItems(state: State): ItemWithIcon[] {
   return fromItems
     .getItems(state.items)

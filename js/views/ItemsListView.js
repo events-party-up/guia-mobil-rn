@@ -20,7 +20,7 @@ type Props = {
 
 type State = {
   sortIndex: number,
-  items?: Object,
+  items: Object[],
   loading: boolean,
   itemCount: number
 };
@@ -34,7 +34,8 @@ class ItemsListView extends Component<Props, State> {
   state = {
     sortIndex: 0,
     itemCount: 0,
-    loading: true
+    loading: true,
+    items: []
   };
 
   componentDidMount() {
@@ -45,11 +46,12 @@ class ItemsListView extends Component<Props, State> {
         .filtered(`category_id = ${category.id}`);
       this.setState({
         itemCount: items.length,
-        items,
+        items: itemsToArray(items),
         loading: false
       });
     });
   }
+
   sortHandler = index => {
     if (index != this.state.sortIndex) this.setState({ sortIndex: index });
   };
@@ -65,6 +67,7 @@ class ItemsListView extends Component<Props, State> {
       image={item.image}
       title={item.name}
       isFavorite={false}
+      coord={item.coord}
       onPress={() =>
         this.props.navigator.push({
           screen: "animus.ItemDetailsView",
@@ -82,9 +85,11 @@ class ItemsListView extends Component<Props, State> {
     }
     const { sortIndex, items } = this.state;
     const sorterFunc = itemsSorter[sortIndex]();
-    const sortedItems = itemsToArray(items.sorted("name"));
+    const sortedItems = items.sort(sorterFunc);
+
     return (
       <FlatList
+        initialNumToRender={8}
         numColumns={2}
         style={styles.grid}
         data={sortedItems}
@@ -120,7 +125,9 @@ class ItemsListView extends Component<Props, State> {
     );
   }
 }
+
 ItemsListView.navigatorStyle = { navBarHidden: true };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1
@@ -129,8 +136,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 10,
     paddingRight: 10
-  },
-  grid: {}
+  }
 });
 
 export default withTheme(connect()(ItemsListView));

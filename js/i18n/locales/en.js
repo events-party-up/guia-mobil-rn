@@ -5,6 +5,9 @@ export default {
   navigation: {
     settings: {
       title: "Settings"
+    },
+    weather: {
+      title: "Weather"
     }
   }
 };

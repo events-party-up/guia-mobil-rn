@@ -143,7 +143,6 @@ dependencies {
     compile project(':@merryjs/photo-viewer')
     compile project(':@mapbox/react-native-mapbox-gl')
     compile project(':realm')
-    compile project(':mapbox-react-native-mapbox-gl')
     compile project(':react-native-device-info')
     compile project(':react-native-push-notification')
     compile project(':react-native-vector-icons')

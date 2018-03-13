@@ -26,11 +26,13 @@ export default ItemSchema;
 
 export const itemsToArray = items =>
   items.map(item => {
-    const object = {};
-    // eslint-disable-next-line no-restricted-syntax,guard-for-in
-    for (const property in ItemSchema.properties) {
-      object[property] = item[property];
-    }
+    const object = Object.keys(ItemSchema.properties).reduce(
+      (plainObj, property) => {
+        plainObj[property] = item[property];
+        return plainObj;
+      },
+      {}
+    );
     object.coord = [item.coord[0], item.coord[1]];
     return object;
   });

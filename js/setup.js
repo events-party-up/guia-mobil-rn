@@ -15,6 +15,8 @@ import theme from "./theme";
 import getRealm from "./database";
 import config from "./utils/config";
 import I18n from "./i18n";
+import { geolocationSettings } from "./config";
+import * as actions from "./actions";
 
 function setup() {
   MapboxGL.setAccessToken(config.get("MAPBOX_ACCESS_TOKEN"));
@@ -30,6 +32,7 @@ function setup() {
     ([store, realm]) => {
       setupPush(store);
       setupLocale(store);
+      getUserLocation(store);
       Reactotron.connect();
       const AppProvider = ({ children, ...props }) => (
         <Provider {...props}>
@@ -51,6 +54,16 @@ function setup() {
     }
   );
 
+  const getUserLocation = store => {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const { coords } = pos;
+        store.dispatch(actions.userLocationUpdate(coords));
+      },
+      error => {},
+      geolocationSettings
+    );
+  };
   const setupLocale = store => {
     // configure the app locale from the redux store
     I18n.locale = store.getState().lang.code;

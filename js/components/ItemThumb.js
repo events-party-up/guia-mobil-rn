@@ -11,11 +11,14 @@ import { connect } from "react-redux";
 import { ICategory } from "../models";
 import { getCategoryWithId } from "../reducers";
 import * as actions from "../actions";
+import { computeDistanceBetweenPoints } from "../utils/maps";
+import { DEFAULT_CENTER_COORDINATE } from "../utils";
+
 type ThumbType = "small" | "large";
 
 type Props = {
-  categoryId: number,
   id: number,
+  coord: number[],
   category: ICategory,
   onPress: () => void,
   image: string,
@@ -23,7 +26,12 @@ type Props = {
   stars: number,
   activeOpacity: number,
   isFavorite: boolean,
-  type: ThumbType
+  type: ThumbType,
+  userLocation?: {
+    latitude: number,
+    longitude: number
+  },
+  dispatch: Function
 };
 
 const CategoryLabel = styled.Text`
@@ -63,6 +71,24 @@ class ItemThumb extends React.Component<Props> {
           imageHeight: WIDTH_SMALL * IMAGE_ASPECT_RATIO_SMALL
         };
 
+  toggleFavourite = id => {
+    this.props.dispatch(actions.toggleFavourite(id));
+  };
+
+  renderTitle = (type: ThumbType, title: string) => {
+    const titleLineLimit = type === "large" ? NUMLINES_LARGE : NUMLINES_SMALL;
+    const titleDifferences =
+      type === "large" ? styles.titleLarge : styles.titleSmall;
+    if (title) {
+      return (
+        <Text numberOfLines={2} style={[styles.title, titleDifferences]}>
+          {title}
+        </Text>
+      );
+    }
+    return null;
+  };
+
   renderImage = (src: string, width: number, height: number) => (
     <Image
       style={[styles.image, { width, height }]}
@@ -71,31 +97,13 @@ class ItemThumb extends React.Component<Props> {
           ? {
               uri: `https://bariloche.guiasmoviles.com/uploads/${src}`
             }
-          : lakeImage
+          : {
+              uri: "lake"
+            }
       }
     />
   );
 
-  renderTitle = (type: ThumbType, title: string) => {
-    const titleLineLimit = type === "large" ? NUMLINES_LARGE : NUMLINES_SMALL;
-    const titleDifferences =
-      type === "large" ? styles.titleLarge : styles.titleSmall;
-    if (title) {
-      return (
-        <Text
-          numberOfLines={titleLineLimit}
-          style={[styles.title, titleDifferences]}
-        >
-          {title}
-        </Text>
-      );
-    }
-    return null;
-  };
-
-  toggleFavourite = id => {
-    this.props.dispatch(actions.toggleFavourite(id));
-  };
   render() {
     const {
       category,
@@ -106,9 +114,14 @@ class ItemThumb extends React.Component<Props> {
       isFavorite,
       type,
       id,
-      stars
+      stars,
+      coord,
+      userLocation
     } = this.props;
-
+    let distance = "...";
+    if (userLocation && coord) {
+      distance = computeDistanceBetweenPoints(coord, DEFAULT_CENTER_COORDINATE);
+    }
     const { imageWidth, imageHeight } = this.getImageSize(type);
 
     return (
@@ -133,6 +146,10 @@ class ItemThumb extends React.Component<Props> {
         </View>
         <CategoryLabel>{category.name.toUpperCase()} </CategoryLabel>
         {this.renderTitle(type, title)}
+        <Text>
+          Dist:{" "}
+          {typeof distance === "number" ? `${distance.toFixed(2)}km` : distance}
+        </Text>
         <Rating imageSize={14} rating={stars} />
       </TouchableOpacity>
     );
@@ -140,7 +157,8 @@ class ItemThumb extends React.Component<Props> {
 }
 
 const mapStateToProps = (state, { categoryId }) => ({
-  category: getCategoryWithId(state, categoryId)
+  category: getCategoryWithId(state, categoryId),
+  userLocation: state.location.coords
 });
 
 export default connect(mapStateToProps)(ItemThumb);

@@ -144,6 +144,7 @@ class HomeView extends React.Component<Props, State> {
             title={item.name}
             isFavorite={item.isFavourite}
             stars={item.rating}
+            coord={item.coord}
             onPress={() =>
               this.props.navigator.push({
                 screen: "animus.ItemDetailsView",
