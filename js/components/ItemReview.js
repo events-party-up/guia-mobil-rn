@@ -13,12 +13,14 @@ const Paragraph = styled.Text`
 const ItemReview = ({ profile_name, rtext, date, profile_img }) => (
   <View style={styles.reviewContainer}>
     <View style={styles.row}>
-      <Image
-        style={styles.avatar}
-        source={{
-          uri: profile_img
-        }}
-      />
+      <View style={styles.avatarContainer}>
+        <Image
+          style={styles.avatar}
+          source={{
+            uri: profile_img
+          }}
+        />
+      </View>
       <View style={styles.info}>
         <Text style={styles.name}>{profile_name}</Text>
         <Text style={styles.date}>{moment(date).format("MM YYYY")}</Text>
@@ -44,6 +46,14 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 20,
     backgroundColor: "gray"
+  },
+  avatarContainer: {
+    width: 40,
+    height: 40,
+    marginVertical: 10,
+    borderRadius: 20,
+    backgroundColor: "gray",
+    overflow: "hidden"
   },
   row: {
     flexDirection: "row",
