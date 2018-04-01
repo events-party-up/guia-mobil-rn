@@ -2,17 +2,24 @@
 import React, { Component } from "react";
 import { View, ScrollView, StyleSheet, Image } from "react-native";
 import styled, { withTheme } from "styled-components";
-import Header from "../components/Header";
+import { connect } from "react-redux";
 import moment from "moment";
+import Header from "../components/Header";
 import { Text } from "../components/common/Text";
 import { weatherUpdate } from "../actions";
-import { connect } from "react-redux";
 import I18n from "../i18n";
 
 type Props = {
   dispatch: Function,
   theme: Object,
-  lastUpdate: number
+  navigator: Object,
+  summary: string,
+  temperature: number,
+  lastUpdate: number,
+  time: number,
+  daily: {
+    data: Object[]
+  }
 };
 
 const icons = {
@@ -29,7 +36,7 @@ const icons = {
 };
 
 const CurrentTempText = styled(Text)`
-  font-size: 60px;
+  font-size: 40px;
   font-weight: 200;
   color: ${props => props.theme.colors.gray};
 `;
@@ -64,6 +71,7 @@ const SmallIcon = styled.Image`
 const WeekDay = styled(Text)`
   width: 100px;
 `;
+
 const Cell = styled.View`
   width: 110px;
   height: 20px;
@@ -71,62 +79,42 @@ const Cell = styled.View`
   justify-content: space-between;
   align-items: center;
 `;
+
 const SmallCell = styled(Cell)`
   width: 80px;
 `;
 
 class WeatherView extends Component<Props> {
+  static navigatorStyle = { navBarHidden: true };
+
   componentDidMount() {
     this.props.dispatch(weatherUpdate());
 
-    moment.locale("es");
+    moment.locale("es-ES");
   }
 
-  render() {
-    const {
-      theme,
-      summary,
-      navigator,
-      lastUpdate,
-      temperature,
-      loaded,
-      time,
-      icon,
-      daily
-    } = this.props;
+  renderBottomView = () => {
+    const { daily } = this.props;
+    if (daily && daily.data) {
+      const remainingDays = daily.data.slice(2);
 
-    const todayWeatherData = daily.data[0];
-    const remainingDays = daily.data.slice(2);
-    const mTime = moment(time, "X");
+      return remainingDays.map(dayWeather => (
+        <RowView key={dayWeather.time}>
+          <WeekDay>{moment(dayWeather.time, "X").format("dddd")}</WeekDay>
+          <SmallIcon source={icons[dayWeather.icon]} />
+          <Text>Min: 8.2 C </Text>
+          <Text />
+          <Text>75.0</Text>
+        </RowView>
+      ));
+    }
+    return null;
+  };
 
-    return (
-      <View style={{ flex: 1 }}>
-        <Header
-          leftItem={{
-            icon: "window-close",
-            iconType: "material-community",
-            onPress: () => navigator.dismissModal()
-          }}
-          title={I18n.t("navigation.weather.title")}
-          backgroundColor={theme.colors.primary}
-          titleColor={theme.colors.highContrast}
-          itemsColor="white"
-        />
-        <ScrollView style={styles.container}>
-          <MainViewContainer>
-            <CurrentTempText>{loaded && temperature} °</CurrentTempText>
-            <View style={{ alignItems: "center" }}>
-              <Image
-                style={{ width: 140, height: 140, resizeMode: "contain" }}
-                source={icons[icon]}
-              />
-              <Summmary>{summary}</Summmary>
-            </View>
-          </MainViewContainer>
-          <RowView>
-            <Text>{mTime.format("dddd")}</Text>
-          </RowView>
-          {/*first row*/}
+  renderDetailedInfo = todayWeatherData => {
+    if (todayWeatherData) {
+      return (
+        <View>
           <RowView>
             <SmallCell>
               <SmallIcon
@@ -153,7 +141,7 @@ class WeatherView extends Component<Props> {
               <Text>{todayWeatherData.humidity} </Text>
             </Cell>
           </RowView>
-          {/*second row*/}
+          {/*second row */}
           <RowView>
             <SmallCell>
               <SmallIcon
@@ -190,23 +178,61 @@ class WeatherView extends Component<Props> {
               <Text>{todayWeatherData.windSpeed}</Text>
             </Cell>
           </RowView>
+        </View>
+      );
+    }
+    return null;
+  };
+
+  render() {
+    const {
+      theme,
+      summary,
+      navigator,
+      lastUpdate,
+      temperature,
+      loaded,
+      time,
+      icon,
+      daily
+    } = this.props;
+    const mTime = moment(time, "X");
+    return (
+      <View style={{ flex: 1 }}>
+        <Header
+          leftItem={{
+            icon: "window-close",
+            iconType: "material-community",
+            onPress: () => navigator.dismissModal()
+          }}
+          title={I18n.t("navigation.weather.title")}
+          backgroundColor={theme.colors.primary}
+          titleColor={theme.colors.highContrast}
+          itemsColor="white"
+        />
+        <ScrollView style={styles.container}>
+          <MainViewContainer>
+            <CurrentTempText>{loaded && temperature} °</CurrentTempText>
+            <View style={{ alignItems: "center" }}>
+              <Image
+                style={{ width: 140, height: 140, resizeMode: "contain" }}
+                source={icons[icon]}
+              />
+              <Summmary>{summary}</Summmary>
+            </View>
+          </MainViewContainer>
+          <RowView>
+            <Text>{mTime.format("dddd")}</Text>
+          </RowView>
+          {/* first row*/}
+          {this.renderDetailedInfo()}
           <Hr />
-          {remainingDays.map(dayWeather => (
-            <RowView key={dayWeather.time}>
-              <WeekDay>{moment(dayWeather.time, "X").format("dddd")}</WeekDay>
-              <SmallIcon source={icons[dayWeather.icon]} />
-              <Text>Min: 8.2 C </Text>
-              <Text />
-              <Text>75.0</Text>
-            </RowView>
-          ))}
+          {this.renderBottomView()}
         </ScrollView>
       </View>
     );
   }
 }
-
-WeatherView.navigatorStyle = { navBarHidden: true };
 
 const mapStateToProps = state => {
   let props = {

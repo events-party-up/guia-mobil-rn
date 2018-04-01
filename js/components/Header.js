@@ -19,8 +19,9 @@ import { Header as RNEHeader, Icon } from "react-native-elements";
 
 let STATUS_BAR_HEIGHT = Platform.OS === "ios" ? 35 : 40;
 if (Platform.OS === "android") {
-  STATUS_BAR_HEIGHT = 0;
+  STATUS_BAR_HEIGHT = 15;
 }
+
 const HEADER_HEIGHT =
   Platform.OS === "ios" ? 45 + STATUS_BAR_HEIGHT : 45 + STATUS_BAR_HEIGHT;
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -159,9 +160,9 @@ const Header = ({
   const rightComponent = (
     <View style={styles.row}>
       {extraItems &&
-        extraItems.map((item, idx) => (
+        extraItems.map((item) => (
           <TouchableOpacity
-            key={idx}
+            key={item.icon}
             onPress={item.onPress}
             style={styles.iconWrapper}
             activeOpacity={ICON_ACTIVE_OPACITY}
@@ -183,15 +184,16 @@ const Header = ({
       backgroundColor={backgroundColor}
       leftComponent={_leftItem}
       centerComponent={
-        <Text style={[{ color: titleColor, fontSize: 16, lineHeight: 32 }]}>
+        <Text style={[{ color: titleColor, fontSize: 14, lineHeight: 32 }]}>
           {title}
         </Text>
       }
       outerContainerStyles={{
         borderBottomWidth: 0,
-        paddingTop: STATUS_BAR_HEIGHT
+        paddingTop: STATUS_BAR_HEIGHT,
+        height: HEADER_HEIGHT
       }}
-      innerContainerStyles={{ alignItems: "center" }}
+      innerContainerStyles={{ alignItems: "center", height: 40 }}
       rightComponent={rightComponent}
     />
   );

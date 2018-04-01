@@ -1,6 +1,13 @@
-const lang = (state = "es", action) => {
+import * as actions from "../actions";
+
+const initalState = {
+  code: "es-ES",
+  name: "Español"
+};
+
+const lang = (state = initalState, action) => {
   switch (action.type) {
-    case "SET_ACTIVE_LANG":
+    case actions.SET_UI_LANG:
       return { code: action.code, name: action.name };
     default:
       return state;

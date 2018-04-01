@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { StyleSheet, ScrollView, FlatList, Text } from "react-native";
 import { connect } from "react-redux";
 import styled, { withTheme } from "styled-components";
@@ -8,14 +8,15 @@ import { itemsSorter } from "../utils";
 import Header from "../components/Header";
 import ItemThumb from "../components/ItemThumb";
 import { ICategory, IItem } from "../models";
-import { getItemsForCategoryId } from "../reducers";
+import { getItemsForCategoryId, getFavoriteItemsIds } from "../reducers";
 import SortButtons from "../components/SortButtons";
 import getRealm, { itemsToArray } from "../database";
 
 type Props = {
   navigator: Object,
   category: ICategory,
-  theme: Object
+  theme: Object,
+  favoritesIds: number[]
 };
 
 type State = {
@@ -30,7 +31,7 @@ const ViewContainer = styled.View`
   background-color: ${props => props.theme.colors.highContrast};
 `;
 
-class ItemsListView extends Component<Props, State> {
+class ItemsListView extends PureComponent<Props, State> {
   state = {
     sortIndex: 0,
     itemCount: 0,
@@ -66,7 +67,7 @@ class ItemsListView extends Component<Props, State> {
       categoryId={item.category_id}
       image={item.image}
       title={item.name}
-      isFavorite={false}
+      isFavorite={this.props.favoritesIds.indexOf(item.id) >= 0}
       coord={item.coord}
       onPress={() =>
         this.props.navigator.push({
@@ -78,14 +79,15 @@ class ItemsListView extends Component<Props, State> {
       }
     />
   );
+
   renderItemsGrid = () => {
     const { loading } = this.state;
     if (loading) {
       return <Text>Loading...</Text>;
     }
     const { sortIndex, items } = this.state;
-    const sorterFunc = itemsSorter[sortIndex]();
-    const sortedItems = items.sort(sorterFunc);
+    const sorterFunc = itemsSorter[sortIndex](this.props.userLocation);
+    const sortedItems = items.slice().sort(sorterFunc);
 
     return (
       <FlatList
@@ -126,6 +128,11 @@ class ItemsListView extends Component<Props, State> {
   }
 }
 
+const mapStateToProps = state => ({
+  favoritesIds: getFavoriteItemsIds(state),
+  userLocation: state.location.coords
+});
+
 ItemsListView.navigatorStyle = { navBarHidden: true };
 
 const styles = StyleSheet.create({
@@ -139,4 +146,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default withTheme(connect()(ItemsListView));
+export default withTheme(connect(mapStateToProps)(ItemsListView));

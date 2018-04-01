@@ -25,6 +25,8 @@ import WeekPicsCarrousel from "../components/WeekPicsCarrousel";
 import StyleSheet from "../components/common/F8StyleSheet";
 import getRealm, { itemsToArray } from "../database";
 import I18n from "../i18n";
+import * as actions from "../actions";
+import debounce from "lodash/debounce";
 
 const EAT_CATEGORIES_ID = 30;
 const SLEEP_CATEGORIES_ID = 1;
@@ -33,7 +35,8 @@ const SERVICES_CATEGORIES_ID = 46;
 
 type Props = {
   navigator: Object,
-  featuredIds: number[]
+  featuredIds: number[],
+  theme: Object
 };
 
 type State = {
@@ -91,11 +94,19 @@ class HomeView extends React.Component<Props, State> {
     super(props);
     this.loadFeaturedItems(this.props.featuredIds);
   }
+
   state: State = {
     featuredItems: [],
     loading: true
   };
-
+  componentDidMount() {
+    this.props.dispatch(actions.categoriesUpdate());
+    this.props.dispatch(actions.itemsUpdate());
+    this.props.dispatch(actions.itemsLoadFeatured());
+    this.props.dispatch(actions.weekPicsUpdate());
+    this.props.dispatch(actions.reviewsUpdate());
+    this.props.dispatch(actions.charsUpdate());
+  }
   componentWillReceiveProps(nextProps: Props) {
     this.loadFeaturedItems(nextProps.featuredIds);
   }
@@ -121,6 +132,10 @@ class HomeView extends React.Component<Props, State> {
     this.props.navigator.push({ screen: "animus.MapView" });
   };
 
+  navigateToFavorites = () => {
+    this.props.navigator.push({ screen: "animus.FavoritesView" });
+  };
+
   navigateToCategory = id => {
     this.props.navigator.push({
       screen: "animus.CategoriesList",
@@ -128,9 +143,16 @@ class HomeView extends React.Component<Props, State> {
     });
   };
 
+  navigateToNotifications = () => {
+    this.props.navigator.showModal({
+      screen: "animus.NotificationsView"
+    });
+  };
+
   renderFeaturedList = () => {
-    const { featuredItems, isLoading } = this.state;
-    if (isLoading) {
+    const { featuredItems, loading } = this.state;
+
+    if (loading) {
       return <Text>Cargando...</Text>;
     }
     return (
@@ -142,7 +164,7 @@ class HomeView extends React.Component<Props, State> {
             categoryId={item.category_id}
             image={item.image}
             title={item.name}
-            isFavorite={item.isFavourite}
+            isFavorite={item.isFavorite}
             stars={item.rating}
             coord={item.coord}
             onPress={() =>
@@ -161,28 +183,33 @@ class HomeView extends React.Component<Props, State> {
 
   renderCategoriesPreviews = () => {
     const categories = [
-      {
-        id: SLEEP_CATEGORIES_ID,
-        name: "Alojamientos",
-        tab: "SleepTab",
-        image: require("./img/cover-hotel.png")
-      },
+      ,
       {
         id: EAT_CATEGORIES_ID,
         name: "Gastronomia",
         tab: "EatTab",
+        tabIdx: 1,
         image: require("./img/cover-cake.png")
       },
       {
+        id: SLEEP_CATEGORIES_ID,
+        name: "Alojamientos",
+        tab: "SleepTab",
+        tabIdx: 2,
+        image: require("./img/cover-hotel.png")
+      },
+      {
         id: TODO_CATEGORIES_ID,
-        name: "Experiencias",
+        name: "Actividades",
         tab: "TodoTab",
+        tabIdx: 3,
         image: require("./img/cover-gondolas.png")
       },
       {
         id: SERVICES_CATEGORIES_ID,
         name: "Servicios",
         tab: "ServicesTab",
+        tabIdx: 4,
         image: require("./img/cover-gondolas.png")
       }
     ];
@@ -199,7 +226,11 @@ class HomeView extends React.Component<Props, State> {
         {categories.map(category => (
           <CategoryCard
             key={category.tab}
-            onPress={() => this.navigateToCategory(category.id)}
+            onPress={debounce(
+              () =>
+                this.props.navigator.switchToTab({ tabIndex: category.tabIdx }),
+              1000
+            )}
             {...category}
           />
         ))}
@@ -245,12 +276,12 @@ class HomeView extends React.Component<Props, State> {
             {
               icon: "notifications-none",
               iconType: "material-icons",
-              onPress: this.navigateToMap
+              onPress: this.navigateToNotifications
             },
             {
               icon: "favorite-border",
               iconType: "material-icons",
-              onPress: this.navigateToMap
+              onPress: this.navigateToFavorites
             }
           ]}
           itemsColor={theme.colors.primary}
@@ -276,12 +307,13 @@ class HomeView extends React.Component<Props, State> {
             {this.renderFeaturedList()}
           </View>
 
-          {showWeekPics && (
-            <WeekImagesContainer>
-              <WeekImagesHeader>Fotos de la semana</WeekImagesHeader>
-              <WeekPicsCarrousel pictures={weekPics} />
-            </WeekImagesContainer>
-          )}
+          {showWeekPics &&
+            weekPics.length > 0 && (
+              <WeekImagesContainer>
+                <WeekImagesHeader>Fotos de la semana</WeekImagesHeader>
+                <WeekPicsCarrousel pictures={weekPics} />
+              </WeekImagesContainer>
+            )}
         </ScrollView>
       </View>
     );

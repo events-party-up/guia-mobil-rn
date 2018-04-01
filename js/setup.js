@@ -20,6 +20,7 @@ import * as actions from "./actions";
 
 function setup() {
   MapboxGL.setAccessToken(config.get("MAPBOX_ACCESS_TOKEN"));
+
   Promise.all([
     configureStore(() => {
       // rehydration callback (after async compatibility and persistStore)
@@ -41,14 +42,69 @@ function setup() {
       );
 
       registerScreens(store, AppProvider);
-      Navigation.startSingleScreenApp({
-        screen: {
-          title: "Screen One",
-          screen: "animus.Home", // unique ID registered with Navigation.registerScreen,
-          navigatorStyle: {
-            navBarHidden: true
+      Navigation.startTabBasedApp({
+        tabs: [
+          {
+            label: "Home",
+            title: "Home",
+            icon: require("./views/img/tab-home-icon.png"),
+            screen: "animus.Home", // unique ID registered with Navigation.registerScreen,
+            navigatorStyle: {
+              navBarHidden: true
+            },
+            navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
           },
-          navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+          {
+            label: "Comer",
+            title: "Comer",
+            icon: require("./views/img/tab-eat-icon.png"),
+            screen: "animus.CategoriesList", // unique ID registered with Navigation.registerScreen,
+            navigatorStyle: {
+              navBarHidden: true
+            },
+            passProps: { id: 30 },
+            navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+          },
+          {
+            label: "Dormir",
+            title: "Dormir",
+            icon: require("./views/img/tab-sleep-icon.png"),
+            screen: "animus.CategoriesList", // unique ID registered with Navigation.registerScreen,
+            navigatorStyle: {
+              navBarHidden: true
+            },
+            passProps: { id: 1 },
+            navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+          },
+          {
+            label: "Actividades",
+            title: "Actividades",
+            icon: require("./views/img/tab-activities-icon.png"),
+            screen: "animus.CategoriesList", // unique ID registered with Navigation.registerScreen,
+            navigatorStyle: {
+              navBarHidden: true
+            },
+            passProps: { id: 36 },
+            navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+          },
+          {
+            label: "Servicios",
+            title: "Servicios",
+            icon: require("./views/img/tab-services-icon.png"),
+            screen: "animus.CategoriesList", // unique ID registered with Navigation.registerScreen,
+            navigatorStyle: {
+              navBarHidden: true
+            },
+            passProps: { id: 46 },
+            navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+          }
+        ],
+        appStyle: {
+          tabBarSelectedButtonColor: "#0a71b3",
+          tabBarButtonColor: "#0a71b3",
+          forceTitlesDisplay: true,
+          tabFontSize: 10,
+          selectTabFontSize: 10
         }
       });
     }
@@ -60,41 +116,30 @@ function setup() {
         const { coords } = pos;
         store.dispatch(actions.userLocationUpdate(coords));
       },
-      error => {},
+      () => {},
       geolocationSettings
     );
   };
   const setupLocale = store => {
     // configure the app locale from the redux store
     I18n.locale = store.getState().lang.code;
-    store.subscribe(() => {
-      I18n.locale = store.getState().lang.code;
-    });
-  };
-  const onTokenReceived = ({ token, os }: { token: string, os: string }) => {
-    console.log("TOKEN PUSH:", token);
   };
 
   const onNotification = notification => {
-    console.log("NOTIFICATION:", notification);
-
-    // process the notification
+    console.log("NOTIFICATION:", notification); // eslint-disable-line
 
     // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
     notification.finish(PushNotificationIOS.FetchResult.NoData);
   };
+
   const setupPush = (store: Store) => {
-    console.log("Setting push notifications");
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
-      onRegister: onTokenReceived,
-
-      // (required) Called when a remote or local notification is opened or received
+      onRegister: ({ token }) => {
+        store.dispatch(actions.registerDeviceToken(token));
+      },
       onNotification,
-
-      // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
-      senderID: "YOUR GCM SENDER ID",
-
+      senderID: config.GCM_SENDER_ID,
       // IOS ONLY (optional): default: all - Permissions to register.
       permissions: {
         alert: true,

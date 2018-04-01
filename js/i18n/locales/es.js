@@ -6,6 +6,9 @@ export default {
   navigation: {
     settings: {
       title: "Configuración"
+    },
+    notifications: {
+      title: "Notificaciones"
     }
   }
 };

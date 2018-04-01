@@ -77,12 +77,14 @@ export default items;
 
 export const getItems = (state: State) => {
   return Object.keys(state.byId).reduce((acc, id) => {
-    acc.push(state.byId[parseInt(id, 10)]);
+    const item = state.byId[parseInt(id, 10)];
+    acc.push(item);
     return acc;
   }, []);
 };
 
 export const getFeaturedItemIds = (state: State) => state.featuredIds;
+export const getFavoriteItemsIds = (state: State) => state.favoritesIds;
 
 export function isItemFavourite(state: State, itemId: number) {
   return state.favoritesIds.indexOf(itemId) >= 0;

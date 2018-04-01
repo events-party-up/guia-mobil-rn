@@ -55,7 +55,7 @@ class CategoriesList extends Component<Props> {
 
   renderRow = category => (
     <ListItem
-      underlayColor="#939393"
+      underlayColor="lightgray"
       onPress={() => this.navigateTo(category)}
       key={category.id}
       title={category.name}
@@ -64,14 +64,15 @@ class CategoriesList extends Component<Props> {
   );
 
   render() {
-    const { categoryName, categories, navigator, theme } = this.props;
+    const { categoryName, categories, navigator, theme, isRoot } = this.props;
     return (
       <View style={styles.container}>
         <Header
           title={categoryName}
           navItem={{
             back: true,
-            onPress: () => navigator.pop()
+            onPress: () =>
+              isRoot ? navigator.switchToTab({ tabIndex: 0 }) : navigator.pop()
           }}
           backgroundColor={theme.colors.primary}
           titleColor={theme.colors.highContrast}

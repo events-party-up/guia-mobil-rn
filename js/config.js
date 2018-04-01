@@ -8,15 +8,15 @@ export const defaultLang = "es";
 
 export const availableLangs = [
   {
-    code: "en",
+    code: "en-EN",
     name: "English"
   },
   {
-    code: "es",
+    code: "es-ES",
     name: "Español"
   },
   {
-    code: "pt",
+    code: "pt-PT",
     name: "Portuguese"
   }
 ];

@@ -6,7 +6,7 @@ import { withTheme } from "styled-components";
 import { connect } from "react-redux";
 import Header from "../../components/Header";
 import { availableLangs } from "../../config";
-import I18n from "../../i18n";
+import * as actions from "../../actions";
 
 type Props = {
   theme: Object,
@@ -45,7 +45,7 @@ const LanguageSelectorView = ({
               type: "ionicon",
               color: theme.colors.primary
             }}
-            onPress={() => setActiveLang(lang)}
+            onPress={() => setActiveLang(lang.code, lang.name)}
           />
         ))}
       </List>
@@ -60,13 +60,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setActiveLang({ code, name }) {
-    I18n.locale = "code";
-    dispatch({
-      type: "SET_ACTIVE_LANG",
-      code,
-      name
-    });
+  setActiveLang(code, name) {
+    dispatch(actions.setUILang(code, name));
   }
 });
 

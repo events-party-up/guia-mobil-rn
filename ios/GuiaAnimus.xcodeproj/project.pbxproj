@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -36,9 +35,6 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8619E59C20462EBA00A8CF66 /* guide-v01.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8619E59B20462EBA00A8CF66 /* guide-v01.ttf */; };
 		862DBED02054B70700B71271 /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 862DBECB2054B6E400B71271 /* libReactNativeNavigation.a */; };
-		862DBEDF2054CCCA00B71271 /* libRCTMGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 862DBEDE2054CCA800B71271 /* libRCTMGL.a */; };
-		862DBEE32054CF2000B71271 /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 862DBEE22054CF2000B71271 /* Mapbox.framework */; };
-		862DBEE42054CF2000B71271 /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 862DBEE22054CF2000B71271 /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		86665B162033772C0072FEC1 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86665AF9203377100072FEC1 /* libRCTPushNotification.a */; };
 		8666AC9F2053620F00BB65C3 /* libMerryPhotoViewer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8666AC6B205361C600BB65C3 /* libMerryPhotoViewer.a */; };
 		8666ACB7205367F700BB65C3 /* Nunito-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8666ACA92053678A00BB65C3 /* Nunito-Italic.ttf */; };
@@ -66,6 +62,7 @@
 		86F54B4E2034EFBC00B036AB /* libRCTFBLogin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F54B4D2034EF9500B036AB /* libRCTFBLogin.a */; };
 		8781E6FB75A0442ABA17D431 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B1FC2E46EC8F40CFBC785C93 /* Entypo.ttf */; };
 		9FA4C556E25F4126A184B65E /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C50F78D09A45D98CC8E564 /* libRNI18n.a */; };
+		A6196FE6CA41087E68431534 /* libPods-GuiaAnimus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCBEDBBF4EE73498E3A208DE /* libPods-GuiaAnimus.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B843C4B5E8B143B39902ED08 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13831D3A4CFB45B1907D0BD7 /* libRNDeviceInfo.a */; };
 		FA4340A4CBE24E89A301E19E /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 562CD93D14CC469489A413DA /* SimpleLineIcons.ttf */; };
@@ -296,13 +293,6 @@
 			remoteGlobalIDString = D8AFADBD1BEE6F3F00A4592D;
 			remoteInfo = ReactNativeNavigation;
 		};
-		862DBEDD2054CCA800B71271 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 862DBED92054CCA700B71271 /* RCTMGL.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C4D1443D1F4E16F600396F26;
-			remoteInfo = RCTMGL;
-		};
 		86665AF8203377100072FEC1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 86665AE62033770F0072FEC1 /* RCTPushNotification.xcodeproj */;
@@ -426,7 +416,6 @@
 			files = (
 				8666AD2220536DAA00BB65C3 /* NYTPhotoViewer.framework in Embed Frameworks */,
 				8666AD26205372E200BB65C3 /* FLAnimatedImage.framework in Embed Frameworks */,
-				862DBEE42054CF2000B71271 /* Mapbox.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -461,17 +450,17 @@
 		25C50F78D09A45D98CC8E564 /* libRNI18n.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNI18n.a; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E6DBDC3582647E1A0B4F7FF /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		469F81A3D582C94F17E8180A /* Pods-GuiaAnimus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GuiaAnimus.release.xcconfig"; path = "Pods/Target Support Files/Pods-GuiaAnimus/Pods-GuiaAnimus.release.xcconfig"; sourceTree = "<group>"; };
 		4B9E4F47A7A04BBCA61D1781 /* libRealmReact.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRealmReact.a; sourceTree = "<group>"; };
 		4CFB8B3CDA96468AB597EFDE /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
 		562CD93D14CC469489A413DA /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		66BE09790684440E9BAEBD99 /* RNI18n.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
+		68FA80530802D8037F56C38A /* Pods-GuiaAnimus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GuiaAnimus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GuiaAnimus/Pods-GuiaAnimus.debug.xcconfig"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8619E59B20462EBA00A8CF66 /* guide-v01.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "guide-v01.ttf"; sourceTree = "<group>"; };
 		862DBE9C2054B6E300B71271 /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
-		862DBED92054CCA700B71271 /* RCTMGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTMGL.xcodeproj; path = "../node_modules/@mapbox/react-native-mapbox-gl/ios/RCTMGL.xcodeproj"; sourceTree = "<group>"; };
-		862DBEE22054CF2000B71271 /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mapbox.framework; path = "../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework"; sourceTree = "<group>"; };
 		86665AE62033770F0072FEC1 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		86665B17203378DF0072FEC1 /* GuiaAnimus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = GuiaAnimus.entitlements; path = GuiaAnimus/GuiaAnimus.entitlements; sourceTree = "<group>"; };
 		8666AC66205361C500BB65C3 /* MerryPhotoViewer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MerryPhotoViewer.xcodeproj; path = "../node_modules/@merryjs/photo-viewer/ios/MerryPhotoViewer.xcodeproj"; sourceTree = "<group>"; };
@@ -505,6 +494,7 @@
 		B3F212B87809498391483950 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		BFE697BAAE1C4BCA8A2B5E93 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		D091A1E4ED1747A7B8A1A2DF /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		DCBEDBBF4EE73498E3A208DE /* libPods-GuiaAnimus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GuiaAnimus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4C92291332D4846993A99DC /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		F6E1E45487734FBF845A2EDC /* RealmReact.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RealmReact.xcodeproj; path = "../node_modules/realm/react-native/ios/RealmReact.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -514,7 +504,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				862DBEDF2054CCCA00B71271 /* libRCTMGL.a in Frameworks */,
 				862DBED02054B70700B71271 /* libReactNativeNavigation.a in Frameworks */,
 				8666AD25205372E200BB65C3 /* FLAnimatedImage.framework in Frameworks */,
 				8666AC9F2053620F00BB65C3 /* libMerryPhotoViewer.a in Frameworks */,
@@ -530,7 +519,6 @@
 				86F54B472034EEDC00B036AB /* FBSDKLoginKit.framework in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
-				862DBEE32054CF2000B71271 /* Mapbox.framework in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
@@ -544,6 +532,7 @@
 				435BDDD2EE8449999E3FB8C6 /* libc++.tbd in Frameworks */,
 				146D756D86484B4ABDBC9525 /* libz.tbd in Frameworks */,
 				9FA4C556E25F4126A184B65E /* libRNI18n.a in Frameworks */,
+				A6196FE6CA41087E68431534 /* libPods-GuiaAnimus.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,8 +665,18 @@
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				9A87F4AA26F943B4926E5E94 /* libc++.tbd */,
 				2E6DBDC3582647E1A0B4F7FF /* libz.tbd */,
+				DCBEDBBF4EE73498E3A208DE /* libPods-GuiaAnimus.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5DF1518C9581D473AE948049 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				68FA80530802D8037F56C38A /* Pods-GuiaAnimus.debug.xcconfig */,
+				469F81A3D582C94F17E8180A /* Pods-GuiaAnimus.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
@@ -701,7 +700,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				862DBED92054CCA700B71271 /* RCTMGL.xcodeproj */,
 				862DBE9C2054B6E300B71271 /* ReactNativeNavigation.xcodeproj */,
 				8666AC66205361C500BB65C3 /* MerryPhotoViewer.xcodeproj */,
 				86F54B482034EF9500B036AB /* RCTFBLogin.xcodeproj */,
@@ -738,7 +736,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				862DBEE22054CF2000B71271 /* Mapbox.framework */,
 				8666AD1B20536CC600BB65C3 /* NYTPhotoViewer.framework */,
 				8666AD1C20536CC700BB65C3 /* NYTPhotoViewerCore.framework */,
 				8666AD1820536CB700BB65C3 /* FLAnimatedImage.framework */,
@@ -764,6 +761,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				B1DD24088691441E80FC9507 /* Resources */,
 				86709E452030979B007450E8 /* Recovered References */,
+				5DF1518C9581D473AE948049 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -799,14 +797,6 @@
 			isa = PBXGroup;
 			children = (
 				862DBECB2054B6E400B71271 /* libReactNativeNavigation.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		862DBEDA2054CCA700B71271 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				862DBEDE2054CCA800B71271 /* libRCTMGL.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -899,12 +889,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "GuiaAnimus" */;
 			buildPhases = (
+				EA541B714DC39D27F86D029B /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				8618C9AD204F5E8700878409 /* Embed Frameworks */,
-				86CFF4F220307E1600FC7BD4 /* ShellScript */,
+				A1C3A03DEB841450B7532908 /* [CP] Embed Pods Frameworks */,
+				346567F543A8211A38FBD0BA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -977,10 +969,6 @@
 				{
 					ProductGroup = 78C398B11ACF4ADC00677621 /* Products */;
 					ProjectRef = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
-				},
-				{
-					ProductGroup = 862DBEDA2054CCA700B71271 /* Products */;
-					ProjectRef = 862DBED92054CCA700B71271 /* RCTMGL.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
@@ -1263,13 +1251,6 @@
 			remoteRef = 862DBECA2054B6E400B71271 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		862DBEDE2054CCA800B71271 /* libRCTMGL.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRCTMGL.a;
-			remoteRef = 862DBEDD2054CCA800B71271 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		86665AF9203377100072FEC1 /* libRCTPushNotification.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1437,18 +1418,56 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		86CFF4F220307E1600FC7BD4 /* ShellScript */ = {
+		346567F543A8211A38FBD0BA /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework/strip-frameworks.sh\"";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GuiaAnimus/Pods-GuiaAnimus-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A1C3A03DEB841450B7532908 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-GuiaAnimus/Pods-GuiaAnimus-frameworks.sh",
+				"${PODS_ROOT}/../../node_modules/@mapbox/react-native-mapbox-gl/ios/Mapbox.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GuiaAnimus/Pods-GuiaAnimus-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EA541B714DC39D27F86D029B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GuiaAnimus-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1479,6 +1498,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68FA80530802D8037F56C38A /* Pods-GuiaAnimus.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = GuiaAnimus/GuiaAnimus.entitlements;
@@ -1528,6 +1548,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 469F81A3D582C94F17E8180A /* Pods-GuiaAnimus.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = GuiaAnimus/GuiaAnimus.entitlements;

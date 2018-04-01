@@ -27,12 +27,12 @@
 {
   
   NSURL *jsCodeLocation;
-#ifdef DEBUG
-  //  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.bundle?platform=ios&dev=true"];
+//#ifdef DEBUG
+//    jsCodeLocation = [NSURL URLWithString:@"http://143.169.153.202:8081/index.bundle?platform=ios&dev=true"];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-#else
-  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#endif
+//#else
+//  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+//#endif
   
   
   // **********************************************

@@ -16,7 +16,6 @@ import PhotoView from "@merryjs/photo-viewer";
 import { Icon } from "react-native-elements";
 import { withTheme } from "styled-components";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
-
 import * as actions from "../actions";
 import { IItem, ICategory, IReview, IChar } from "../models";
 import Header from "../components/Header";
@@ -40,7 +39,7 @@ import { DEFAULT_CENTER_COORDINATE, getImageUrl } from "../utils";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
-
+const STICKY_HEADER_HEIGHT = Platform.OS === "ios" ? 70 : 56;
 const lakeImage = require("../components/img/lake.jpeg");
 
 interface Props extends IItem {
@@ -175,13 +174,13 @@ class ItemDetailsView extends Component<Props, State> {
         <ParallaxScrollView
           backgroundColor={theme.colors.primary}
           contentBackgroundColor="white"
-          stickyHeaderHeight={70}
+          stickyHeaderHeight={STICKY_HEADER_HEIGHT}
           backgroundSpeed={10}
           renderFixedHeader={() => this.renderHeader()}
           renderStickyHeader={() => (
             <View
               style={{
-                height: 70,
+                height: STICKY_HEADER_HEIGHT,
                 backgroundColor: theme.colors.primary
               }}
             />
@@ -198,24 +197,6 @@ class ItemDetailsView extends Component<Props, State> {
             />
           )}
           parallaxHeaderHeight={IMAGE_HEIGHT}
-          // renderBackground={() => {
-          //   return (
-          //     <Animated.Image
-          //       key="parallax-header"
-          //       source={
-          //         image && image.length
-          //           ? {
-          //               uri: getImageUrl(image)
-          //             }
-          //           : lakeImage
-          //       }
-          //       style={{
-          //         width: WINDOW_WIDTH,
-          //         height: IMAGE_HEIGHT
-          //       }}
-          //     />
-          //   );
-          // }}
         >
           <CategoriesBreakdrum categoryChain={this.props.categoryChain} />
           <Text style={styles.title}> {name.toUpperCase()}</Text>

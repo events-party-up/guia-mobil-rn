@@ -1,62 +1,61 @@
 package com.guiaanimus;
 
-import android.app.Application;
+import android.support.annotation.Nullable;
 
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.crashlytics.android.Crashlytics;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
-import com.facebook.react.ReactApplication;
-import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
-import com.reactnativenavigation.NavigationReactPackage;
-import com.magus.fblogin.FacebookLoginPackage;
-import com.merryjs.PhotoViewer.MerryPhotoViewPackage;
-import com.mapbox.rctmgl.RCTMGLPackage;
-import io.fabric.sdk.android.Fabric;
-import io.realm.react.RealmReactPackage;
-import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.magus.fblogin.FacebookLoginPackage;
 import com.mapbox.rctmgl.RCTMGLPackage;
+import com.merryjs.PhotoViewer.MerryPhotoViewPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.reactnativenavigation.NavigationApplication;
+import com.reactnativenavigation.bridge.NavigationReactPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+import io.fabric.sdk.android.Fabric;
+import io.realm.react.RealmReactPackage;
 
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-    @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
-    }
+public class MainApplication extends NavigationApplication  {
 
-    @Override
-    protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
+
+  @Override
+  public boolean isDebug() {
+    return BuildConfig.DEBUG;
+  }
+
+  @Nullable
+  @Override
+  public List<ReactPackage> createAdditionalReactPackages() {
+    return getPackages();
+  }
+
+
+  protected List<ReactPackage> getPackages() {
+    // Add additional packages you require here
+    // No need to add RnnPackage and MainReactPackage
+    return Arrays.<ReactPackage>asList(
             new RNI18nPackage(),
             new NavigationReactPackage(),
             new FacebookLoginPackage(),
             new MerryPhotoViewPackage(),
-            new RCTMGLPackage(),
             new RealmReactPackage(),
             new RNDeviceInfo(),
             new ReactNativePushNotificationPackage(),
             new RCTMGLPackage(),
-            new VectorIconsPackage()
-      );
-    }
-
-    @Override
-    protected String getJSMainModuleName() {
-      return "index";
-    }
-  };
+            new VectorIconsPackage(),
+            new MerryPhotoViewPackage()
+    );
+  }
 
   @Override
-  public ReactNativeHost getReactNativeHost() {
-    return mReactNativeHost;
+  public String getJSMainModuleName() {
+    return "index";
   }
 
   @Override

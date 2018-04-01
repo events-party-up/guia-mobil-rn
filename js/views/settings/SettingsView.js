@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, Platform } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import { withTheme } from "styled-components";
 import Header from "../../components/Header";
@@ -49,8 +49,13 @@ const SettingsView = ({
           hideChevron
           switched
           title="Notificaciones"
+          switchThumbTintColor={
+            Platform.OS !== "ios" ? theme.colors.primary : null
+          }
           onSwitch={toggleNotifications}
-          switchOnTintColor={theme.colors.primary}
+          switchOnTintColor={
+            Platform.OS === "ios" ? theme.colors.primary : null
+          }
         />
       </List>
 

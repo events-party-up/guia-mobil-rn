@@ -26,7 +26,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 async function configureStore(onComplete: () => void) {
   const store = Reactotron.createStore(
     persistedReducer,
-    applyMiddleware(apiCallMiddleware(apiClient), thunk)
+    applyMiddleware(thunk, apiCallMiddleware(apiClient))
   );
 
   persistStore(store, null, onComplete);

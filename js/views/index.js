@@ -8,6 +8,8 @@ import ItemsListView from "./ItemsListView";
 import SettingsView from "./settings/SettingsView";
 import LanguageSelectorView from "./settings/LanguageSelectorView";
 import SettingsContentView from "./settings/SettingsContentView";
+import FavoritesView from "./FavoritesView";
+import NotificationsView from "./NotificationsView";
 
 import MapView from "./Map/MapView";
 
@@ -61,6 +63,18 @@ export function registerScreens(store, Provider) {
   Navigation.registerComponent(
     "animus.MapView",
     () => MapView,
+    store,
+    Provider
+  );
+  Navigation.registerComponent(
+    "animus.FavoritesView",
+    () => FavoritesView,
+    store,
+    Provider
+  );
+  Navigation.registerComponent(
+    "animus.NotificationsView",
+    () => NotificationsView,
     store,
     Provider
   );

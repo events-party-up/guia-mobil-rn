@@ -41,21 +41,23 @@ export const getImageUrl = (image: string) =>
   `https://bariloche.guiasmoviles.com/uploads/${image}`;
 
 export const distanceToUser = (item: IItem, userLocation: number[]) => {
+  console.log(item);
+  debugger;
   return fromMaps.computeDistanceBetweenPoints(item.coord, userLocation);
 };
 
 export const SORT_AZ = 0;
 export const SORT_POPULAR = 1;
-export const SORT_PRICE = 2;
-export const SORT_DISTANCE = 3;
+export const SORT_PRICE = 3;
+export const SORT_DISTANCE = 2;
 
 export const itemsSorter = {
   [SORT_AZ]: () => (item1, item2) =>
     item1.name.toLowerCase().localeCompare(item2.name.toLowerCase()),
 
   [SORT_POPULAR]: () => (item1, item2) => item1.rating - item2.rating,
-  [SORT_PRICE]: () => (item1, item2) => item1.price - item2.price,
 
+  [SORT_PRICE]: () => (item1, item2) => item1.price - item2.price,
   [SORT_DISTANCE]: userLocation => (item1, item2) =>
     distanceToUser(item1, userLocation) < distanceToUser(item2, userLocation)
 };

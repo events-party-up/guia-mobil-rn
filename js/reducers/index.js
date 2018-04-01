@@ -13,7 +13,7 @@ import galleries, * as fromGalleries from "./galleries";
 import lang from "./lang";
 import location from "./location";
 
-import { ICategory, IItem } from "../models";
+import { ICategory } from "../models";
 
 export default combineReducers({
   categories,
@@ -89,6 +89,10 @@ export function getFilteredItems(state: State) {
 export function isItemFavourite(state: State, itemId: number) {
   return fromItems.isItemFavourite(state.items, itemId);
 }
+export function getFavoriteItemsIds(state: State) {
+  return fromItems.getFavoriteItemsIds(state.items);
+}
+
 export function getReviewsForItemId(state: State, itemId: number) {
   return fromReviews.getReviewsForItemId(state.reviews, itemId);
 }

@@ -18,7 +18,8 @@ const ItemSchema = {
     image: "string?",
     rating: "float?",
     url: "string?",
-    chars: "int?[]"
+    chars: "int?[]",
+    isFavorite: "bool?"
   }
 };
 
