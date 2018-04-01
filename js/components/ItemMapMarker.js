@@ -22,8 +22,7 @@ const IconText = styled.Text`
   color: ${props => (props.isActive ? props.theme.colors.primary : "white")};
   margin-top: 10px;
   border-radius: 3px;
-  background: ${props =>
-    props.isActive ? "white" : props.theme.colors.primary};
+  background:  transparent;
 `;
 
 const ItemMapMarker = ({ icon, isActive = false }: Props) => (

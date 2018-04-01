@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   Linking,
   Platform,
-  Share
+  Share,
+  Image
 } from "react-native";
 import { connect } from "react-redux";
 import PhotoView from "@merryjs/photo-viewer";
@@ -35,7 +36,11 @@ import ItemInfoBlock from "../components/ItemInfoBlock";
 import ImageGalleryPreview from "../components/ImageGalleryPreview";
 import type { Gallery } from "../reducers/galleries";
 import { toLatLong, getAppleMapsUri, getGoogleMapsUri } from "../utils/maps";
-import { DEFAULT_CENTER_COORDINATE, getImageUrl } from "../utils";
+import {
+  DEFAULT_CENTER_COORDINATE,
+  getImageUrl,
+  toggleFavorite
+} from "../utils";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
@@ -81,6 +86,7 @@ class ItemDetailsView extends Component<Props, State> {
       );
     }
   };
+
   shareItemHandler = () => {
     const { name } = this.props;
     Share.share(
@@ -105,7 +111,7 @@ class ItemDetailsView extends Component<Props, State> {
   // };
 
   toggleFavourite = id => {
-    this.props.dispatch(actions.toggleFavourite(id));
+    toggleFavorite(this.props.dispatch, id, this.props.isFavorite);
   };
 
   showRouteHandler = () => {
@@ -209,7 +215,7 @@ class ItemDetailsView extends Component<Props, State> {
             <Text style={styles.description}> {description} </Text>
           </View>
           <View style={styles.mapWrapper}>
-            <MapPreview marker={coord} id={id} />
+            {/*<MapPreview marker={coord} id={id} />*/}
           </View>
           <View style={styles.actionsContainer}>
             <TouchableOpacity style={styles.actionWrapper}>

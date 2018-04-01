@@ -12,7 +12,7 @@ import { ICategory } from "../models";
 import { getCategoryWithId } from "../reducers";
 import * as actions from "../actions";
 import { computeDistanceBetweenPoints } from "../utils/maps";
-import { DEFAULT_CENTER_COORDINATE } from "../utils";
+import { DEFAULT_CENTER_COORDINATE, toggleFavorite } from "../utils";
 
 type ThumbType = "small" | "large";
 
@@ -70,10 +70,6 @@ class ItemThumb extends React.Component<Props> {
           imageWidth: WIDTH_SMALL,
           imageHeight: WIDTH_SMALL * IMAGE_ASPECT_RATIO_SMALL
         };
-
-  toggleFavourite = id => {
-    this.props.dispatch(actions.toggleFavourite(id));
-  };
 
   renderTitle = (type: ThumbType, title: string) => {
     const titleLineLimit = type === "large" ? NUMLINES_LARGE : NUMLINES_SMALL;
@@ -134,7 +130,7 @@ class ItemThumb extends React.Component<Props> {
           {this.renderImage(image, imageWidth, imageHeight)}
           <TouchableOpacity
             style={styles.favouriteToggle}
-            onPress={() => this.toggleFavourite(id)}
+            onPress={() => toggleFavorite(this.props.dispatch, id, isFavorite)}
           >
             <Icon
               name={isFavorite ? "heart" : "heart-outline"}

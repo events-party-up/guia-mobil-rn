@@ -45,17 +45,7 @@ export const itemsLoadFeatured = options => ({
   options
 });
 
-export const toggleFavourite = id => {
-  return dispatch => {
-    getRealm().then(realm => {
-      const item = realm.objects("Item").filtered(`id == ${id}`)[0];
-      realm.write(() => {
-        item.isFavorite = !item.isFavorite;
-      });
-      return {
-        type: ITEM_TOGGLE_FAVOURITE,
-        payload: id
-      };
-    });
-  };
-};
+export const toggleFavourite = id => ({
+  type: ITEM_TOGGLE_FAVOURITE,
+  payload: id
+});

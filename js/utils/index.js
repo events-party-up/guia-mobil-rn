@@ -2,6 +2,7 @@
 import { Platform } from "react-native";
 import { IItem } from "../models";
 import * as fromMaps from "./maps";
+export * from "./toggleFavorite";
 
 export * from "./maps";
 

@@ -19,6 +19,7 @@ const WeekPicsCarrousel = ({ pictures }) => {
         <View style={styles.wrapper}>
             <Swiper
                 height={HEIGHT}
+                width={WIDTH}
                 dot={
                     <View
                         style={{

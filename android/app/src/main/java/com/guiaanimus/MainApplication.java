@@ -3,6 +3,7 @@ package com.guiaanimus;
 import android.support.annotation.Nullable;
 
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.azendoo.reactnativesnackbar.SnackbarPackage; 
 import com.crashlytics.android.Crashlytics;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.facebook.react.ReactPackage;
@@ -49,7 +50,8 @@ public class MainApplication extends NavigationApplication  {
             new ReactNativePushNotificationPackage(),
             new RCTMGLPackage(),
             new VectorIconsPackage(),
-            new MerryPhotoViewPackage()
+            new MerryPhotoViewPackage(),
+            new SnackbarPackage()
     );
   }
 

@@ -18,6 +18,7 @@ const ImageGalleryPreview = ({
   return (
     <Swiper
       height={IMAGE_HEIGHT}
+      width={WINDOW_WIDTH}
       dotStyle={styles.dotStyle}
       loop={false}
       activeDotStyle={styles.activeDotStyle}

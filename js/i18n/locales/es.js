@@ -10,5 +10,15 @@ export default {
     notifications: {
       title: "Notificaciones"
     }
+  },
+  items: {
+    save: {
+      title: "Item guardado",
+      undo: "Deshacer"
+    },
+    unsave: {
+      title: "Item removido",
+      undo: "Deshacer"
+    }
   }
 };

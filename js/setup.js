@@ -33,8 +33,8 @@ function setup() {
     ([store, realm]) => {
       setupPush(store);
       setupLocale(store);
-      getUserLocation(store);
-      Reactotron.connect();
+
+      // Reactotron.connect();
       const AppProvider = ({ children, ...props }) => (
         <Provider {...props}>
           <ThemeProvider theme={theme}>{children}</ThemeProvider>
@@ -110,16 +110,6 @@ function setup() {
     }
   );
 
-  const getUserLocation = store => {
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const { coords } = pos;
-        store.dispatch(actions.userLocationUpdate(coords));
-      },
-      () => {},
-      geolocationSettings
-    );
-  };
   const setupLocale = store => {
     // configure the app locale from the redux store
     I18n.locale = store.getState().lang.code;

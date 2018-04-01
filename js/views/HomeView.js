@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import {
   View,
   Button,
@@ -17,7 +18,7 @@ import { getImageUrl } from "../utils";
 import { FacebookLoginButton } from "../components/FacebookLoginButton";
 import Header from "../components/Header";
 import { Heading2 } from "../components/common/Text";
-import { getFeaturedItemIds } from "../reducers";
+import { getFeaturedItemIds, getFavoriteItemsIds } from "../reducers";
 import ItemThumb from "../components/ItemThumb";
 import { IItem } from "../models";
 import CategoryCard from "../components/CategoryCard";
@@ -27,6 +28,8 @@ import getRealm, { itemsToArray } from "../database";
 import I18n from "../i18n";
 import * as actions from "../actions";
 import debounce from "lodash/debounce";
+import { IS_ANDROID } from "../utils";
+import { geolocationSettings } from "../config";
 
 const EAT_CATEGORIES_ID = 30;
 const SLEEP_CATEGORIES_ID = 1;
@@ -97,8 +100,20 @@ class HomeView extends React.Component<Props, State> {
 
   state: State = {
     featuredItems: [],
-    loading: true
+    loading: true,
+    isFetchingAndroidPermission: true
   };
+
+  async componentWillMount() {
+    if (IS_ANDROID) {
+      const isGranted = await MapboxGL.requestAndroidLocationPermissions();
+      this.setState({
+        isAndroidPermissionGranted: isGranted,
+        isFetchingAndroidPermission: false
+      });
+    }
+  }
+
   componentDidMount() {
     this.props.dispatch(actions.categoriesUpdate());
     this.props.dispatch(actions.itemsUpdate());
@@ -106,6 +121,22 @@ class HomeView extends React.Component<Props, State> {
     this.props.dispatch(actions.weekPicsUpdate());
     this.props.dispatch(actions.reviewsUpdate());
     this.props.dispatch(actions.charsUpdate());
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      !prevState.isAndroidPermissionGranted &&
+      this.state.isAndroidPermissionGranted
+    ) {
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          const { coords } = pos;
+          this.props.dispatch(actions.userLocationUpdate(coords));
+        },
+        () => {},
+        geolocationSettings
+      );
+    }
   }
   componentWillReceiveProps(nextProps: Props) {
     this.loadFeaturedItems(nextProps.featuredIds);
@@ -164,7 +195,7 @@ class HomeView extends React.Component<Props, State> {
             categoryId={item.category_id}
             image={item.image}
             title={item.name}
-            isFavorite={item.isFavorite}
+            isFavorite={this.props.favoritesIds.indexOf(item.id) >= 0}
             stars={item.rating}
             coord={item.coord}
             onPress={() =>
@@ -343,6 +374,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   weekPics: state.weekPics,
+  favoritesIds: getFavoriteItemsIds(state),
   featuredIds: getFeaturedItemIds(state),
   userName:
     state.auth.isAuthenticated && state.auth.userProfile
