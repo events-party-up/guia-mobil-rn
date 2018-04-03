@@ -1,4 +1,4 @@
-package com.guiaanimus;
+package com.animus.guideapp;
 
 import com.reactnativenavigation.controllers.SplashActivity;
 
