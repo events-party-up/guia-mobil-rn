@@ -216,7 +216,14 @@ class ItemDetailsView extends Component<Props, State> {
             <MapPreview marker={coord} />
           </View>
           <View style={styles.actionsContainer}>
-            <TouchableOpacity style={styles.actionWrapper}>
+            <TouchableOpacity
+              style={styles.actionWrapper}
+              onPress={() => {
+                this.props.navigator.showModal({
+                  screen: "animus.ReviewCreationView"
+                });
+              }}
+            >
               <View
                 style={{
                   backgroundColor: theme.colors.primary,

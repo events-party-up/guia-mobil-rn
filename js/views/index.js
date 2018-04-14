@@ -10,6 +10,7 @@ import LanguageSelectorView from "./settings/LanguageSelectorView";
 import SettingsContentView from "./settings/SettingsContentView";
 import FavoritesView from "./FavoritesView";
 import NotificationsView from "./NotificationsView";
+import ReviewCreationView from "./ReviewCreationView";
 
 import MapView from "./Map/MapView";
 
@@ -75,6 +76,12 @@ export function registerScreens(store, Provider) {
   Navigation.registerComponent(
     "animus.NotificationsView",
     () => NotificationsView,
+    store,
+    Provider
+  );
+  Navigation.registerComponent(
+    "animus.ReviewCreationView",
+    () => ReviewCreationView,
     store,
     Provider
   );

@@ -26,7 +26,7 @@ const ItemReview = ({ profile_name, rtext, date, profile_img }) => (
         <Text style={styles.date}>{moment(date).format("MM YYYY")}</Text>
       </View>
     </View>
-    <Paragraph>{rtext}</Paragraph>
+    <Paragraph>{rtext.trim()}</Paragraph>
   </View>
 );
 
