@@ -217,27 +217,46 @@ class ItemDetailsView extends Component<Props, State> {
           </View>
           <View style={styles.actionsContainer}>
             <TouchableOpacity style={styles.actionWrapper}>
-              <Icon
-                raised
-                reverse
-                name="insert-comment"
-                type="material-icons"
-                color={theme.colors.primary}
-                onPress={this.newReviewHandler}
-              />
+              <View
+                style={{
+                  backgroundColor: theme.colors.primary,
+                  width: 48,
+                  height: 48,
+                  borderRadius: 24,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginHorizontal: 10
+                }}
+              >
+                <Image
+                  source={require("../components/img/comment_icon.png")}
+                  style={{ width: 24, height: 24 }}
+                  resizeMode="contain"
+                />
+              </View>
               <Text>Calificar</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.actionWrapper}
               onPress={this.showRouteHandler}
             >
-              <Icon
-                raised
-                reverse
-                name="navigation"
-                type="material-icons"
-                color={theme.colors.primary}
-              />
+              <View
+                style={{
+                  backgroundColor: theme.colors.primary,
+                  width: 48,
+                  height: 48,
+                  borderRadius: 24,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginHorizontal: 10
+                }}
+              >
+                <Image
+                  source={require("../components/img/navigate_icon.png")}
+                  style={{ width: 24, height: 24 }}
+                  resizeMode="contain"
+                />
+              </View>
               <Text>Llevarme ahí</Text>
             </TouchableOpacity>
           </View>
@@ -309,7 +328,7 @@ const styles = StyleSheet.create({
   actionsContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginVertical: 10
+    marginVertical: 20
   },
   actionWrapper: {
     flexDirection: "row",
