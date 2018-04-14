@@ -24,6 +24,9 @@
       android:icon="@mipmap/ic_launcher"
       android:theme="@style/AppTheme">
 
+      <meta-data
+           android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyCJ4VSfaCEcXBE-1Esinry7us5-pESIrsw"/>
       <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"

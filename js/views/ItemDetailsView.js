@@ -211,11 +211,9 @@ class ItemDetailsView extends Component<Props, State> {
             <Button title="Ver en mapa" primary />
           </View>
           <ItemInfoBlock {...this.props} />
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.description}> {description} </Text>
-          </View>
+          <View style={styles.descriptionContainer} />
           <View style={styles.mapWrapper}>
-            {/*<MapPreview marker={coord} id={id} />*/}
+            <MapPreview marker={coord} />
           </View>
           <View style={styles.actionsContainer}>
             <TouchableOpacity style={styles.actionWrapper}>

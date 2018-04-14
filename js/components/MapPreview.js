@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import MapboxGL from "@mapbox/react-native-mapbox-gl";
+import MapView, { Marker, ProviderPropType } from "react-native-maps";
 import ItemMapMarker from "./ItemMapMarker";
 import { Dimensions, StyleSheet } from "react-native";
 
@@ -12,25 +12,20 @@ type Props = {
 };
 
 const MapPreview = ({ id, marker }: Props) => (
-  <MapboxGL.MapView
-    style={styles.map}
-    textureMode
-    styleURL={MapboxGL.StyleURL.Street}
-    centerCoordinate={marker}
-    zoomLevel={14}
-    height={200}
+  <MapView
+    initialRegion={{
+      latitude: marker[1],
+      longitude: marker[0],
+      latitudeDelta: 0.00922,
+      longitudeDelta: 0.00421
+    }}
     zoomEnabled={false}
-    scrollEnabled={false}
     rotateEnabled={false}
+    scrollEnabled={false}
+    style={{ height: 200, width: WINDOW_WIDTH }}
   >
-    <MapboxGL.PointAnnotation
-      id={`${id}`}
-      coordinate={marker}
-      anchor={{ x: 0.5, y: 1.0 }}
-    >
-      <ItemMapMarker />
-    </MapboxGL.PointAnnotation>
-  </MapboxGL.MapView>
+    <Marker coordinate={{ latitude: marker[1], longitude: marker[0] }} />
+  </MapView>
 );
 
 export default MapPreview;

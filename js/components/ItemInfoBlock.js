@@ -35,10 +35,11 @@ const ItemInfoBlock = props => {
   const { phone, mail, address, rating, theme, price, itemChars, url } = props;
   return (
     <View style={styles.infoItems}>
-      <InfoItem iconName="phone" text={phone} theme={theme} />
-      <InfoItem iconName="email" text={mail} theme={theme} />
+      {/*address*/}
       <InfoItem iconName="map-marker" text={address} theme={theme} />
-
+      {/*phone*/}
+      <InfoItem iconName="phone" text={phone} theme={theme} />
+      {/*price*/}
       {!!price && (
         <View style={styles.contactRow}>
           <Icon
@@ -50,7 +51,7 @@ const ItemInfoBlock = props => {
           <Rating imageSize={12} rating={price} type="circle" />
         </View>
       )}
-
+      {/*rating*/}
       {!!rating && (
         <View style={styles.contactRow}>
           <Icon
@@ -62,7 +63,11 @@ const ItemInfoBlock = props => {
           <Rating imageSize={12} rating={rating} />
         </View>
       )}
+      {/*feature icons*/}
       <CharsSvgList charList={itemChars} style={{ width: WINDOW_WIDTH - 20 }} />
+      {/*email */}
+      <InfoItem iconName="email" text={mail} theme={theme} />
+      {/*url*/}
       <InfoItem iconName="link" text={url} theme={theme} />
     </View>
   );

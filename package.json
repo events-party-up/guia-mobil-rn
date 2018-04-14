@@ -29,6 +29,7 @@
         "react-native-fcm": "^14.1.0",
         "react-native-hyperlink": "^0.0.12",
         "react-native-i18n": "^2.0.12",
+        "react-native-maps": "^0.21.0",
         "react-native-navigation": "^1.1.407",
         "react-native-parallax-scroll-view": "^0.20.1",
         "react-native-push-notification": "^3.0.2",

@@ -16,18 +16,22 @@ const MarkerImage = styled.Image`
   position: absolute;
   top: 0;
 `;
+
 const IconText = styled.Text`
   font-family: "guide-v01";
   font-size: 18px;
   color: ${props => (props.isActive ? props.theme.colors.primary : "white")};
   margin-top: 10px;
   border-radius: 3px;
-  background:  transparent;
+  background-color: transparent;
 `;
 
 const ItemMapMarker = ({ icon, isActive = false }: Props) => (
   <View style={styles.markerContainer}>
-    <MarkerImage isActive={isActive} source={require("./img/ic_place.png")} />
+    <MarkerImage
+      isActive={isActive}
+      source={require("./img/rect_map_marker.png")}
+    />
     {icon && (
       <IconText isActive={isActive}>
         {String.fromCharCode(parseInt(icon, 16))}

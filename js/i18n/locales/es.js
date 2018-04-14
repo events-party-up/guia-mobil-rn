@@ -13,11 +13,11 @@ export default {
   },
   items: {
     save: {
-      title: "Item guardado",
+      title: "Item agregado a favoritos",
       undo: "Deshacer"
     },
     unsave: {
-      title: "Item removido",
+      title: "Item eliminado de favoritos",
       undo: "Deshacer"
     }
   }

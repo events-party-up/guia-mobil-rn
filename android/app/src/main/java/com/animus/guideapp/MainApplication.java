@@ -15,12 +15,16 @@ import com.merryjs.PhotoViewer.MerryPhotoViewPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.bridge.NavigationReactPackage;
+import com.airbnb.android.react.maps.MapsPackage;
 
 import java.util.Arrays;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 import io.realm.react.RealmReactPackage;
+
+import android.support.multidex.MultiDex;
+import android.content.Context;
 
 public class MainApplication extends NavigationApplication  {
 
@@ -37,6 +41,14 @@ public class MainApplication extends NavigationApplication  {
   }
 
 
+  @Override
+    protected void attachBaseContext(Context base) {
+       super.attachBaseContext(base);
+       MultiDex.install(this);
+    }
+
+
+
   protected List<ReactPackage> getPackages() {
     // Add additional packages you require here
     // No need to add RnnPackage and MainReactPackage
@@ -51,7 +63,8 @@ public class MainApplication extends NavigationApplication  {
             new RCTMGLPackage(),
             new VectorIconsPackage(),
             new MerryPhotoViewPackage(),
-            new SnackbarPackage()
+            new SnackbarPackage(),
+            new MapsPackage()
     );
   }
 
