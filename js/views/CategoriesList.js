@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import { connect } from "react-redux";
 import { withTheme } from "styled-components";

@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import styled, { withTheme } from "styled-components";
 import flatten from "lodash/flatten";
 import Reactotron from "reactotron-react-native";
-import { getImageUrl } from "../utils";
+import { getImageUrl, IS_ANDROID } from "../utils";
 import { FacebookLoginButton } from "../components/FacebookLoginButton";
 import Header from "../components/Header";
 import { Heading2 } from "../components/common/Text";
@@ -28,7 +28,6 @@ import getRealm, { itemsToArray } from "../database";
 import I18n from "../i18n";
 import * as actions from "../actions";
 import debounce from "lodash/debounce";
-import { IS_ANDROID } from "../utils";
 import { geolocationSettings } from "../config";
 
 const EAT_CATEGORIES_ID = 30;
@@ -39,6 +38,7 @@ const SERVICES_CATEGORIES_ID = 46;
 type Props = {
   navigator: Object,
   featuredIds: number[],
+  favoritesIds: number[],
   theme: Object
 };
 

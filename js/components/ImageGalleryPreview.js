@@ -2,6 +2,7 @@
 import React from "react";
 import { TouchableOpacity, Image, StyleSheet, Dimensions } from "react-native";
 import Swiper from "react-native-swiper";
+
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const IMAGE_HEIGHT = 200;
 

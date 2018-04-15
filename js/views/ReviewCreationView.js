@@ -2,10 +2,8 @@
 import React, { Component } from "react";
 import { StyleSheet, ScrollView, View, Text, TextInput } from "react-native";
 import { connect } from "react-redux";
-import flatten from "lodash/flatten";
 import styled, { withTheme } from "styled-components";
 import Header from "../components/Header";
-import ItemThumb from "../components/ItemThumb";
 import { getFavoriteItemsIds } from "../reducers";
 import I18n from "../i18n";
 
@@ -60,7 +58,7 @@ class FavoritesView extends Component<Props, State> {
             autofocus
             onChangeText={text => this.setState({ text })}
             value={this.state.text}
-            underlineColorAndroid={"transparent"}
+            underlineColorAndroid="transparent"
           />
           <View>
             <Text>{`${charCount}/${ALLOWED_CHAR_COUNT}`} </Text>

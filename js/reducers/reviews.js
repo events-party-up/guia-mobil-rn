@@ -75,7 +75,7 @@ export function getReviewsForItemId(state, id: number): IReview[] {
   const reviewsIds = state.byItemId[id];
 
   if (reviewsIds) {
-    return reviewsIds; //.map(reviewId => state.byId[reviewId]);
+    return reviewsIds; // .map(reviewId => state.byId[reviewId]);
   }
   return [];
 }

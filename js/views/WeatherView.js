@@ -5,6 +5,7 @@ import styled, { withTheme } from "styled-components";
 import { connect } from "react-redux";
 import moment from "moment";
 import Header from "../components/Header";
+import CurrentWeather from "../components/WeatherView/CurrentWeather";
 import { Text } from "../components/common/Text";
 import { weatherUpdate } from "../actions";
 import I18n from "../i18n";
@@ -12,40 +13,31 @@ import I18n from "../i18n";
 type Props = {
   dispatch: Function,
   theme: Object,
+  loaded: boolean,
   navigator: Object,
   summary: string,
   temperature: number,
   lastUpdate: number,
   time: number,
+  icon: string,
   daily: {
     data: Object[]
   }
 };
 
 const icons = {
-  "clear-day": require("../components/img/weather/Sunny.png"),
-  "clear-night": require("../components/img/weather/Clear.png"),
-  rain: require("../components/img/weather/HeavyRain.png"),
+  "clear-day": require("../components/img/weather/clear.png"),
+  "clear-night": require("../components/img/weather/nt_clear.png"),
+  rain: require("../components/img/weather/rain.png"),
   snow: require("../components/img/weather/HeavySnow.png"),
-  sleet: require("../components/img/weather/HeavySleet.png"),
+  sleet: require("../components/img/weather/sleet.png"),
   wind: require("../components/img/weather/wind.png"),
   fog: require("../components/img/weather/Fog.png"),
   cloudy: require("../components/img/weather/Cloudy.png"),
-  "partly-cloudy-day": require("../components/img/weather/PartlyCloudyDay.png"),
-  "partly-cloudy-night": require("../components/img/weather/PartlyCloudyNight.png")
+  "partly-cloudy-day": require("../components/img/weather/partlycloudy.png"),
+  "partly-cloudy-night": require("../components/img/weather/nt_partlycloudy.png")
 };
 
-const CurrentTempText = styled(Text)`
-  font-size: 40px;
-  font-weight: 200;
-  color: ${props => props.theme.colors.gray};
-`;
-const MainViewContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-  padding-vertical: 10px;
-  padding-horizontal: 20px;
-`;
 const RowView = styled.View`
   flex-direction: row;
   padding-vertical: 5px;
@@ -56,10 +48,6 @@ const Hr = styled.View`
   height: 1px;
   background-color: lightgray;
   margin-vertical: 10px;
-`;
-
-const Summmary = styled(Text)`
-  padding-vertical: 20px;
 `;
 
 const SmallIcon = styled.Image`
@@ -141,7 +129,7 @@ class WeatherView extends Component<Props> {
               <Text>{todayWeatherData.humidity} </Text>
             </Cell>
           </RowView>
-          {/*second row */}
+          {/* second row */}
           <RowView>
             <SmallCell>
               <SmallIcon
@@ -211,20 +199,16 @@ class WeatherView extends Component<Props> {
           itemsColor="white"
         />
         <ScrollView style={styles.container}>
-          <MainViewContainer>
-            <CurrentTempText>{loaded && temperature} °</CurrentTempText>
-            <View style={{ alignItems: "center" }}>
-              <Image
-                style={{ width: 140, height: 140, resizeMode: "contain" }}
-                source={icons[icon]}
-              />
-              <Summmary>{summary}</Summmary>
-            </View>
-          </MainViewContainer>
+          <CurrentWeather
+            icon={icon}
+            temperature={temperature}
+            summary={summary}
+            loaded={loaded}
+          />
           <RowView>
             <Text>{mTime.format("dddd")}</Text>
           </RowView>
-          {/* first row*/}
+          {/* first row */}
           {this.renderDetailedInfo()}
           <Hr />
           {this.renderBottomView()}

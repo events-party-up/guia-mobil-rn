@@ -1,12 +1,9 @@
 // @flow
 import React, { Component } from "react";
-import { View, ScrollView, StyleSheet, Image } from "react-native";
-import styled, { withTheme } from "styled-components";
-import { connect } from "react-redux";
-import moment from "moment";
+import { View, ScrollView, StyleSheet } from "react-native";
+import { withTheme } from "styled-components";
 import faker from "faker";
 import Header from "../components/Header";
-import { Text } from "../components/common/Text";
 import I18n from "../i18n";
 import NotificationCard from "../components/NotificationsView/NotificationCard";
 
