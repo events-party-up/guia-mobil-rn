@@ -9,6 +9,13 @@
         "release:android": "cd android && ./gradlew assembleRelease",
         "run:android": "react-native run-android"
     },
+
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn lint",
+            "pre-push": "yarn lint && yarn test"
+        }
+    },
     "dependencies": {
         "@mapbox/geo-viewport": "^0.2.2",
         "@mapbox/react-native-mapbox-gl": "^6.1.0",
@@ -66,6 +73,7 @@
         "eslint-plugin-prettier": "^2.6.0",
         "eslint-plugin-react": "^7.7.0",
         "flow-bin": "^0.66.0",
+        "husky": "^1.0.0-rc.1",
         "jest": "22.2.2",
         "react-test-renderer": "16.2.0",
         "reactotron-redux": "^1.13.0"
