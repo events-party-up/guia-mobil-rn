@@ -1,6 +1,13 @@
 // @flow
 import React from "react";
-import { Dimensions, View, Text, Image, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  View,
+  Text,
+  Image,
+  TouchableNativeFeedback,
+  TouchableOpacity
+} from "react-native";
 import { Icon } from "react-native-elements";
 import StyleSheet from "./common/F8StyleSheet";
 import F8Colors from "./common/F8Colors";
@@ -121,33 +128,43 @@ class ItemThumb extends React.Component<Props> {
     const { imageWidth, imageHeight } = this.getImageSize(type);
 
     return (
-      <TouchableOpacity
+      <TouchableNativeFeedback
         activeOpacity={activeOpacity}
-        style={type === "large" ? styles.containerLarge : styles.containerSmall}
         onPress={() => onPress && onPress()}
+        background={TouchableNativeFeedback.SelectableBackground()}
       >
-        <View style={styles.thumb}>
-          {this.renderImage(image, imageWidth, imageHeight)}
-          <TouchableOpacity
-            style={styles.favouriteToggle}
-            onPress={() => toggleFavorite(this.props.dispatch, id, isFavorite)}
-          >
-            <Icon
-              name={isFavorite ? "heart" : "heart-outline"}
-              type="material-community"
-              color="white"
-              size={24}
-            />
-          </TouchableOpacity>
+        <View
+          style={
+            type === "large" ? styles.containerLarge : styles.containerSmall
+          }
+        >
+          <View style={styles.thumb}>
+            {this.renderImage(image, imageWidth, imageHeight)}
+            <TouchableOpacity
+              style={styles.favouriteToggle}
+              onPress={() =>
+                toggleFavorite(this.props.dispatch, id, isFavorite)
+              }
+            >
+              <Icon
+                name={isFavorite ? "heart" : "heart-outline"}
+                type="material-community"
+                color="white"
+                size={24}
+              />
+            </TouchableOpacity>
+          </View>
+          <CategoryLabel>{category.name.toUpperCase()} </CategoryLabel>
+          {this.renderTitle(type, title)}
+          <Text>
+            {"Dist: "}
+            {typeof distance === "number"
+              ? `${distance.toFixed(2)}km`
+              : distance}
+          </Text>
+          <Rating imageSize={14} rating={stars} />
         </View>
-        <CategoryLabel>{category.name.toUpperCase()} </CategoryLabel>
-        {this.renderTitle(type, title)}
-        <Text>
-          Dist:{" "}
-          {typeof distance === "number" ? `${distance.toFixed(2)}km` : distance}
-        </Text>
-        <Rating imageSize={14} rating={stars} />
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
     );
   }
 }

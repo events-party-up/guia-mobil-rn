@@ -8,6 +8,9 @@ export default {
     },
     weather: {
       title: "Weather"
+    },
+    reviewcreation: {
+      title: "Create review"
     }
   }
 };

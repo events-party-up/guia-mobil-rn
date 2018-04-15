@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { StyleSheet, ScrollView, FlatList, Text } from "react-native";
+import { StyleSheet, ScrollView, View, Text, TextInput } from "react-native";
 import { connect } from "react-redux";
 import flatten from "lodash/flatten";
 import styled, { withTheme } from "styled-components";
@@ -14,21 +14,27 @@ type Props = {
   theme: Object
 };
 
+const ALLOWED_CHAR_COUNT = 500;
 const ViewContainer = styled.View`
   flex: 1;
   background-color: ${props => props.theme.colors.highContrast};
 `;
 
+type State = {
+  dataState: string,
+  text: string
+};
+
 class FavoritesView extends Component<Props, State> {
   static navigatorStyle = { navBarHidden: true };
 
   state: State = {
-    dataState: "loading",
-    items: []
+    text: ""
   };
 
   render() {
     const { theme, navigator } = this.props;
+    const charCount = this.state.text.length;
 
     return (
       <ViewContainer style={styles.container}>
@@ -43,7 +49,23 @@ class FavoritesView extends Component<Props, State> {
           backgroundColor={theme.colors.primary}
           titleColor={theme.colors.highContrast}
         />
-        <ScrollView style={styles.scrollView} />
+        <ScrollView style={styles.scrollView}>
+          <TextInput
+            style={{
+              borderWidth: 1,
+              borderColor: "black"
+            }}
+            maxLength={ALLOWED_CHAR_COUNT}
+            multiline
+            autofocus
+            onChangeText={text => this.setState({ text })}
+            value={this.state.text}
+            underlineColorAndroid={"transparent"}
+          />
+          <View>
+            <Text>{`${charCount}/${ALLOWED_CHAR_COUNT}`} </Text>
+          </View>
+        </ScrollView>
       </ViewContainer>
     );
   }

@@ -9,6 +9,9 @@ export default {
     },
     notifications: {
       title: "Notificaciones"
+    },
+    reviewcreation: {
+      title: "Create review"
     }
   },
   items: {

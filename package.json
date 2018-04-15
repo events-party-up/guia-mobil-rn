@@ -6,7 +6,8 @@
         "start": "node node_modules/react-native/local-cli/cli.js start",
         "test": "jest",
         "lint": "eslint ./js/**/*.{js,jsx} --quiet",
-        "release:android": "cd android && ./gradlew assembleRelease"
+        "release:android": "cd android && ./gradlew assembleRelease",
+        "run:android": "react-native run-android"
     },
     "dependencies": {
         "@mapbox/geo-viewport": "^0.2.2",

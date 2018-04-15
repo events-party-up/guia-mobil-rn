@@ -26,7 +26,7 @@ import { Platform, Dimensions } from "react-native";
 
 const DEVICE_SCALE = Dimensions.get("window").width / 375;
 
-const DEFAULT_FONT = "helvetica";
+const DEFAULT_FONT = "nunito";
 
 /* utils ==================================================================== */
 

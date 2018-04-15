@@ -198,14 +198,16 @@ class HomeView extends React.Component<Props, State> {
             isFavorite={this.props.favoritesIds.indexOf(item.id) >= 0}
             stars={item.rating}
             coord={item.coord}
-            onPress={() =>
-              this.props.navigator.push({
-                screen: "animus.ItemDetailsView",
-                passProps: {
-                  item
-                }
-              })
-            }
+            onPress={debounce(
+              () =>
+                this.props.navigator.push({
+                  screen: "animus.ItemDetailsView",
+                  passProps: {
+                    item
+                  }
+                }),
+              2000
+            )}
           />
         ))}
       </View>
