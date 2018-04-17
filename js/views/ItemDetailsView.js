@@ -217,7 +217,10 @@ class ItemDetailsView extends Component<Props, State> {
               style={styles.actionWrapper}
               onPress={() => {
                 this.props.navigator.showModal({
-                  screen: "animus.ReviewCreationView"
+                  screen: "animus.ReviewCreationView",
+                  passProps: {
+                    itemId: this.props.id
+                  }
                 });
               }}
             >

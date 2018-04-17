@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { StyleSheet, ScrollView, FlatList, Text } from "react-native";
 import { connect } from "react-redux";
 import styled, { withTheme } from "styled-components";
@@ -7,7 +7,7 @@ import * as actions from "../actions";
 import { itemsSorter } from "../utils";
 import Header from "../components/Header";
 import ItemThumb from "../components/ItemThumb";
-import { ICategory, IItem } from "../models";
+import { ICategory } from "../models";
 import { getItemsForCategoryId, getFavoriteItemsIds } from "../reducers";
 import SortButtons from "../components/SortButtons";
 import getRealm, { itemsToArray } from "../database";
@@ -54,7 +54,7 @@ class ItemsListView extends PureComponent<Props, State> {
   }
 
   sortHandler = index => {
-    if (index != this.state.sortIndex) this.setState({ sortIndex: index });
+    if (index !== this.state.sortIndex) this.setState({ sortIndex: index });
   };
 
   keyExtractor = item => item.id;

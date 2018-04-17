@@ -1,7 +1,7 @@
 // @flow
-import * as actions from "../actions";
-import { combineReducers } from "redux";
 import getRealm from "../database";
+import { combineReducers } from "redux";
+import * as actions from "../actions";
 
 // store a lot less data in memory
 

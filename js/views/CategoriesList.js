@@ -3,13 +3,12 @@ import React, { Component } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import { connect } from "react-redux";
-import { withTheme } from "styled-components";
+import styled, { withTheme } from "styled-components";
 import * as actions from "../actions";
 import { ICategory } from "../models";
 import { getCategoriesWithParentId, getCategoryWithId } from "../reducers";
 import Header from "../components/Header";
 import GuideIcon from "../components/GuideIcon";
-import styled from "styled-components";
 
 type Props = {
   categories: ICategory[],

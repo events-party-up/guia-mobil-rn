@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { View, ScrollView, StyleSheet, Image } from "react-native";
+import { View, ScrollView, StyleSheet } from "react-native";
 import styled, { withTheme } from "styled-components";
 import { connect } from "react-redux";
 import moment from "moment";

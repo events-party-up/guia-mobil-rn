@@ -160,7 +160,7 @@ const Header = ({
   const rightComponent = (
     <View style={styles.row}>
       {extraItems &&
-        extraItems.map((item) => (
+        extraItems.map(item => (
           <TouchableOpacity
             key={item.icon}
             onPress={item.onPress}
@@ -183,11 +183,19 @@ const Header = ({
     <RNEHeader
       backgroundColor={backgroundColor}
       leftComponent={_leftItem}
-      centerComponent={
-        <Text style={[{ color: titleColor, fontSize: 14, lineHeight: 32 }]}>
-          {title}
-        </Text>
-      }
+      centerComponent={{
+        text: title,
+        style: {
+          position: "absolute",
+          left: 48,
+          right: 48,
+          color: titleColor,
+          fontSize: 18,
+          lineHeight: 32,
+          fontFamily: "nunito",
+          alignItems: "center"
+        }
+      }}
       outerContainerStyles={{
         borderBottomWidth: 0,
         paddingTop: STATUS_BAR_HEIGHT,

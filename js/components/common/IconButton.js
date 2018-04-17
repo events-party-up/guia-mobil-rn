@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import { View, Image, StyleSheet } from "react-native";
 import { withTheme } from "styled-components";
 
 type Props = {
@@ -9,15 +10,12 @@ type Props = {
 
 const IconButton = ({ imageSource, theme }: Props) => (
   <View
-    style={{
-      backgroundColor: theme.colors.primary,
-      width: 48,
-      height: 48,
-      borderRadius: 24,
-      alignItems: "center",
-      justifyContent: "center",
-      marginHorizontal: 10
-    }}
+    style={[
+      {
+        backgroundColor: theme.colors.primary
+      },
+      styles.button
+    ]}
   >
     <Image
       source={imageSource}
@@ -26,5 +24,16 @@ const IconButton = ({ imageSource, theme }: Props) => (
     />
   </View>
 );
+
+const styles = StyleSheet.create({
+  button: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 10
+  }
+});
 
 export default withTheme(IconButton);
