@@ -1,0 +1,24 @@
+Guía de Bariloche es la aplicación ideal para encontrar los mejores hoteles, restaurantes y atractivos turísticos de la zona. Te sugiere lugares, atracciones y servicios, por proximidad (geolocalización) y funciona sin conexión de datos. 
+
+Optimiza tus tiempos en la ciudad, ya que toda la información se encuentra almacenada en la aplicación. Es la guía oficial de Bariloche.
+
+Prestaciones:
+
+- Es gratis! Descargarla tarda sólo 1 minuto
+- Mapas offline con geolocalización
+- No depende de Internet para funcionar
+- Provee información actualizada de Bariloche
+- Diseñada en español, inglés, y portugués
+- Te permite programar tu visita a Bariloche desde cualquier lugar del mundo
+- Provee información útil y necesaria para tu viaje, con valoración de los usuarios por precio y calidad
+- Dónde dormir (hoteles, cabañas, campings)
+- Dónde comer (restaurantes, chocolaterías, cafés)
+- Qué hacer (excursiones, atracciones)
+- Servicios (información de utilidad, policía, hospitales, agencias de turismo)
+- Cómo llegar a un sitio del mapa - Ruta de navegación (requiere conexión)
+- Senderos de montaña más populares (refugios)
+- Cupones de descuento y ofertas de último minuto
+- Recorridos entre sitios favoritos
+- Buscador por nombre
+
+IMPORTANTE: Ante cualquier inconveniente te agradecemos nos contactes en www.guiadebariloche.com.ar. Muchas gracias.

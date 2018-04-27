@@ -1,0 +1,26 @@
+If you're visiting Bariloche, this is the perfect application for your trip!
+
+Find in Bariloche Guide the best Hotels, Restaurants and Places exactly where you are. Designed and tested in Bariloche, it offers quality information and daily updates.
+
+You won't need Internet connection to find what you look for, all the information is stored into the application and can be accessed 100% offline.
+
+
+Main Features:
+- Offline map with geolocation
+- Doesn't require WiFi / 3G network
+- Always fresh information
+- Last minute offers
+- Events calendar
+- Where to sleep
+- Where to eat
+- What to do
+- Service
+- Get routes (require internet connection)
+- City information
+- Mountain tracks (Shelters)
+- Bookmarks
+- Search by name
+- Reviews and rating
+- Call now and Find in map features
+
+IMPORTANT: This is a beta version. If you have a question please contact us at www.guiasmoviles.com. Thank you.

@@ -243,7 +243,7 @@ class HomeView extends React.Component<Props, State> {
         name: "Servicios",
         tab: "ServicesTab",
         tabIdx: 4,
-        image: require("./img/cover-gondolas.png")
+        image: require("./img/cover-services.png")
       }
     ];
     return (

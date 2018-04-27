@@ -10,6 +10,7 @@ import ReviewCard from "../components/ReviewCard";
 import { getFavoriteItemsIds } from "../reducers";
 import I18n from "../i18n";
 import { sendItemReview } from "../actions";
+
 const STAR_IMAGE = require("../components/img/ratings/star.png");
 const CIRCLE_IMAGE = require("../components/img/ratings/circle.png");
 
