@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   Dimensions,
-  Animated,
   TouchableOpacity,
   Linking,
   Platform,
@@ -14,7 +13,6 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import PhotoView from "@merryjs/photo-viewer";
-import { Icon } from "react-native-elements";
 import { withTheme } from "styled-components";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import * as actions from "../actions";
@@ -34,6 +32,7 @@ import MapPreview from "../components/MapPreview";
 import CategoriesBreakdrum from "../components/CategoriesBrackdrum";
 import ItemInfoBlock from "../components/ItemInfoBlock";
 import ImageGalleryPreview from "../components/ImageGalleryPreview";
+import IconButton from "../components/common/IconButton";
 import type { Gallery } from "../reducers/galleries";
 import { toLatLong, getAppleMapsUri, getGoogleMapsUri } from "../utils/maps";
 import {
@@ -61,14 +60,12 @@ interface Props extends IItem {
 }
 type State = {
   galleryVisible: boolean,
-  showSlider: boolean,
   activeImageIndex: number
 };
 
 class ItemDetailsView extends Component<Props, State> {
   state: State = {
     galleryVisible: false,
-    showSlider: true,
     activeImageIndex: 0
   };
 
@@ -220,50 +217,25 @@ class ItemDetailsView extends Component<Props, State> {
               style={styles.actionWrapper}
               onPress={() => {
                 this.props.navigator.showModal({
-                  screen: "animus.ReviewCreationView"
+                  screen: "animus.ReviewCreationView",
+                  passProps: {
+                    itemId: this.props.id
+                  }
                 });
               }}
             >
-              <View
-                style={{
-                  backgroundColor: theme.colors.primary,
-                  width: 48,
-                  height: 48,
-                  borderRadius: 24,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginHorizontal: 10
-                }}
-              >
-                <Image
-                  source={require("../components/img/comment_icon.png")}
-                  style={{ width: 24, height: 24 }}
-                  resizeMode="contain"
-                />
-              </View>
+              <IconButton
+                imageSource={require("../components/img/comment_icon.png")}
+              />
               <Text>Calificar</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.actionWrapper}
               onPress={this.showRouteHandler}
             >
-              <View
-                style={{
-                  backgroundColor: theme.colors.primary,
-                  width: 48,
-                  height: 48,
-                  borderRadius: 24,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginHorizontal: 10
-                }}
-              >
-                <Image
-                  source={require("../components/img/navigate_icon.png")}
-                  style={{ width: 24, height: 24 }}
-                  resizeMode="contain"
-                />
-              </View>
+              <IconButton
+                imageSource={require("../components/img/navigate_icon.png")}
+              />
               <Text>Llevarme ahí</Text>
             </TouchableOpacity>
           </View>

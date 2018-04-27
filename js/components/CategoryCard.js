@@ -4,6 +4,7 @@ import { Dimensions, StyleSheet, TouchableOpacity } from "react-native";
 import { Heading3 } from "./common/Text";
 import { Card } from "react-native-elements";
 import styled from "styled-components";
+
 type Props = {
   name: string,
   image?: string,

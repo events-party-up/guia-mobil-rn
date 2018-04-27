@@ -2,6 +2,7 @@
 import { Platform } from "react-native";
 import { IItem } from "../models";
 import * as fromMaps from "./maps";
+
 export * from "./toggleFavorite";
 
 export * from "./maps";
@@ -43,7 +44,7 @@ export const getImageUrl = (image: string) =>
 
 export const distanceToUser = (item: IItem, userLocation: number[]) => {
   console.log(item);
-  debugger;
+  
   return fromMaps.computeDistanceBetweenPoints(item.coord, userLocation);
 };
 

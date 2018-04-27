@@ -1,6 +1,5 @@
 import Snackbar from "react-native-snackbar";
 import defer from "lodash/defer";
-import curry from "lodash/curry";
 import * as actions from "../actions";
 
 import I18n from "../i18n";

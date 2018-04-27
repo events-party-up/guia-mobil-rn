@@ -1,0 +1,2 @@
+- Actualizado el recorrido de la Línea 70
+- Mejoras de estabilidad y rendimiento

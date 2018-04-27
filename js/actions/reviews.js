@@ -4,7 +4,7 @@ export const ADD_ITEM_REVIEW = "ADD_ITEM_REVIEW";
 export const ADD_ITEM_REVIEW_SUCCESS = "ADD_ITEM_REVIEW_SUCCESS";
 export const ADD_ITEM_REVIEW_FAILURE = "ADD_ITEM_REVIEW_FAILURE";
 
-export const reviewItem = (itemId, review) => ({
+export const sendItemReview = (itemId, review) => ({
   type: ADD_ITEM_REVIEW,
   apiCall: (apiClient, { itemId, review }, getState) => {
     const { auth } = getState();
