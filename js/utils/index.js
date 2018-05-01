@@ -32,7 +32,7 @@ export function itemToGeoJSONPoint(item: IItem) {
   return {
     type: "Feature",
     geometry: { type: "Point", coordinates: item.coord },
-    properties: { ...item, icon: "example" }
+    properties: { ...item, icon: "marker" }
   };
 }
 

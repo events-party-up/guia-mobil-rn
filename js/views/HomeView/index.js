@@ -6,7 +6,6 @@ import OneSignal from "react-native-onesignal";
 import { connect } from "react-redux";
 import { withTheme } from "styled-components";
 import flatten from "lodash/flatten";
-import Reactotron from "reactotron-react-native";
 import debounce from "lodash/debounce";
 import { IS_ANDROID } from "../../utils";
 import Header from "../../components/Header";
@@ -20,9 +19,9 @@ import StyleSheet from "../../components/common/F8StyleSheet";
 import getRealm, { itemsToArray } from "../../database";
 import I18n from "../../i18n";
 import * as actions from "../../actions";
-import { geolocationSettings } from "../../config";
 import type { Dispatch } from "../../actions/types";
 import { WeekImagesContainer, Subtitle, WeekImagesHeader } from "./elements";
+import { geolocationSettings } from "../../config";
 
 const EAT_CATEGORIES_ID = 30;
 const SLEEP_CATEGORIES_ID = 1;
@@ -40,8 +39,7 @@ type Props = {
 
 type State = {
   featuredItems: IItem[],
-  loading: boolean,
-  isAndroidPermissionGranted: boolean
+  loading: boolean
 };
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
@@ -61,16 +59,11 @@ class HomeView extends React.Component<Props, State> {
 
   state: State = {
     featuredItems: [],
-    loading: true,
-    isAndroidPermissionGranted: true
+    loading: true
   };
 
   async componentWillMount() {
     if (IS_ANDROID) {
-      const isGranted = await MapboxGL.requestAndroidLocationPermissions();
-      this.setState({
-        isAndroidPermissionGranted: isGranted
-      });
       OneSignal.setLogLevel(7, 0);
       OneSignal.inFocusDisplaying(2);
       OneSignal.getPermissionSubscriptionState(
@@ -103,26 +96,11 @@ class HomeView extends React.Component<Props, State> {
     this.props.dispatch(actions.weekPicsUpdate());
     this.props.dispatch(actions.reviewsUpdate());
     this.props.dispatch(actions.charsUpdate());
+    this.fetchUserLocation();
   }
 
   componentWillReceiveProps(nextProps: Props) {
     this.loadFeaturedItems(nextProps.featuredIds);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      !prevState.isAndroidPermissionGranted &&
-      this.state.isAndroidPermissionGranted
-    ) {
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          const { coords } = pos;
-          this.props.dispatch(actions.userLocationUpdate(coords));
-        },
-        () => {},
-        geolocationSettings
-      );
-    }
   }
 
   componentWillUnmount() {
@@ -148,15 +126,30 @@ class HomeView extends React.Component<Props, State> {
     console.log("openResult: ", openResult);
   };
 
+  fetchUserLocation = async () => {
+    const isGranted = await MapboxGL.requestAndroidLocationPermissions();
+    if (isGranted) {
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          const { coords } = pos;
+          console.log({ coords });
+          this.props.dispatch(actions.userLocationUpdate(coords));
+        },
+        err => {
+          console.error("Failed getting user coords");
+          console.error({ err });
+        },
+        geolocationSettings
+      );
+    }
+  };
+
   loadFeaturedItems = featuredItemIds => {
     getRealm().then(realm => {
       const items = realm.objects("Item");
-      Reactotron.log("HomeView: got realm");
       const featuredItems = flatten(
         featuredItemIds.map(id => itemsToArray(items.filtered(`id = ${id}`)))
       );
-      Reactotron.log("HomeView: got items", { featuredItems });
-      Reactotron.log(featuredItemIds);
 
       this.setState({
         featuredItems,
@@ -283,7 +276,7 @@ class HomeView extends React.Component<Props, State> {
       title: "Map",
       layout: "icon",
       icon: "map",
-      type: "map",
+      iconType: "simple-line-icon",
       onPress: this.navigateToMap
     };
 
@@ -379,6 +372,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
+  state: state,
   isAuthenticated: state.auth.isAuthenticated,
   weekPics: state.weekPics,
   favoritesIds: getFavoriteItemsIds(state),

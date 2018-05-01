@@ -35,7 +35,7 @@ import ImageGalleryPreview from "../components/ImageGalleryPreview";
 import IconButton from "../components/common/IconButton";
 import ReviewItemButton from "../components/ReviewItemButton";
 import type { Gallery } from "../reducers/galleries";
-import { toLatLong, getAppleMapsUri, getGoogleMapsUri } from "../utils/maps";
+import { openRouteToItem } from "../utils/maps";
 import {
   DEFAULT_CENTER_COORDINATE,
   getImageUrl,
@@ -58,6 +58,7 @@ interface Props extends IItem {
   navigator: Object;
   theme: Object;
   itemGallery: Gallery;
+  userLocation: number[];
 }
 type State = {
   galleryVisible: boolean,
@@ -113,16 +114,7 @@ class ItemDetailsView extends Component<Props, State> {
   };
 
   showRouteHandler = () => {
-    const { coord, userLocation } = this.props;
-    let uri: string;
-    if (Platform.OS === "ios") {
-      uri = getAppleMapsUri(toLatLong(coord), toLatLong(userLocation));
-    } else {
-      uri = getGoogleMapsUri(toLatLong(coord), toLatLong(userLocation));
-    }
-    Linking.openURL(uri).catch(err =>
-      console.error("An error occurred opening maps", err)
-    );
+    openRouteToItem(this.props.coord, this.props.userLocation);
   };
 
   renderHeader = () => {
@@ -245,6 +237,11 @@ class ItemDetailsView extends Component<Props, State> {
 }
 
 const mapStateToProps = (state, { item }) => {
+  let userCoord = DEFAULT_CENTER_COORDINATE;
+  if (state.location.coord) {
+    const { latitude, longitude } = state.location.coord;
+    userCoord = [latitude, longitude];
+  }
   if (item) {
     return {
       ...item,
@@ -253,7 +250,7 @@ const mapStateToProps = (state, { item }) => {
       categoryChain: getCategoryChain(state, item.category_id),
       itemChars: getCharsWithIds(state, item.chars),
       itemGallery: getGalleryForItem(state, item.id),
-      userLocation: DEFAULT_CENTER_COORDINATE
+      userLocation: userCoord
     };
   }
 };

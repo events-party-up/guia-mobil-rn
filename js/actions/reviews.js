@@ -3,7 +3,7 @@
 import DeviceInfo from "react-native-device-info";
 import type { State } from "../reducers/auth";
 import { ToastAndroid } from "react-native";
-
+import type Axios from "axios";
 export const ADD_ITEM_REVIEW = "ADD_ITEM_REVIEW";
 export const ADD_ITEM_REVIEW_SUCCESS = "ADD_ITEM_REVIEW_SUCCESS";
 export const ADD_ITEM_REVIEW_FAILURE = "ADD_ITEM_REVIEW_FAILURE";
@@ -18,7 +18,7 @@ type Review = {
 export const sendItemReview = (itemId: number, review: Review) => ({
   type: ADD_ITEM_REVIEW,
   apiCall: (
-    apiClient,
+    apiClient: Axios,
     { itemId, review }: { itemId: number, review: Review },
     getState: () => { auth: State }
   ) => {
@@ -50,10 +50,7 @@ export const sendItemReview = (itemId: number, review: Review) => ({
     }
     throw new Error("Only authenticated users can publish reviews");
   },
-  payload: {
-    itemId,
-    review
-  }
+  payload: { itemId, review }
 });
 
 export const LOAD_REVIEWS = "LOAD_REVIEWS";

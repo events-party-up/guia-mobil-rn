@@ -28,7 +28,6 @@ export function getCategoriesWithParentId(
   state: State,
   id: number
 ): ICategory[] {
-  console.log({ state });
   const parentCategory = state.raw.find(category => category.id === id);
   if (parentCategory) {
     return parentCategory.children;
@@ -69,6 +68,3 @@ function flatTree(
     {}
   );
 }
-
-
-

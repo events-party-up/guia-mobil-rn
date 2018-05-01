@@ -138,7 +138,7 @@ class MapScreen extends React.Component<Props, State> {
         >
           <ItemCallout
             itemId={id}
-            data={itemsDataPreload[idx]}
+            itemData={itemsDataPreload[idx]}
             onPress={() =>
               this.props.navigator.push({
                 screen: "animus.ItemDetailsView",

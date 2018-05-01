@@ -47,7 +47,10 @@ public class MainApplication extends NavigationApplication  {
        MultiDex.install(this);
     }
 
-
+  @Override
+  public boolean clearHostOnActivityDestroy() {
+      return false;
+  }
 
   protected List<ReactPackage> getPackages() {
     // Add additional packages you require here

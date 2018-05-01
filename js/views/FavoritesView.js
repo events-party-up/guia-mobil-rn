@@ -99,7 +99,7 @@ class FavoritesView extends Component<Props, State> {
       title: "Map",
       layout: "icon",
       icon: "map",
-      type: "map",
+      iconType: "simple-line-icon",
       onPress: this.navigateToMap
     };
 

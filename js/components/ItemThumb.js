@@ -141,8 +141,10 @@ class ItemThumb extends React.Component<Props> {
       userLocation
     } = this.props;
     let distance = "...";
+
     if (userLocation && coord) {
-      distance = computeDistanceBetweenPoints(coord, DEFAULT_CENTER_COORDINATE);
+      const { latitude, longitude } = userLocation;
+      distance = computeDistanceBetweenPoints(coord, [latitude, longitude]);
     }
     const { imageWidth, imageHeight } = this.getImageSize(type);
 

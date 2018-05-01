@@ -11,7 +11,7 @@ export const ITEM_GALLERY_LOAD_FAILURE = "ITEM_GALLERY_LOAD_FAILURE";
 
 export const galleryLoad = (id: number, options: Object) => ({
   type: ITEM_GALLERY_LOAD,
-  apiCall: (apiClient: Axios, { itemId }) => {
+  apiCall: (apiClient: Axios, { itemId }: { itemId: string | number }) => {
     return apiClient.get(`gallery/${itemId}`).then(res => {
       const normalizedData = normalize(res.data, gallery);
       return {

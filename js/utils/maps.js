@@ -1,4 +1,6 @@
+// @flow
 import turf from "turf";
+import { Platform, Linking } from "react-native";
 
 export const toLatLong = coordArr => ({
   latitude: coordArr[1],
@@ -20,4 +22,16 @@ export const computeDistanceBetweenPoints = (fromPoint, toPoint) => {
   const to = turf.point(toPoint);
 
   return turf.distance(from, to);
+};
+
+export const openRouteToItem = (coord: number[], userLocation: number[]) => {
+  let uri: string;
+  if (Platform.OS === "ios") {
+    uri = getAppleMapsUri(toLatLong(coord), toLatLong(userLocation));
+  } else {
+    uri = getGoogleMapsUri(toLatLong(coord), toLatLong(userLocation));
+  }
+  Linking.openURL(uri).catch(err =>
+    console.error("An error occurred opening maps", err)
+  );
 };

@@ -1,60 +1,37 @@
 // @flow
 import React from "react";
-import { View, Text, Dimensions, StyleSheet } from "react-native";
+import { View, Dimensions, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import GeoViewport from "@mapbox/geo-viewport";
-import SuperCluster from "supercluster";
 import { Icon } from "react-native-elements";
 import { withTheme } from "styled-components";
 import sheet from "../../styles/sheet";
 import { IItem } from "../../models";
-import { getFilteredItems } from "../../reducers";
+import { getFilteredItems, getFavoriteItemsIds } from "../../reducers";
 import Header from "../../components/Header";
-import ItemMapMarker from "../../components/ItemMapMarker";
+import ItemCallout from "../../components/ItemCallout";
 import { itemToGeoJSONPoint, DEFAULT_CENTER_COORDINATE } from "../../utils";
 import { geolocationSettings } from "../../config";
-const exampleIcon = require("./example.png");
+import getRealm from "../../database";
 import config from "../../utils/config";
+import IconButton from "../../components/common/IconButton";
+
+const markerIcon = require("./img/marker.png");
 
 const MAPBOX_VECTOR_TILE_SIZE = 512;
-const MAX_ZOOM = 20;
-const MIN_ZOOM = 10;
 const DEFAULT_ZOOM_LEVEL = 10;
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 
-export const regionToBoundingBox = region => {
-  let lngD;
-  if (region.longitudeDelta < 0) lngD = region.longitudeDelta + 360;
-  else lngD = region.longitudeDelta;
-
-  return [
-    region.longitude - lngD, // westLng - min lng
-    region.latitude - region.latitudeDelta, // southLat - min lat
-    region.longitude + lngD, // eastLng - max lng
-    region.latitude + region.latitudeDelta // northLat - max lat
-  ];
-};
-
-type RegionFeature = {
-  properties: {
-    isUserInteraction: boolean,
-    animated: boolean,
-    pitch: number,
-    visibleBounds: [number[], number[]],
-    heading: number,
-    zoomLevel: number
-  },
-  geometry: {
-    coordinates: number[],
-    type: "Point"
-  },
-  type: "Feature"
-};
+function transformIconCode(item) {
+  return {
+    ...item,
+    iconCode: String.fromCharCode(parseInt(item.iconCode, 16))
+  };
+}
 
 type State = {
-  pointsLoaded: boolean,
   accuracy?: number,
   heading?: number,
   altitudeAccuracy?: number,
@@ -62,56 +39,21 @@ type State = {
   speed?: number,
   altitude?: number,
   longitude?: number,
-  clusteredItems: ?any,
-  errorInUserLocation: ?string,
-  selectedItem: ?Object,
-  userLocationLoaded: boolean
+  errorInUserLocation?: string,
+  selectedItemId: ?number,
+  userLocationLoaded: boolean,
+  pointCollection: {},
+  itemsDataPreload: {}
 };
 
 type Props = {
-  items: ?Array<IItem>,
+  items: Array<IItem>,
   theme: Object,
-  navigator: Object
+  navigator: Object,
+  favoritesIds: number[]
 };
 
-const featureCollection = {
-  type: "FeatureCollection",
-  features: [
-    {
-      type: "Feature",
-      id: "9d10456e-bdda-4aa9-9269-04c1667d4552",
-      properties: {
-        icon: "example"
-      },
-      geometry: {
-        type: "Point",
-        coordinates: [-117.20611157485, 52.180961084261]
-      }
-    },
-    {
-      type: "Feature",
-      id: "9d10456e-bdda-4aa9-9269-04c1667d4552",
-      properties: {
-        icon: "airport-15"
-      },
-      geometry: {
-        type: "Point",
-        coordinates: [-117.205908, 52.180843]
-      }
-    },
-    {
-      type: "Feature",
-      id: "9d10456e-bdda-4aa9-9269-04c1667d4552",
-      properties: {
-        icon: "pin"
-      },
-      geometry: {
-        type: "Point",
-        coordinates: [-117.206562, 52.180797]
-      }
-    }
-  ]
-};
+/* eslint-disable  no-underscore-dangle */
 
 class MapView extends React.Component<Props, State> {
   static navigationOptions = {
@@ -119,27 +61,17 @@ class MapView extends React.Component<Props, State> {
     gesturesEnabled: false // no gestures on mapa
   };
 
-  constructor(props) {
+  static navigatorStyle = { navBarHidden: true, tabBarHidden: true };
+
+  constructor(props: Props) {
     super(props);
-    this.dimensions = [WINDOW_WIDTH, WINDOW_HEIGHT];
-    const features = this.props.items.map(itemToGeoJSONPoint);
-
-    const source = {
-      type: "FeatureCollection",
-      features
+    this.state = {
+      userLocationLoaded: false,
+      itemsDataPreload: {},
+      pointCollection: this.buildFeautureCollection(this.props.items),
+      selectedItemId: null
     };
-    console.log({ source });
-    this.state = { items: source };
   }
-
-  state: State = {
-    userLocationLoaded: false,
-    clusteredItems: [],
-    pointsLoaded: false,
-    errorInUserLocation: null,
-    selectedItem: null,
-    region: []
-  };
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
@@ -148,7 +80,7 @@ class MapView extends React.Component<Props, State> {
 
         this.setState({
           ...coords,
-          errorInUserLocation: null,
+          errorInUserLocation: "",
           userLocationLoaded: true
         });
       },
@@ -161,7 +93,9 @@ class MapView extends React.Component<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     if (this.props.items !== nextProps.items) {
-      this.setState({ items: nextProps.items.map(itemToGeoJSONPoint) });
+      this.setState({
+        pointCollection: this.buildFeautureCollection(nextProps.items)
+      });
     }
   }
 
@@ -191,70 +125,24 @@ class MapView extends React.Component<Props, State> {
     // start download
   };
 
-  // onAnnotationSelected = item => {
-  //   this.setState({ selectedItem: item });
-  //   console.log(`item: ${item.id}`);
-  //   console.log("Selected annotation");
-  //   if (item.properties.cluster) {
-  //     const zoom = this.clustering.getClusterExpansionZoom(
-  //       item.properties.cluster_id
-  //     );
-  //     this._map.setCamera({
-  //       centerCoordinate: item.geometry.coordinates,
-  //       zoom
-  //     });
-  //   }
-  // };
-
-  // onAnnotationDeselected = () => {
-  //   this.setState({ selectedItem: null });
-  // };
-
-  _map: any;
-
-  // renderItems = () => {
-  //   const { clusteredItems, selectedItem } = this.state;
-  //   const selectedItemId = selectedItem ? getItemId(selectedItem) : "";
-
-  //   if (clusteredItems) {
-  //     return clusteredItems.map(item => {
-  //       const id = getItemId(item);
-  //       let markerView;
-  //       if (item.properties.cluster) {
-  //         markerView = (
-  //           <View style={styles.annotationContainer}>
-  //             <View style={styles.annotationFill}>
-  //               {item.properties.cluster ? (
-  //                 <Text>{item.properties.point_count}</Text>
-  //               ) : null}
-  //             </View>
-  //           </View>
-  //         );
-  //       } else {
-  //         markerView = (
-  //           <ItemMapMarker
-  //             icon={item.properties.iconCode}
-  //             isActive={selectedItemId === id}
-  //           />
-  //         );
-  //       }
-  //       return (
-  //         <MapboxGL.PointAnnotation
-  //           key={id}
-  //           id={`${item.properties.id}`}
-  //           coordinate={item.geometry.coordinates}
-  //           onSelected={() => this.onAnnotationSelected(item)}
-  //           onDeselected={() => this.onAnnotationDeselected()}
-  //           anchor={{ x: 0.5, y: 1.0 }}
-  //         >
-  //           {markerView}
-  //           <MapboxGL.Callout title="Look! An annotation!" />
-  //         </MapboxGL.PointAnnotation>
-  //       );
-  //     });
-  //   }
-  //   return null;
-  // };
+  onItemPress = async (evt: {
+    nativeEvent: {
+      payload: {
+        properties: any
+      }
+    }
+  }) => {
+    // evt.type  =shapesourcelayerpress
+    const {
+      id
+    }: // iconCode,
+    // coord,
+    // category_id,
+    // rootCategoryId
+    IItem = evt.nativeEvent.payload.properties;
+    this.setState({ selectedItemId: id });
+    this.loadDataForItem(id);
+  };
 
   birdView = () => {
     this._map.setCamera({
@@ -263,6 +151,7 @@ class MapView extends React.Component<Props, State> {
       duration: 2000
     });
   };
+  _map: any;
 
   centerOnUser = () => {
     const {
@@ -275,8 +164,37 @@ class MapView extends React.Component<Props, State> {
       this._map.flyTo([longitude, latitude], 2000);
   };
 
+  buildFeautureCollection = (items: (IItem & { iconCode: string })[]) => {
+    const features = items.map(transformIconCode).map(itemToGeoJSONPoint);
+    console.log({ features });
+    const source = {
+      type: "FeatureCollection",
+      features
+    };
+    return source;
+  };
+
   showFiltersModal = () => {
-    this.props.navigator.navigate("FiltersModal");
+    this.props.navigator.showModal({
+      screen: "FiltersModal"
+    });
+  };
+
+  loadDataForItem = async itemId => {
+    if (this.state.itemsDataPreload[itemId]) {
+      return;
+    }
+    const realm = await getRealm();
+    const item = realm.objects("Item").filtered(`id = ${itemId}`)[0];
+    const isFavorite = this.props.favoritesIds.indexOf(item.id) >= 0;
+    if (item) {
+      this.setState({
+        itemsDataPreload: {
+          ...this.state.itemsDataPreload,
+          [itemId]: { ...item, isFavorite }
+        }
+      });
+    }
   };
 
   renderUserLocationMarker() {
@@ -297,9 +215,20 @@ class MapView extends React.Component<Props, State> {
     );
   }
 
+  clearSelectedItem = () => {
+    this.setState(
+      // eslint-disable-line
+      { selectedItemId: null }
+    );
+  };
   render() {
     const { theme, navigator } = this.props;
-    const { errorInUserLocation, userLocationLoaded } = this.state;
+    const {
+      errorInUserLocation,
+      userLocationLoaded,
+      itemsDataPreload,
+      selectedItemId
+    } = this.state;
     return (
       <View style={styles.container}>
         <Header
@@ -314,45 +243,43 @@ class MapView extends React.Component<Props, State> {
             sheet.matchParent,
             { width: WINDOW_WIDTH, height: WINDOW_HEIGHT }
           ]}
+          localizeLabels
+          onRegionWillChange={this.clearSelectedItem}
           centerCoordinate={DEFAULT_CENTER_COORDINATE}
           zoomLevel={DEFAULT_ZOOM_LEVEL}
           showUserLocation
+          ref={c => (this._map = c)}
+          onPress={this.clearSelectedItem}
         >
           <MapboxGL.ShapeSource
             id="exampleShapeSource"
-            shape={this.state.items}
-            images={{ example: exampleIcon }}
+            shape={this.state.pointCollection}
+            images={{ marker: markerIcon }}
+            onPress={this.onItemPress}
           >
             <MapboxGL.SymbolLayer id="exampleIconName" style={mapStyles.icon} />
           </MapboxGL.ShapeSource>
         </MapboxGL.MapView>
+        {selectedItemId && (
+          <View style={styles.calloutViewContainer}>
+            <ItemCallout
+              isFavorite={this.props.favoritesIds.indexOf(selectedItemId) >= 0}
+              navigator={this.props.navigator}
+              itemData={itemsDataPreload[selectedItemId]}
+            />
+          </View>
+        )}
         <View style={styles.bottomView}>
-          <Icon
-            raised
-            reverse
-            name="my-location"
-            type="material-icons"
-            color={theme.colors.primary}
+          <IconButton
+            imageSource={require("./img/my-location-icon.png")}
             onPress={this.centerOnUser}
-            containerStyle={{
-              opacity:
-                errorInUserLocation !== null || !userLocationLoaded ? 0.5 : 1.0
-            }}
           />
-          <Icon
-            raised
-            reverse
-            name="center-focus-weak"
-            type="material-icons"
-            color={theme.colors.primary}
+          <IconButton
+            imageSource={require("./img/center-focus-icon.png")}
             onPress={this.birdView}
           />
-          <Icon
-            raised
-            reverse
-            name="filter"
-            type="feather"
-            color={theme.colors.primary}
+          <IconButton
+            imageSource={require("./img/filter-icon.png")}
             onPress={this.showFiltersModal}
           />
         </View>
@@ -360,16 +287,16 @@ class MapView extends React.Component<Props, State> {
     );
   }
 }
-
-MapView.navigatorStyle = { navBarHidden: true };
+/* eslint-enable  no-underscore-dangle */
 
 const mapStateToProps = state => ({
-  items: getFilteredItems(state)
+  items: getFilteredItems(state),
+  favoritesIds: getFavoriteItemsIds(state)
 });
 
 export default withTheme(connect(mapStateToProps)(MapView));
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1
   },
@@ -400,19 +327,30 @@ const styles = {
     left: 0,
     right: 0,
     padding: 10,
+    marginBottom: 20,
     backgroundColor: "transparent",
     flexDirection: "row",
     justifyContent: "space-around"
+  },
+  calloutViewContainer: {
+    position: "absolute",
+    top: 60,
+    left: 0,
+    right: 0,
+    padding: 10,
+    backgroundColor: "transparent",
+    flexDirection: "row"
   }
-};
+});
 
 const mapStyles = MapboxGL.StyleSheet.create({
   icon: {
     iconImage: "{icon}",
     iconSize: MapboxGL.StyleSheet.source(
-      [["example", 0.5], ["airport-15", 1.2]],
+      [["marker", 0.1], ["airport-15", 1.2]],
       "icon",
       MapboxGL.InterpolationMode.Categorical
-    )
+    ),
+    textField: "{iconCode}"
   }
 });
