@@ -1,4 +1,5 @@
 // @flow
+
 import React from "react";
 import { View, ScrollView, StyleSheet, Platform } from "react-native";
 import { List, ListItem } from "react-native-elements";
@@ -6,19 +7,26 @@ import { withTheme } from "styled-components";
 import Header from "../../components/Header";
 import { connect } from "react-redux";
 import I18n from "../../i18n";
+import * as actions from "../../actions";
+import type { Dispatch } from "../../actions/types";
 
 type Props = {
   navigator: Object,
   theme: Object,
   activeLangName: string,
-  toggleNotifications: () => void
+  toggleNotifications: () => void,
+  isAuthenticated: boolean,
+  dispatch: Dispatch
 };
 
 const SettingsView = ({
   toggleNotifications,
   theme,
   navigator,
-  activeLangName
+  activeLangName,
+  isAuthenticated,
+  authProvider,
+  dispatch
 }: Props) => (
   <View style={styles.container}>
     <Header
@@ -89,6 +97,14 @@ const SettingsView = ({
           }
         />
       </List>
+      {isAuthenticated && (
+        <List>
+          <ListItem
+            title="Logout"
+            onPress={() => dispatch(actions.logout(authProvider))}
+          />
+        </List>
+      )}
     </ScrollView>
   </View>
 );
@@ -96,7 +112,9 @@ const SettingsView = ({
 SettingsView.navigatorStyle = { navBarHidden: true };
 
 const mapStateToProps = state => ({
-  activeLangName: state.lang.name
+  activeLangName: state.lang.name,
+  isAuthenticated: state.auth.isAuthenticated,
+  authProvider: state.auth.provider
 });
 
 export default withTheme(connect(mapStateToProps)(SettingsView));
@@ -104,6 +122,6 @@ export default withTheme(connect(mapStateToProps)(SettingsView));
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ebe9f1"
+    backgroundColor: "#eeeeee"
   }
 });

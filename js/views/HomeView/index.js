@@ -15,20 +15,19 @@ import styled, { withTheme } from "styled-components";
 import flatten from "lodash/flatten";
 import Reactotron from "reactotron-react-native";
 import debounce from "lodash/debounce";
-import { getImageUrl, IS_ANDROID } from "../utils";
-import { FacebookLoginButton } from "../components/FacebookLoginButton";
-import Header from "../components/Header";
-import { Heading2 } from "../components/common/Text";
-import { getFeaturedItemIds, getFavoriteItemsIds } from "../reducers";
-import ItemThumb from "../components/ItemThumb";
-import { IItem } from "../models";
-import CategoryCard from "../components/CategoryCard";
-import WeekPicsCarrousel from "../components/WeekPicsCarrousel";
-import StyleSheet from "../components/common/F8StyleSheet";
-import getRealm, { itemsToArray } from "../database";
-import I18n from "../i18n";
-import * as actions from "../actions";
-import { geolocationSettings } from "../config";
+import { getImageUrl, IS_ANDROID } from "../../utils";
+import Header from "../../components/Header";
+import { Heading2 } from "../../components/common/Text";
+import { getFeaturedItemIds, getFavoriteItemsIds } from "../../reducers";
+import ItemThumb from "../../components/ItemThumb";
+import { IItem } from "../../models";
+import CategoryCard from "../../components/CategoryCard";
+import WeekPicsCarrousel from "../../components/WeekPicsCarrousel";
+import StyleSheet from "../../components/common/F8StyleSheet";
+import getRealm, { itemsToArray } from "../../database";
+import I18n from "../../i18n";
+import * as actions from "../../actions";
+import { geolocationSettings } from "../../config";
 
 const EAT_CATEGORIES_ID = 30;
 const SLEEP_CATEGORIES_ID = 1;
@@ -222,28 +221,28 @@ class HomeView extends React.Component<Props, State> {
         name: "Gastronomia",
         tab: "EatTab",
         tabIdx: 1,
-        image: require("./img/cover-cake.png")
+        image: require("../img/cover-cake.png")
       },
       {
         id: SLEEP_CATEGORIES_ID,
         name: "Alojamientos",
         tab: "SleepTab",
         tabIdx: 2,
-        image: require("./img/cover-hotel.png")
+        image: require("../img/cover-hotel.png")
       },
       {
         id: TODO_CATEGORIES_ID,
         name: "Actividades",
         tab: "TodoTab",
         tabIdx: 3,
-        image: require("./img/cover-gondolas.png")
+        image: require("../img/cover-gondolas.png")
       },
       {
         id: SERVICES_CATEGORIES_ID,
         name: "Servicios",
         tab: "ServicesTab",
         tabIdx: 4,
-        image: require("./img/cover-services.png")
+        image: require("../img/cover-services.jpg")
       }
     ];
     return (
@@ -328,7 +327,7 @@ class HomeView extends React.Component<Props, State> {
                 resizeMode: "contain",
                 alignSelf: "center"
               }}
-              source={require("./img/logo.png")}
+              source={require("../img/logo.png")}
             />
 
             <Heading2>{I18n.t("discoverPlace")}</Heading2>

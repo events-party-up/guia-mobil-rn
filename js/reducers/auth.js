@@ -5,6 +5,7 @@ import type { Action } from "../actions/types";
 type State = {
   [x: string]: any,
   isAuthenticated: boolean,
+  provider?: "facebook" | "twitter" | "google",
   credentials?: any,
   userProfile?: any
 };
@@ -17,23 +18,29 @@ const auth = (
 ) => {
   switch (action.type) {
     case actions.LOGOUT:
-      return {
-        isAuthenticated: false
-      };
+      return { isAuthenticated: false };
     case actions.SET_FACEBOOK_CREDENTIALS:
       return {
         isAuthenticated: true,
-        credentials: action.payload
-      };
-    case actions.SET_USER_PROFILE:
-      return {
-        ...state,
+        credentials: action.credentials,
+        provider: "facebook",
         userProfile: {
-          id: action.payload.id,
-          raw: action.payload,
-          firstName: action.payload.first_name,
-          lastName: action.payload.last_name,
-          profilePic: action.payload.picture.data.url
+          id: action.profile.id,
+          firstName: action.profile.first_name,
+          lastName: action.profile.last_name,
+          profilePic: action.profile.picture.data.url
+        }
+      };
+    case actions.SET_GOOGLE_CREDENTIALS:
+      return {
+        isAuthenticated: true,
+        credentials: action.credentials,
+        provider: "google",
+        userProfile: {
+          id: action.profile.id,
+          firstName: action.profile.givenName,
+          lastName: action.profile.familyName,
+          profilePic: action.profile.photo
         }
       };
     default:

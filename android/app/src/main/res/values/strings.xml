@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GuiaAnimus</string>
+    <string name="fb_app_id">1812967998727274</string>
+    <string name="fb_login_protocol_scheme">fb1812967998727274</string>
 </resources>

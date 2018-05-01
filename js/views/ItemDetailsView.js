@@ -33,6 +33,7 @@ import CategoriesBreakdrum from "../components/CategoriesBrackdrum";
 import ItemInfoBlock from "../components/ItemInfoBlock";
 import ImageGalleryPreview from "../components/ImageGalleryPreview";
 import IconButton from "../components/common/IconButton";
+import ReviewItemButton from "../components/ReviewItemButton";
 import type { Gallery } from "../reducers/galleries";
 import { toLatLong, getAppleMapsUri, getGoogleMapsUri } from "../utils/maps";
 import {
@@ -64,6 +65,8 @@ type State = {
 };
 
 class ItemDetailsView extends Component<Props, State> {
+  static navigatorStyle = { navBarHidden: true };
+
   state: State = {
     galleryVisible: false,
     activeImageIndex: 0
@@ -98,8 +101,6 @@ class ItemDetailsView extends Component<Props, State> {
       }
     );
   };
-
-  newReviewHandler = () => {};
 
   // onScroll = evt => {
   //   if (evt.nativeEvent.contentOffset.y <= -20) {
@@ -213,22 +214,7 @@ class ItemDetailsView extends Component<Props, State> {
             <MapPreview marker={coord} />
           </View>
           <View style={styles.actionsContainer}>
-            <TouchableOpacity
-              style={styles.actionWrapper}
-              onPress={() => {
-                this.props.navigator.showModal({
-                  screen: "animus.ReviewCreationView",
-                  passProps: {
-                    itemId: this.props.id
-                  }
-                });
-              }}
-            >
-              <IconButton
-                imageSource={require("../components/img/comment_icon.png")}
-              />
-              <Text>Calificar</Text>
-            </TouchableOpacity>
+            <ReviewItemButton navigator={this.props.navigator} itemId={id} />
             <TouchableOpacity
               style={styles.actionWrapper}
               onPress={this.showRouteHandler}
@@ -257,7 +243,6 @@ class ItemDetailsView extends Component<Props, State> {
     );
   }
 }
-ItemDetailsView.navigatorStyle = { navBarHidden: true };
 
 const mapStateToProps = (state, { item }) => {
   if (item) {

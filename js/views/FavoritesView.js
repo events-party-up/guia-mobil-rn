@@ -33,7 +33,7 @@ class FavoritesView extends Component<Props, State> {
     items: []
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { favoriteItemsIds } = this.props;
     getRealm().then(realm => {
       const items = realm.objects("Item");
@@ -48,17 +48,17 @@ class FavoritesView extends Component<Props, State> {
       });
     });
   }
-  keyExtractor = item => item.id;
+
+  keyExtractor = item => `item_{item.id}`;
 
   renderItem = ({ item }) => (
     <ItemThumb
-      key={item.id}
       id={item.id}
       type="large"
       categoryId={item.category_id}
       image={item.image}
       title={item.name}
-      isFavorite={false}
+      hideFavoriteBtn
       coord={item.coord}
       onPress={() =>
         this.props.navigator.push({

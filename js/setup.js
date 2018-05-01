@@ -62,8 +62,7 @@ function setup() {
             navigatorStyle: {
               navBarHidden: true
             },
-            passProps: { id: 30 },
-            navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+            passProps: { id: 30 }
           },
           {
             label: "Dormir",

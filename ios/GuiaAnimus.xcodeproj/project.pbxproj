@@ -66,6 +66,10 @@
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B843C4B5E8B143B39902ED08 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 13831D3A4CFB45B1907D0BD7 /* libRNDeviceInfo.a */; };
 		FA4340A4CBE24E89A301E19E /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 562CD93D14CC469489A413DA /* SimpleLineIcons.ttf */; };
+		F1587CA1F9AF4F38A874E357 /* libRNGoogleSignin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3BA072E423B40A8901DE59B /* libRNGoogleSignin.a */; };
+		62DB6F15CA2643C785764596 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF598F357A834609B8CDAB96 /* SafariServices.framework */; };
+		ABD83F886C4044E2ACF86572 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF573C826A12419A89D8CAE8 /* SystemConfiguration.framework */; };
+		646F026E7627421782CA7B56 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B0A6CA02A404330AE3972E7 /* AddressBook.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -497,6 +501,11 @@
 		DCBEDBBF4EE73498E3A208DE /* libPods-GuiaAnimus.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GuiaAnimus.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4C92291332D4846993A99DC /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		F6E1E45487734FBF845A2EDC /* RealmReact.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RealmReact.xcodeproj; path = "../node_modules/realm/react-native/ios/RealmReact.xcodeproj"; sourceTree = "<group>"; };
+		8A38F0705D534C05A2169072 /* RNGoogleSignin.xcodeproj */ = {isa = PBXFileReference; name = "RNGoogleSignin.xcodeproj"; path = "../node_modules/react-native-google-signin/ios/RNGoogleSignin.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		D3BA072E423B40A8901DE59B /* libRNGoogleSignin.a */ = {isa = PBXFileReference; name = "libRNGoogleSignin.a"; path = "libRNGoogleSignin.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		FF598F357A834609B8CDAB96 /* SafariServices.framework */ = {isa = PBXFileReference; name = "SafariServices.framework"; path = "System/Library/Frameworks/SafariServices.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		AF573C826A12419A89D8CAE8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; name = "SystemConfiguration.framework"; path = "System/Library/Frameworks/SystemConfiguration.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		5B0A6CA02A404330AE3972E7 /* AddressBook.framework */ = {isa = PBXFileReference; name = "AddressBook.framework"; path = "System/Library/Frameworks/AddressBook.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -533,6 +542,10 @@
 				146D756D86484B4ABDBC9525 /* libz.tbd in Frameworks */,
 				9FA4C556E25F4126A184B65E /* libRNI18n.a in Frameworks */,
 				A6196FE6CA41087E68431534 /* libPods-GuiaAnimus.a in Frameworks */,
+				F1587CA1F9AF4F38A874E357 /* libRNGoogleSignin.a in Frameworks */,
+				62DB6F15CA2643C785764596 /* SafariServices.framework in Frameworks */,
+				ABD83F886C4044E2ACF86572 /* SystemConfiguration.framework in Frameworks */,
+				646F026E7627421782CA7B56 /* AddressBook.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -666,6 +679,9 @@
 				9A87F4AA26F943B4926E5E94 /* libc++.tbd */,
 				2E6DBDC3582647E1A0B4F7FF /* libz.tbd */,
 				DCBEDBBF4EE73498E3A208DE /* libPods-GuiaAnimus.a */,
+				FF598F357A834609B8CDAB96 /* SafariServices.framework */,
+				AF573C826A12419A89D8CAE8 /* SystemConfiguration.framework */,
+				5B0A6CA02A404330AE3972E7 /* AddressBook.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -720,6 +736,7 @@
 				AFB359B46FC34AF38F0AB18A /* RNDeviceInfo.xcodeproj */,
 				F6E1E45487734FBF845A2EDC /* RealmReact.xcodeproj */,
 				66BE09790684440E9BAEBD99 /* RNI18n.xcodeproj */,
+				8A38F0705D534C05A2169072 /* RNGoogleSignin.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1525,11 +1542,13 @@
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
+					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
 				);
 				INFOPLIST_FILE = GuiaAnimus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",
@@ -1574,11 +1593,13 @@
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
+					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
 				);
 				INFOPLIST_FILE = GuiaAnimus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",

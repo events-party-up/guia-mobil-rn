@@ -118,7 +118,8 @@ class ReviewCreationView extends Component<Props, State> {
 }
 
 const mapStateToProps = state => ({
-  favoriteItemsIds: getFavoriteItemsIds(state)
+  favoriteItemsIds: getFavoriteItemsIds(state),
+  userProfile: state.auth.userProfile
 });
 
 export default withTheme(connect(mapStateToProps)(ReviewCreationView));

@@ -11,6 +11,7 @@ import SettingsContentView from "./settings/SettingsContentView";
 import FavoritesView from "./FavoritesView";
 import NotificationsView from "./NotificationsView";
 import ReviewCreationView from "./ReviewCreationView";
+import SocialLoginView from "./SocialLoginView";
 
 import MapView from "./Map/MapView";
 
@@ -82,6 +83,12 @@ export function registerScreens(store, Provider) {
   Navigation.registerComponent(
     "animus.ReviewCreationView",
     () => ReviewCreationView,
+    store,
+    Provider
+  );
+  Navigation.registerComponent(
+    "animus.SocialLoginView",
+    () => SocialLoginView,
     store,
     Provider
   );

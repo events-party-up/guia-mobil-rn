@@ -1,28 +1,35 @@
 {
   "project_info": {
-    "project_number": "342741371055",
-    "firebase_url": "https://animus-guiabariloche.firebaseio.com",
-    "project_id": "animus-guiabariloche",
-    "storage_bucket": "animus-guiabariloche.appspot.com"
+    "project_number": "892221673674",
+    "firebase_url": "https://guiaanimus-1523228491156.firebaseio.com",
+    "project_id": "guiaanimus-1523228491156",
+    "storage_bucket": "guiaanimus-1523228491156.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:342741371055:android:0ea5bc32cfc36fba",
+        "mobilesdk_app_id": "1:892221673674:android:0ea5bc32cfc36fba",
         "android_client_info": {
           "package_name": "com.animus.guideapp"
         }
       },
       "oauth_client": [
         {
-          "client_id":
-            "342741371055-4g5g4gqcs7d1aubqndlktgjlbuut9gav.apps.googleusercontent.com",
+          "client_id": "892221673674-na57aa9f38lflr8v5lf6ogd2nrutu5hb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.animus.guideapp",
+            "certificate_hash": "a07205866d9644f0054250a4d0db5b4d2ae56447"
+          }
+        },
+        {
+          "client_id": "892221673674-rhp9es40jpt84gv1ekfg9skjt4dganuj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCvsRCWX7A-OjxXkRp2i8-_3Y9OQWA8gh4"
+          "current_key": "AIzaSyAD1CYJnS_PPZ-l4k0DZJ8pxvJJ5rglZHg"
         }
       ],
       "services": {
@@ -30,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892221673674-rhp9es40jpt84gv1ekfg9skjt4dganuj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

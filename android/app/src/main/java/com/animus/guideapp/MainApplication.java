@@ -16,7 +16,7 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.bridge.NavigationReactPackage;
 import com.airbnb.android.react.maps.MapsPackage;
-
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,7 +64,8 @@ public class MainApplication extends NavigationApplication  {
             new VectorIconsPackage(),
             new MerryPhotoViewPackage(),
             new SnackbarPackage(),
-            new MapsPackage()
+            new MapsPackage(),
+            new RNGoogleSigninPackage() 
     );
   }
 

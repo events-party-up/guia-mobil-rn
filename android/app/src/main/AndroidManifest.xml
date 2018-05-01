@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.animus.guideapp"
     android:versionCode="1"
+    xmlns:tools="http://schemas.android.com/tools"
     android:versionName="1.0">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -65,6 +66,31 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="cadaf92c090d2e079d5aa1c798183910d0abd112" />
+
+  <!--add FacebookActivity-->
+        <activity 
+            tools:replace="android:theme"
+                android:name="com.facebook.FacebookActivity"
+                android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+                android:label="@string/app_name"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <!--add CustomTabActivity-->
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+            <!--reference your fb_app_id-->
+        <meta-data
+                android:name="com.facebook.sdk.ApplicationId"
+                android:value="@string/fb_app_id"/>
 
     </application>
 

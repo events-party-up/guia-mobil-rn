@@ -34,6 +34,7 @@ type Props = {
   activeOpacity: number,
   isFavorite: boolean,
   type: ThumbType,
+  hideFavoriteBtn: boolean,
   userLocation?: {
     latitude: number,
     longitude: number
@@ -106,6 +107,25 @@ class ItemThumb extends React.Component<Props> {
       }
     />
   );
+  renderFavoriteBtn = () => {
+    const { isFavorite, id, hideFavoriteBtn = false } = this.props;
+    if (hideFavoriteBtn) {
+      return null;
+    }
+    return (
+      <TouchableOpacity
+        style={styles.favouriteToggle}
+        onPress={() => toggleFavorite(this.props.dispatch, id, isFavorite)}
+      >
+        <Icon
+          name={isFavorite ? "heart" : "heart-outline"}
+          type="material-community"
+          color="white"
+          size={24}
+        />
+      </TouchableOpacity>
+    );
+  };
 
   render() {
     const {
@@ -114,7 +134,6 @@ class ItemThumb extends React.Component<Props> {
       image,
       title,
       activeOpacity,
-      isFavorite,
       type,
       id,
       stars,
@@ -140,19 +159,7 @@ class ItemThumb extends React.Component<Props> {
         >
           <View style={styles.thumb}>
             {this.renderImage(image, imageWidth, imageHeight)}
-            <TouchableOpacity
-              style={styles.favouriteToggle}
-              onPress={() =>
-                toggleFavorite(this.props.dispatch, id, isFavorite)
-              }
-            >
-              <Icon
-                name={isFavorite ? "heart" : "heart-outline"}
-                type="material-community"
-                color="white"
-                size={24}
-              />
-            </TouchableOpacity>
+            {this.renderFavoriteBtn()}
           </View>
           <CategoryLabel>{category.name.toUpperCase()} </CategoryLabel>
           {this.renderTitle(type, title)}

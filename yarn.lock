@@ -4955,6 +4955,10 @@ react-native-fcm@^14.1.0:
   version "14.1.0"
   resolved "https://registry.yarnpkg.com/react-native-fcm/-/react-native-fcm-14.1.0.tgz#e1b58e041d4cc8bf100206a57bb5182d1324551c"
 
+react-native-google-signin@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/react-native-google-signin/-/react-native-google-signin-0.12.0.tgz#fc549593adbc92ed2a5a683a957f157650ece961"
+
 react-native-hyperlink@^0.0.12:
   version "0.0.12"
   resolved "https://registry.yarnpkg.com/react-native-hyperlink/-/react-native-hyperlink-0.0.12.tgz#07fcd81bdc23da35dafde0546073347398adcaff"
