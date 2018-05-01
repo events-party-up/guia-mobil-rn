@@ -71,25 +71,14 @@ const Header = ({
   let leftIcon = null;
   let _leftItem = null;
   if (navItem && navItem.back) {
-    if (Platform.OS === "ios") {
-      leftIcon = (
-        <Icon
-          name="chevron-thin-left"
-          type="entypo"
-          color={itemsColor}
-          containerStyle={styles.icon}
-        />
-      );
-    } else {
-      leftIcon = (
-        <Icon
-          name="arrow-left"
-          type="feather"
-          color={itemsColor}
-          containerStyle={styles.icon}
-        />
-      );
-    }
+    leftIcon = (
+      <Icon
+        name="chevron-left"
+        type="feather"
+        color={itemsColor}
+        containerStyle={styles.icon}
+      />
+    );
     _leftItem = (
       <TouchableOpacity
         activeOpacity={ICON_ACTIVE_OPACITY}

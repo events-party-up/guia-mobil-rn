@@ -144,8 +144,8 @@ class ItemDetailsView extends Component<Props, State> {
           itemsColor="white"
           extraItems={[
             {
-              icon: "share",
-              iconType: "material-icons",
+              icon: "share-2",
+              iconType: "feather",
               onPress: this.shareItemHandler
             }
           ]}
