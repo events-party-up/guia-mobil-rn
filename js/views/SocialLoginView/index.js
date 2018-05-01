@@ -4,7 +4,7 @@ import { HeaderText, Container } from "./elements";
 import { Text } from "../../components/common/Text";
 import FacebookLoginButton from "../../components/LoginButton/FacebookLoginButton";
 import GoogleLoginButton from "../../components/LoginButton/GoogleLoginButton";
-import TwitterLoginButton from "../../components/TwitterLoginButton";
+// import TwitterLoginButton from "../../components/LoginButton/TwitterLoginButton";
 import { connect } from "react-redux";
 
 class SocialLoginView extends Component {
@@ -59,10 +59,6 @@ class SocialLoginView extends Component {
           <View>
             <FacebookLoginButton />
             <Text style={styles.loginButtonText}>Facebook</Text>
-          </View>
-          <View>
-            <TwitterLoginButton />
-            <Text style={styles.loginButtonText}>Twitter</Text>
           </View>
           <View>
             <GoogleLoginButton />

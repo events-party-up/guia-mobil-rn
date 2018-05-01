@@ -8,3 +8,4 @@ export * from "./chars";
 export * from "./gallery";
 export * from "./weather";
 export * from "./location";
+export * from "./notifications";

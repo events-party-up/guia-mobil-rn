@@ -1,5 +1,6 @@
 // @flow
 import * as actions from "./index";
+import { NOTIFICATION_SEEN } from "./index";
 import type { FacebookProfileData } from "./auth";
 
 type UserProfile = {
@@ -18,6 +19,10 @@ export type Action =
       type: actions.SET_FACEBOOK_CREDENTIALS,
       credentials: { userId: string, token: string },
       profile: FacebookProfileData
+    }
+  | {
+      type: NOTIFICATION_SEEN,
+      notificationId: string | number
     };
 
 export type Dispatch = (

@@ -2,13 +2,18 @@
 import * as actions from "../actions";
 import type { Action } from "../actions/types";
 
-type State = {
-  [x: string]: any,
-  isAuthenticated: boolean,
-  provider?: "facebook" | "twitter" | "google",
-  credentials?: any,
-  userProfile?: any
-};
+export type State =
+  | { isAuthenticated: false }
+  | {
+      isAuthenticated: true,
+      provider: "facebook" | "twitter" | "google",
+      userProfile: {
+        id: string,
+        firstName: string,
+        lastName: string,
+        profilePic: string
+      }
+    };
 
 const auth = (
   state: State = {

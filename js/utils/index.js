@@ -31,11 +31,8 @@ export function parseChars(chars: ?string): number[] {
 export function itemToGeoJSONPoint(item: IItem) {
   return {
     type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: item.coord
-    },
-    properties: item
+    geometry: { type: "Point", coordinates: item.coord },
+    properties: { ...item, icon: "example" }
   };
 }
 
@@ -44,7 +41,7 @@ export const getImageUrl = (image: string) =>
 
 export const distanceToUser = (item: IItem, userLocation: number[]) => {
   console.log(item);
-  
+
   return fromMaps.computeDistanceBetweenPoints(item.coord, userLocation);
 };
 

@@ -2,10 +2,8 @@
 import { applyMiddleware, createStore } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import { AsyncStorage } from "react-native";
-
 import axios from "axios";
 import thunk from "redux-thunk";
-import logger from "redux-logger";
 import apiCallMiddleware from "./apiCallMiddleware";
 import rootReducer from "../reducers";
 import Reactotron from "reactotron-react-native";

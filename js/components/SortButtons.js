@@ -1,25 +1,37 @@
+// @flow
 import React from "react";
-import { Text } from "react-native";
 import { ButtonGroup } from "react-native-elements";
 
-const component1 = () => <Text>A/Z</Text>;
-const component2 = () => <Text>Popular</Text>;
-const component3 = () => <Text>Distancia</Text>;
-const component4 = () => <Text>Precio</Text>;
-
-const SortButtons = ({ activeSorterIndex, onChangeSorter }) => {
-  const buttons = [
-    { element: component1 },
-    { element: component2 },
-    { element: component3 },
-    { element: component4 }
-  ];
+const SortButtons = ({
+  activeSorterIndex,
+  onChangeSorter
+}: {
+  activeSorterIndex: number,
+  onChangeSorter: () => void
+}) => {
+  const buttons = ["A/Z", "POPULAR", "DISTANCIA", "PRECIO"];
+  const textStyle = {
+    color: "white",
+    fontFamily: "nunito",
+    fontSize: 11,
+    fontWeight: "bold"
+  };
   return (
     <ButtonGroup
       onPress={onChangeSorter}
+      innerBorderStyle={{ width: 0, color: "transparent" }}
+      containerBorderRadius={0}
       selectedIndex={activeSorterIndex}
+      buttonStyle={{ backgroundColor: "#0a71b3", marginHorizontal: 4 }}
+      selectedButtonStyle={{ backgroundColor: "#0b99e2" }}
+      textStyle={textStyle}
+      selectedTextStyle={textStyle}
       buttons={buttons}
-      containerStyle={{ height: 40 }}
+      containerStyle={{
+        height: 40,
+        borderWidth: 0,
+        borderColor: "transparent"
+      }}
     />
   );
 };

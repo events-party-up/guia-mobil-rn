@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.azendoo.reactnativesnackbar.SnackbarPackage; 
 import com.crashlytics.android.Crashlytics;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -17,6 +16,7 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.bridge.NavigationReactPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
+import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,16 +56,16 @@ public class MainApplication extends NavigationApplication  {
             new RNI18nPackage(),
             new NavigationReactPackage(),
             new FacebookLoginPackage(),
+            new RNGoogleSigninPackage(),
             new MerryPhotoViewPackage(),
             new RealmReactPackage(),
             new RNDeviceInfo(),
-            new ReactNativePushNotificationPackage(),
+            new ReactNativeOneSignalPackage(),
             new RCTMGLPackage(),
             new VectorIconsPackage(),
             new MerryPhotoViewPackage(),
             new SnackbarPackage(),
-            new MapsPackage(),
-            new RNGoogleSigninPackage() 
+            new MapsPackage()
     );
   }
 

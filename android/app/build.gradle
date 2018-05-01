@@ -1,9 +1,24 @@
-apply plugin: "com.android.application"
-apply plugin: 'io.fabric'
+
+
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/'}
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.8.2, 0.99.99]'
+    }
+}
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+
 }
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
+apply plugin: "com.android.application"
+apply plugin: 'io.fabric'
+
 
 import com.android.build.OutputFile
 
@@ -104,16 +119,16 @@ def enableProguardInReleaseBuilds = false
 android {
     compileSdkVersion 26
 
-    // signingConfigs {
-    //     release {
-    //         if (project.hasProperty('GUIA_RELEASE_STORE_FILE')) {
-    //             storeFile file(GUIA_RELEASE_STORE_FILE)
-    //             storePassword GUIA_RELEASE_STORE_PASSWORD
-    //             keyAlias GUIA_RELEASE_KEY_ALIAS
-    //             keyPassword GUIA_RELEASE_KEY_PASSWORD
-    //         }
-    //     }
-    // }
+    signingConfigs {
+        release {
+            if (project.hasProperty('GUIA_RELEASE_STORE_FILE')) {
+                storeFile file(GUIA_RELEASE_STORE_FILE)
+                storePassword GUIA_RELEASE_STORE_PASSWORD
+                keyAlias GUIA_RELEASE_KEY_ALIAS
+                keyPassword GUIA_RELEASE_KEY_PASSWORD
+            }
+        }
+    }
 
     defaultConfig {
         applicationId "com.animus.guideapp"
@@ -127,8 +142,11 @@ android {
         }
         renderscriptTargetApi 25
         renderscriptSupportModeEnabled true
+        manifestPlaceholders = [onesignal_app_id: "562197c4-a5c1-4f7a-875a-b544d8a8022d",
+                                onesignal_google_project_number: "REMOTE"]
     }
 
+ 
 
     splits {
         abi {
@@ -141,7 +159,7 @@ android {
     buildTypes {
         release {
             // minifyEnabled enableProguardInReleaseBuilds
-            // signingConfig  signingConfigs.release
+            signingConfig  signingConfigs.release
             // proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
@@ -161,9 +179,9 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-onesignal')
     compile project(':react-native-google-signin')
     compile 'com.android.support:multidex:1.0.1'
-    compile project(':react-native-fcm')
     compile project(':react-native-i18n')
     compile project(':react-native-navigation')
     compile project(':react-native-facebook-login')
@@ -171,14 +189,15 @@ dependencies {
     compile project(':mapbox-react-native-mapbox-gl')
     compile project(':realm')
     compile project(':react-native-device-info')
-    compile project(':react-native-push-notification')
     compile project(':react-native-vector-icons')
     compile project(':react-native-snackbar')
     implementation project(':react-native-maps')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.google.android.gms:play-services-base:+"
+    compile "com.google.android.gms:play-services-ads:7.5.0"
     compile "com.google.android.gms:play-services-maps:+"
+    compile "com.google.android.gms:play-services-base:12.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
         transitive = true;

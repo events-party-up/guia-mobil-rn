@@ -70,6 +70,12 @@
 		62DB6F15CA2643C785764596 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF598F357A834609B8CDAB96 /* SafariServices.framework */; };
 		ABD83F886C4044E2ACF86572 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF573C826A12419A89D8CAE8 /* SystemConfiguration.framework */; };
 		646F026E7627421782CA7B56 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B0A6CA02A404330AE3972E7 /* AddressBook.framework */; };
+		294960EB673844C0A388B56B /* libyoga.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5A8E6B9C5A244F7B1832521 /* libyoga.a */; };
+		0AB03A33B2E344DEB7ED8AB3 /* libcxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 698B94A389BA43DAA4E7337F /* libcxxreact.a */; };
+		973675855D7646DC9D4EEED6 /* libjschelpers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B134E175A39438D89B6E218 /* libjschelpers.a */; };
+		855BF1F4399341F68938C39C /* libRNRandomBytes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91BE6C20FFBF4F0398D9EE7D /* libRNRandomBytes.a */; };
+		67070F5C5F254F10857CCBCF /* libRNRandomBytes-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52E5C7E0B3364A9485620737 /* libRNRandomBytes-tvOS.a */; };
+		719DD4BE4B8A4E3F89DFECE9 /* libRCTOneSignal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 965190C19C63492C8BCE98C2 /* libRCTOneSignal.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -506,6 +512,15 @@
 		FF598F357A834609B8CDAB96 /* SafariServices.framework */ = {isa = PBXFileReference; name = "SafariServices.framework"; path = "System/Library/Frameworks/SafariServices.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		AF573C826A12419A89D8CAE8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; name = "SystemConfiguration.framework"; path = "System/Library/Frameworks/SystemConfiguration.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		5B0A6CA02A404330AE3972E7 /* AddressBook.framework */ = {isa = PBXFileReference; name = "AddressBook.framework"; path = "System/Library/Frameworks/AddressBook.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		C853B87AAE1B451BAF50BBC8 /* RNTwitterSignIn.xcodeproj */ = {isa = PBXFileReference; name = "RNTwitterSignIn.xcodeproj"; path = "../node_modules/react-native-twitter-signin/ios/RNTwitterSignIn.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		C5A8E6B9C5A244F7B1832521 /* libyoga.a */ = {isa = PBXFileReference; name = "libyoga.a"; path = "libyoga.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		698B94A389BA43DAA4E7337F /* libcxxreact.a */ = {isa = PBXFileReference; name = "libcxxreact.a"; path = "libcxxreact.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		9B134E175A39438D89B6E218 /* libjschelpers.a */ = {isa = PBXFileReference; name = "libjschelpers.a"; path = "libjschelpers.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		294A9E3AD4D44FD5ADCE4B2B /* RNRandomBytes.xcodeproj */ = {isa = PBXFileReference; name = "RNRandomBytes.xcodeproj"; path = "../node_modules/react-native-randombytes/RNRandomBytes.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		91BE6C20FFBF4F0398D9EE7D /* libRNRandomBytes.a */ = {isa = PBXFileReference; name = "libRNRandomBytes.a"; path = "libRNRandomBytes.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		52E5C7E0B3364A9485620737 /* libRNRandomBytes-tvOS.a */ = {isa = PBXFileReference; name = "libRNRandomBytes-tvOS.a"; path = "libRNRandomBytes-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		A76EF4327A434936B99784FF /* RCTOneSignal.xcodeproj */ = {isa = PBXFileReference; name = "RCTOneSignal.xcodeproj"; path = "../node_modules/react-native-onesignal/ios/RCTOneSignal.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		965190C19C63492C8BCE98C2 /* libRCTOneSignal.a */ = {isa = PBXFileReference; name = "libRCTOneSignal.a"; path = "libRCTOneSignal.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -546,6 +561,12 @@
 				62DB6F15CA2643C785764596 /* SafariServices.framework in Frameworks */,
 				ABD83F886C4044E2ACF86572 /* SystemConfiguration.framework in Frameworks */,
 				646F026E7627421782CA7B56 /* AddressBook.framework in Frameworks */,
+				294960EB673844C0A388B56B /* libyoga.a in Frameworks */,
+				0AB03A33B2E344DEB7ED8AB3 /* libcxxreact.a in Frameworks */,
+				973675855D7646DC9D4EEED6 /* libjschelpers.a in Frameworks */,
+				855BF1F4399341F68938C39C /* libRNRandomBytes.a in Frameworks */,
+				67070F5C5F254F10857CCBCF /* libRNRandomBytes-tvOS.a in Frameworks */,
+				719DD4BE4B8A4E3F89DFECE9 /* libRCTOneSignal.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -737,6 +758,9 @@
 				F6E1E45487734FBF845A2EDC /* RealmReact.xcodeproj */,
 				66BE09790684440E9BAEBD99 /* RNI18n.xcodeproj */,
 				8A38F0705D534C05A2169072 /* RNGoogleSignin.xcodeproj */,
+				C853B87AAE1B451BAF50BBC8 /* RNTwitterSignIn.xcodeproj */,
+				294A9E3AD4D44FD5ADCE4B2B /* RNRandomBytes.xcodeproj */,
+				A76EF4327A434936B99784FF /* RCTOneSignal.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1543,11 +1567,20 @@
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
+					"$(SRCROOT)/../node_modules/react-native-twitter-signin/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-randombytes",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 				);
 				INFOPLIST_FILE = GuiaAnimus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/GuiaAnimus\"",
+					"\"$(SRCROOT)/GuiaAnimus\"",
+					"\"$(SRCROOT)/GuiaAnimus\"",
+					"\"$(SRCROOT)/GuiaAnimus\"",
+					"\"$(SRCROOT)/GuiaAnimus\"",
+					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",
@@ -1594,11 +1627,20 @@
 					"$(SRCROOT)/../node_modules/react-native-navigation/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)/../node_modules/react-native-google-signin/ios/RNGoogleSignin/**",
+					"$(SRCROOT)/../node_modules/react-native-twitter-signin/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-randombytes",
+					"$(SRCROOT)/../node_modules/react-native-onesignal/ios/**",
 				);
 				INFOPLIST_FILE = GuiaAnimus/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/GuiaAnimus\"",
+					"\"$(SRCROOT)/GuiaAnimus\"",
+					"\"$(SRCROOT)/GuiaAnimus\"",
+					"\"$(SRCROOT)/GuiaAnimus\"",
+					"\"$(SRCROOT)/GuiaAnimus\"",
+					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",
 					"\"$(SRCROOT)/GuiaAnimus\"",

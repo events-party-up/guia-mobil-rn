@@ -28,10 +28,6 @@ const IconText = styled.Text`
 
 const ItemMapMarker = ({ icon, isActive = false }: Props) => (
   <View style={styles.markerContainer}>
-    <MarkerImage
-      isActive={isActive}
-      source={require("./img/rect_map_marker.png")}
-    />
     {icon && (
       <IconText isActive={isActive}>
         {String.fromCharCode(parseInt(icon, 16))}
@@ -48,6 +44,10 @@ export default ItemMapMarker;
 const styles = StyleSheet.create({
   markerContainer: {
     alignItems: "center",
-    justifyContent: "flex-start"
+    justifyContent: "center",
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "red"
   }
 });

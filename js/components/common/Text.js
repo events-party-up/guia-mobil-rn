@@ -1,4 +1,5 @@
 // @flow
+
 import * as React from "react";
 import ReactNative from "react-native";
 import StyleSheet from "./F8StyleSheet";
@@ -16,15 +17,15 @@ export function Heading2({ style, ...props }: Object): ReactElement {
 }
 
 export function Heading3({ style, ...props }: Object): ReactElement {
-    return <ReactNative.Text style={[styles.h3, style]} {...props} />;
-  }
+  return <ReactNative.Text style={[styles.h3, style]} {...props} />;
+}
 export function Heading4({ style, ...props }: Object): ReactElement {
   return <ReactNative.Text style={[styles.h4, style]} {...props} />;
 }
 
 const styles = StyleSheet.create({
   text: {
-    fontFamily: F8Fonts.default
+    fontFamily: "nunito"
   },
   h1: {
     fontFamily: F8Fonts.h1,
@@ -33,10 +34,10 @@ const styles = StyleSheet.create({
     color: F8Colors.blue
   },
   h2: {
-    fontFamily: F8Fonts.h2,
+    fontFamily: "nunito",
     fontSize: F8Fonts.normalize(23),
     lineHeight: F8Fonts.lineHeight(27),
-    color: F8Colors.tangaroa,
+    color: "#484848",
     letterSpacing: -0.24
   },
   h3: {
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     color: F8Colors.tangaroa
   },
   p: {
-    fontFamily: F8Fonts.p,
+    fontFamily: "nunito",
     fontSize: F8Fonts.normalize(17),
     lineHeight: F8Fonts.lineHeight(25),
     color: F8Colors.tangaroa
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
     backgroundColor: F8Colors.colorWithAlpha("black", 0.1)
   },
   headerTitle: {
-    fontFamily: F8Fonts.fontWithWeight("helvetica", "semibold"),
+    fontFamily: "nunito",
     ios: { fontSize: 17 },
     android: { fontSize: 20 }
   }

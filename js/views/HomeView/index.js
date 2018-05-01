@@ -1,21 +1,14 @@
 // @flow
 import React from "react";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
-import {
-  View,
-  Button,
-  Text,
-  ScrollView,
-  Image,
-  Dimensions,
-  TouchableOpacity
-} from "react-native";
+import { View, Text, ScrollView, Image, Dimensions } from "react-native";
+import OneSignal from "react-native-onesignal";
 import { connect } from "react-redux";
-import styled, { withTheme } from "styled-components";
+import { withTheme } from "styled-components";
 import flatten from "lodash/flatten";
 import Reactotron from "reactotron-react-native";
 import debounce from "lodash/debounce";
-import { getImageUrl, IS_ANDROID } from "../../utils";
+import { IS_ANDROID } from "../../utils";
 import Header from "../../components/Header";
 import { Heading2 } from "../../components/common/Text";
 import { getFeaturedItemIds, getFavoriteItemsIds } from "../../reducers";
@@ -28,6 +21,8 @@ import getRealm, { itemsToArray } from "../../database";
 import I18n from "../../i18n";
 import * as actions from "../../actions";
 import { geolocationSettings } from "../../config";
+import type { Dispatch } from "../../actions/types";
+import { WeekImagesContainer, Subtitle, WeekImagesHeader } from "./elements";
 
 const EAT_CATEGORIES_ID = 30;
 const SLEEP_CATEGORIES_ID = 1;
@@ -38,58 +33,25 @@ type Props = {
   navigator: Object,
   featuredIds: number[],
   favoritesIds: number[],
-  theme: Object
+  theme: Object,
+  dispatch: Dispatch,
+  weekPics: any[]
 };
 
 type State = {
   featuredItems: IItem[],
-  loading: boolean
+  loading: boolean,
+  isAndroidPermissionGranted: boolean
 };
-
-const Subtitle = styled.Text`
-  color: ${props => props.theme.colors.gray};
-  font-size: 18px;
-  line-height: 18px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-`;
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const CONTAINER_PADDING_H = 15;
 const WIDTH = WINDOW_WIDTH - 2 * CONTAINER_PADDING_H;
 
-const WeekImagesContainer = styled.View`
-  background-color: ${props => props.theme.colors.lightBackground};
-  padding-horizontal: ${CONTAINER_PADDING_H}px;
-  padding-top: 20px;
-  padding-bottom: 40px;
-`;
-
-const WeekImagesHeader = styled(Heading2)`
-  color: ${props => props.theme.colors.gray};
-  padding-vertical: 10px;
-`;
-
 class HomeView extends React.Component<Props, State> {
   static navigatorStyle = {
     drawUnderNavBar: false,
     navBarTranslucent: true
-  };
-
-  static navigatorButtons = {
-    rightButtons: [
-      {
-        title: "Edit", // for a textual button, provide the button title (label)
-        id: "edit", // id for this button, given in onNavigatorEvent(event) to help understand which button was clicked
-        testID: "e2e_rules", // optional, used to locate this view in end-to-end tests
-        disabled: true, // optional, used to disable the button (appears faded and doesn't interact)
-        disableIconTint: true, // optional, by default the image colors are overridden and tinted to navBarButtonColor, set to true to keep the original image colors
-        showAsAction: "ifRoom", // optional, Android only. Control how the button is displayed in the Toolbar. Accepted valued: 'ifRoom' (default) - Show this item as a button in an Action Bar if the system decides there is room for it. 'always' - Always show this item as a button in an Action Bar. 'withText' - When this item is in the action bar, always show it with a text label even if it also has an icon specified. 'never' - Never show this item as a button in an Action Bar.
-        buttonColor: "blue", // Optional, iOS only. Set color for the button (can also be used in setButtons function to set different button style programatically)
-        buttonFontSize: 14, // Set font size for the button (can also be used in setButtons function to set different button style programatically)
-        buttonFontWeight: "600" // Set font weight for the button (can also be used in setButtons function to set different button style programatically)
-      }
-    ]
   };
 
   constructor(props: Props) {
@@ -100,16 +62,37 @@ class HomeView extends React.Component<Props, State> {
   state: State = {
     featuredItems: [],
     loading: true,
-    isFetchingAndroidPermission: true
+    isAndroidPermissionGranted: true
   };
 
   async componentWillMount() {
     if (IS_ANDROID) {
       const isGranted = await MapboxGL.requestAndroidLocationPermissions();
       this.setState({
-        isAndroidPermissionGranted: isGranted,
-        isFetchingAndroidPermission: false
+        isAndroidPermissionGranted: isGranted
       });
+      OneSignal.setLogLevel(7, 0);
+      OneSignal.inFocusDisplaying(2);
+      OneSignal.getPermissionSubscriptionState(
+        (status: {
+          pushToken: string,
+          userId: string,
+          notificationsEnabled: boolean,
+          subscriptionEnabled: boolean,
+          userSubscriptionEnabled: boolean
+        }) => {
+          const { userId, pushToken } = status;
+          this.props.dispatch(actions.registerDeviceToken(pushToken, userId));
+        }
+      );
+      OneSignal.addEventListener(
+        "received",
+        this.onReceivedOneSignalPushNotification
+      );
+      OneSignal.addEventListener(
+        "opened",
+        this.onOpenedOneSignalPushNotification
+      );
     }
   }
 
@@ -120,6 +103,10 @@ class HomeView extends React.Component<Props, State> {
     this.props.dispatch(actions.weekPicsUpdate());
     this.props.dispatch(actions.reviewsUpdate());
     this.props.dispatch(actions.charsUpdate());
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    this.loadFeaturedItems(nextProps.featuredIds);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -137,9 +124,29 @@ class HomeView extends React.Component<Props, State> {
       );
     }
   }
-  componentWillReceiveProps(nextProps: Props) {
-    this.loadFeaturedItems(nextProps.featuredIds);
+
+  componentWillUnmount() {
+    OneSignal.removeEventListener(
+      "received",
+      this.onReceivedOneSignalPushNotification
+    );
+    OneSignal.removeEventListener(
+      "opened",
+      this.onOpenedOneSignalPushNotification
+    );
   }
+
+  onReceivedOneSignalPushNotification = notification => {
+    console.log("Notification received: ", notification);
+    this.props.dispatch(actions.receivePush(notification));
+  };
+
+  onOpenedOneSignalPushNotification = openResult => {
+    console.log("Message: ", openResult.notification.payload.body);
+    console.log("Data: ", openResult.notification.payload.additionalData);
+    console.log("isActive: ", openResult.notification.isAppInFocus);
+    console.log("openResult: ", openResult);
+  };
 
   loadFeaturedItems = featuredItemIds => {
     getRealm().then(realm => {
@@ -215,7 +222,6 @@ class HomeView extends React.Component<Props, State> {
 
   renderCategoriesPreviews = () => {
     const categories = [
-      ,
       {
         id: EAT_CATEGORIES_ID,
         name: "Gastronomia",

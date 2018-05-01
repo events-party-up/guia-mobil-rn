@@ -12,6 +12,7 @@ import weather from "./weather";
 import galleries, * as fromGalleries from "./galleries";
 import lang from "./lang";
 import location from "./location";
+import notifications, * as fromNotifications from "./notifications";
 
 import { ICategory } from "../models";
 
@@ -26,7 +27,8 @@ export default combineReducers({
   galleries,
   weather,
   lang,
-  location
+  location,
+  notifications
 });
 
 type State = {
@@ -35,7 +37,8 @@ type State = {
   reviews: fromReviews.State,
   filters: fromFilters.Filters,
   chars: fromChars.State,
-  galleries: fromGalleries.State
+  galleries: fromGalleries.State,
+  notifications: fromNotifications.State
 };
 
 // state selectors
@@ -109,4 +112,14 @@ export function getCharsWithIds(state: State, idList: number[]) {
 
 export function getGalleryForItem(state: State, itemId: number) {
   return fromGalleries.getGalleryForItem(state.galleries, itemId);
+}
+
+export function getNotificationWithId(
+  state: State,
+  notificationId: number | string
+) {
+  return fromNotifications.getNotificationWithId(
+    state.notifications,
+    notificationId
+  );
 }

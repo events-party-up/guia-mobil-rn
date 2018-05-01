@@ -2,10 +2,12 @@
 import axios from "axios";
 import { GoogleSignin } from "react-native-google-signin";
 import { FBLoginManager } from "react-native-facebook-login";
+import type { Dispatch } from "./types";
+import { ToastAndroid } from "react-native";
+
 export const SET_FACEBOOK_CREDENTIALS = "SET_FACEBOOK_CREDENTIALS";
 export const SET_GOOGLE_CREDENTIALS = "SET_GOOGLE_CREDENTIALS";
 export const SET_USER_PROFILE = "SET_USER_PROFILE";
-import { ToastAndroid } from "react-native";
 
 export type FacebookProfileData = {
   first_name: string,
@@ -46,10 +48,12 @@ export const setGoogleCredentials = (
 });
 
 export const LOGOUT = "LOGOUT";
-export const logout = (provider: "facebook" | "google") => dispatch => {
+export const logout = (provider: "facebook" | "google") => (
+  dispatch: Dispatch
+) => {
   const logoutAction = { type: LOGOUT };
   ToastAndroid.show(
-    "Login out..." + " Provider: " + provider,
+    `${"Login out..." + " Provider: "}${provider}`,
     ToastAndroid.SHORT
   );
   switch (provider) {

@@ -1,6 +1,15 @@
 // @flow
+
 import React, { Component } from "react";
-import { StyleSheet, ScrollView, View, Text, TextInput } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  TextInput,
+  ToastAndroid,
+  Keyboard
+} from "react-native";
 import { connect } from "react-redux";
 import { Rating } from "react-native-elements";
 import { Heading2 } from "../components/common/Text";
@@ -9,14 +18,17 @@ import Header from "../components/Header";
 import ReviewCard from "../components/ReviewCard";
 import { getFavoriteItemsIds } from "../reducers";
 import I18n from "../i18n";
-import { sendItemReview } from "../actions";
+import * as actions from "../actions";
+import type { Dispatch } from "../actions/types";
 
 const STAR_IMAGE = require("../components/img/ratings/star.png");
 const CIRCLE_IMAGE = require("../components/img/ratings/circle.png");
 
 type Props = {
   navigator: Object,
-  theme: Object
+  theme: Object,
+  dispatch: Dispatch,
+  itemId: number
 };
 
 const ViewContainer = styled.View`
@@ -25,8 +37,9 @@ const ViewContainer = styled.View`
 `;
 
 type State = {
-  dataState: string,
-  text: string
+  reviewText: string,
+  starRating?: number,
+  priceRating?: number
 };
 
 class ReviewCreationView extends Component<Props, State> {
@@ -43,15 +56,21 @@ class ReviewCreationView extends Component<Props, State> {
   priceRatingCompleted = rating => {
     this.setState({ priceRating: rating });
   };
-  submitRating = () => {
-    const itemId = this.props.itemId;
-    this.props.dispatch(
+
+  submitRating = async () => {
+    ToastAndroid.show("Review sent!", ToastAndroid.SHORT);
+    Keyboard.dismiss();
+    const { itemId } = this.props;
+    await this.props.dispatch(
       actions.sendItemReview(itemId, {
         comment: this.state.reviewText,
         starRating: this.state.starRating,
         priceRating: this.state.priceRating
       })
     );
+
+    ToastAndroid.show("Review sent!", ToastAndroid.SHORT);
+    this.props.navigator.dismissModal();
   };
 
   render() {
@@ -68,8 +87,8 @@ class ReviewCreationView extends Component<Props, State> {
           }}
           rightItem={{
             layout: "title",
-            title: "PUBLISH",
-            onPress: () => {}
+            title: "Publish",
+            onPress: this.submitRating
           }}
           itemsColor="white"
           backgroundColor={theme.colors.primary}

@@ -80,7 +80,7 @@ class App extends React.Component<Props, State> {
 
   componentDidMount() {
     this.props.dispatch(actions.categoriesUpdate());
-    this.props.dispatch(actions.itemsUpdate());
+    // this.props.dispatch(actions.itemsUpdate());
     this.props.dispatch(actions.itemsLoadFeatured());
     this.props.dispatch(actions.weekPicsUpdate());
     this.props.dispatch(actions.reviewsUpdate());

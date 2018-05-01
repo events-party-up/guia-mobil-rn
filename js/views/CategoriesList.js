@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, FlatList } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import { connect } from "react-redux";
 import styled, { withTheme } from "styled-components";
@@ -52,12 +52,18 @@ class CategoriesList extends Component<Props> {
     }
   };
 
-  renderRow = category => (
+  renderRow = ({ item: category }) => (
     <ListItem
+      hideChevron
       underlayColor="lightgray"
       onPress={() => this.navigateTo(category)}
-      key={category.id}
       title={category.name}
+      containerStyle={{
+        paddingHorizontal: 0
+      }}
+      topDivider={false}
+      bottomDivider={false}
+      titleStyle={{ fontFamily: "nunito", color: "#484848" }}
       leftIcon={<RowIcon icon={category.icon} />}
     />
   );
@@ -77,9 +83,13 @@ class CategoriesList extends Component<Props> {
           titleColor={theme.colors.highContrast}
           itemsColor="white"
         />
-        <ScrollView>
-          <List style={styles.list}>{categories.map(this.renderRow)}</List>
-        </ScrollView>
+
+        <FlatList
+          style={styles.list}
+          data={categories}
+          renderItem={this.renderRow}
+          keyExtractor={category => `category_${category.id}`}
+        />
       </View>
     );
   }
@@ -88,14 +98,9 @@ class CategoriesList extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ebe9f1"
+    backgroundColor: "#ffffff"
   },
-  list: {
-    flex: 1,
-    backgroundColor: "transparent",
-    marginTop: 0,
-    marginBottom: 60
-  },
+  list: {},
   row: {
     height: 40,
     flexDirection: "row",

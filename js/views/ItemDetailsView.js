@@ -65,7 +65,7 @@ type State = {
 };
 
 class ItemDetailsView extends Component<Props, State> {
-  static navigatorStyle = { navBarHidden: true };
+  static navigatorStyle = { navBarHidden: true, tabBarHidden: true };
 
   state: State = {
     galleryVisible: false,

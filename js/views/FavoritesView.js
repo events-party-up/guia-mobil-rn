@@ -89,8 +89,19 @@ class FavoritesView extends Component<Props, State> {
     );
   };
 
+  navigateToMap = () => {
+    this.props.navigator.push({ screen: "animus.MapView" });
+  };
+
   render() {
     const { theme } = this.props;
+    const rightItem = {
+      title: "Map",
+      layout: "icon",
+      icon: "map",
+      type: "map",
+      onPress: this.navigateToMap
+    };
 
     return (
       <ViewContainer style={styles.container}>
@@ -98,11 +109,9 @@ class FavoritesView extends Component<Props, State> {
           title="Favorites"
           backgroundColor={theme.colors.primary}
           titleColor={theme.colors.highContrast}
-          navItem={{
-            back: true,
-            onPress: () => this.props.navigator.pop()
-          }}
+          navItem={{ back: true, onPress: () => this.props.navigator.pop() }}
           itemsColor="white"
+          rightItem={rightItem}
         />
         <ScrollView style={styles.scrollView}>
           {this.renderItemsGrid()}

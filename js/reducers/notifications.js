@@ -1,22 +1,26 @@
 // @flow
+
 import { Platform } from "react-native";
 import type { Action } from "../actions/types";
-import * as actions from "../actions";
+import {
+  LOAD_NOTIFICATIONS_SUCCESS,
+  RECEIVED_PUSH_NOTIFICATION,
+  NOTIFICATION_SEEN
+} from "../actions";
 
 export type Notification = {
+  title: string,
+  content: string,
   id: string,
-  url: ?string,
-  urlTitle: ?string,
-  text: string,
-  time: number,
-  image: ?string
+  imageUrl: string,
+  date: number
 };
 
 export type SeenNotifications = {
   [id: string]: boolean
 };
 
-type State = {
+export type State = {
   enabled: ?boolean, // null = no answer
   registered: boolean,
   push: Array<Notification>,
@@ -35,20 +39,38 @@ export default function notifications(
   action: Action
 ): State {
   switch (action.type) {
-    case actions.LOAD_NOTIFICATIONS_SUCCESS:
+    case LOAD_NOTIFICATIONS_SUCCESS:
       return state;
-    case actions.RECEIVED_PUSH_NOTIFICATION:
+    case RECEIVED_PUSH_NOTIFICATION:
       return {
         ...state,
-        push: append(action.notification, state.push)
+        seen: {
+          ...state.seen,
+          [action.notification.id]: false
+        },
+        push: append({ ...action.notification, date: Date.now() }, state.push)
+      };
+    case NOTIFICATION_SEEN:
+      return {
+        ...state,
+        seen: { ...state.seen, [action.notificationId]: true }
       };
     default:
       return state;
   }
 }
+
 function append(item, list) {
   if (list.find(it => it.id === item.id)) {
     return list;
   }
   return [...list, item];
+}
+
+export function getNotificationWithId(
+  state: State,
+  notificationId: string | number
+): ?Notification {
+  console.log({ state });
+  return state.push.find(notification => notification.id === notificationId);
 }

@@ -27,20 +27,12 @@ platform :android do
 
   desc "Submit a new Beta Build to Crashlytics Beta"
   lane :beta do 
-    # gradle(task: "assembleRelease")
-    sign_apk(
-         alias: "animus argentina",
-         storepass: "AnimuS",
-         keystore_path: "../secrets/animus.jks",
-         keypass: "AnimuS"
-       )
-
-    zipalign(apk_path: "#{lane_context[SharedValues::SIGNED_APK_PATH]}")
-
-    supply(track: 'beta',
-    apk: "#{lane_context[SharedValues::SIGNED_APK_PATH]}"
-      )
-
+     gradle(task: "assembleRelease")
+    crashlytics(
+      api_token: 'cadaf92c090d2e079d5aa1c798183910d0abd112',
+      build_secret: '10b85c36346f8fb128dd5505f1dc627b4003af21f4ccce53e73fe143b21362d2'
+    )
+    
     # sh "your_script.sh"
     # You can also use other beta testing services here
   end

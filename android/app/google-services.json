@@ -15,7 +15,8 @@
       },
       "oauth_client": [
         {
-          "client_id": "892221673674-na57aa9f38lflr8v5lf6ogd2nrutu5hb.apps.googleusercontent.com",
+          "client_id":
+            "892221673674-na57aa9f38lflr8v5lf6ogd2nrutu5hb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.animus.guideapp",
@@ -23,7 +24,8 @@
           }
         },
         {
-          "client_id": "892221673674-rhp9es40jpt84gv1ekfg9skjt4dganuj.apps.googleusercontent.com",
+          "client_id":
+            "892221673674-rhp9es40jpt84gv1ekfg9skjt4dganuj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -40,7 +42,8 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "892221673674-rhp9es40jpt84gv1ekfg9skjt4dganuj.apps.googleusercontent.com",
+              "client_id":
+                "892221673674-rhp9es40jpt84gv1ekfg9skjt4dganuj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
