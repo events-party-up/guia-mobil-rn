@@ -17,7 +17,16 @@ export const getGoogleMapsUri = (from, to) =>
     to.latitude
   },${to.longitude}`;
 
-export const computeDistanceBetweenPoints = (fromPoint, toPoint) => {
+export const computeDistanceBetweenPoints = (
+  fromPoint: number[],
+  toPoint: number[]
+) => {
+  if (!Array.isArray(toPoint)) {
+    throw new Error(
+      `This does not look as an array to me ${JSON.stringify(toPoint)}`
+    );
+  }
+  //longitude, latitude
   const from = turf.point(fromPoint);
   const to = turf.point(toPoint);
 

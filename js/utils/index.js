@@ -39,10 +39,14 @@ export function itemToGeoJSONPoint(item: IItem) {
 export const getImageUrl = (image: string) =>
   `https://bariloche.guiasmoviles.com/uploads/${image}`;
 
-export const distanceToUser = (item: IItem, userLocation: number[]) => {
-  console.log(item);
-
-  return fromMaps.computeDistanceBetweenPoints(item.coord, userLocation);
+export const distanceToUser = (
+  item: IItem,
+  userLocation: { latitude: number, longitude: number }
+) => {
+  return fromMaps.computeDistanceBetweenPoints(item.coord, [
+    userLocation.longitude,
+    userLocation.latitude
+  ]);
 };
 
 export const SORT_AZ = 0;
@@ -58,5 +62,5 @@ export const itemsSorter = {
 
   [SORT_PRICE]: () => (item1, item2) => item1.price - item2.price,
   [SORT_DISTANCE]: userLocation => (item1, item2) =>
-    distanceToUser(item1, userLocation) < distanceToUser(item2, userLocation)
+    distanceToUser(item1, userLocation) - distanceToUser(item2, userLocation)
 };
