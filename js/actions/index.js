@@ -9,3 +9,4 @@ export * from "./gallery";
 export * from "./weather";
 export * from "./location";
 export * from "./notifications";
+export * from "./search";

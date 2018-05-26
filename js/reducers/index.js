@@ -13,6 +13,7 @@ import galleries, * as fromGalleries from "./galleries";
 import lang from "./lang";
 import location from "./location";
 import notifications, * as fromNotifications from "./notifications";
+import search, * as fromSearch from "./search";
 
 import { ICategory } from "../models";
 
@@ -28,7 +29,8 @@ export default combineReducers({
   weather,
   lang,
   location,
-  notifications
+  notifications,
+  search
 });
 
 type State = {
@@ -122,4 +124,8 @@ export function getNotificationWithId(
     state.notifications,
     notificationId
   );
+}
+
+export function getSearchTermsHistory(state: State) {
+  return fromSearch.getSearchTermsHistory(state.search);
 }

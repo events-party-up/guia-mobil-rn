@@ -1,18 +1,35 @@
+// @flow
+
 import React, { Component } from "react";
 import { View, Text, FlatList } from "react-native";
 import { SearchBar, Icon } from "react-native-elements";
 import { withTheme } from "styled-components";
+import { connect } from "react-redux";
+import { sortBy } from "lodash";
+import type { Dispatch } from "redux";
 import Header from "../../components/Header";
 import getRealm, { itemsToArray } from "../../database";
 import ItemThumb from "../../components/ItemThumb";
+import actions from "../../actions";
+import { getSearchTermsHistory } from "../../reducers";
 
-class SearchView extends Component {
+type Props = {
+  dispatch: Dispatch,
+  searchHistory: SearchRecord[],
+  theme: Object,
+  navigator: Object
+};
+
+type State = {
+  isSearching: boolean,
+  searchTerm: string,
+  searchResults: number
+};
+
+class SearchView extends Component<Props, State> {
   static navigatorStyle = { navBarHidden: true, tabBarHidden: true };
-  static defaultProps = {
-    searchHistory: []
-  };
 
-  state = {
+  state: State = {
     isSearching: false,
     searchTerm: "",
     searchResults: 0
@@ -35,12 +52,13 @@ class SearchView extends Component {
           searchResults: itemsToArray(items),
           isSearching: false
         });
+        this.props.dispatch(actions.recordSearchTerm(this.state.searchTerm));
       }
     }
   };
 
   hanndleClearText = () => {
-    this.setState({ isSearching: false, searchTerm: "" });
+    this.setState({ isSearching: false, searchTerm: "", searchResults: [] });
   };
 
   renderEmptySearchHistory = () => {
@@ -64,6 +82,22 @@ class SearchView extends Component {
           <Text>Encontrá restaurantes, hostels y lugares para visitar</Text>
         </View>
       </View>
+    );
+  };
+
+  renderSearchTerm = item => {
+    // TODO: improve this
+    return <View>{item.term}</View>;
+  };
+
+  renderSearchHistoryView = () => {
+    const searchTermsSorted = sortBy(this.props.searchHistory, "searchDate");
+    return (
+      <FlatList
+        data={searchTermsSorted}
+        keyExtractor={item => `search_${item.term}`}
+        renderItem={this.renderSearchTerm}
+      />
     );
   };
 
@@ -144,4 +178,8 @@ class SearchView extends Component {
   }
 }
 
-export default withTheme(SearchView);
+const mapStateToProps = state => ({
+  searchHistory: getSearchTermsHistory(state)
+});
+
+export default connect(mapStateToProps)(withTheme(SearchView));
