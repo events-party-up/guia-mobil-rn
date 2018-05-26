@@ -13,8 +13,10 @@ import NotificationsView from "./NotificationsView";
 import NotificationDetailsView from "./NotificationDetailsView";
 import ReviewCreationView from "./ReviewCreationView";
 import SocialLoginView from "./SocialLoginView";
+import SearchView from "./SearchView";
 
 import MapView from "./Map/MapView";
+import FiltersModal from "./Map/FiltersModal";
 
 export function registerScreens(store, Provider) {
   Navigation.registerComponent("animus.Home", () => HomeView, store, Provider);
@@ -69,6 +71,14 @@ export function registerScreens(store, Provider) {
     store,
     Provider
   );
+
+  Navigation.registerComponent(
+    "animus.FiltersModal",
+    () => FiltersModal,
+    store,
+    Provider
+  );
+
   Navigation.registerComponent(
     "animus.FavoritesView",
     () => FavoritesView,
@@ -98,6 +108,13 @@ export function registerScreens(store, Provider) {
   Navigation.registerComponent(
     "animus.SocialLoginView",
     () => SocialLoginView,
+    store,
+    Provider
+  );
+
+  Navigation.registerComponent(
+    "animus.SearchView",
+    () => SearchView,
     store,
     Provider
   );

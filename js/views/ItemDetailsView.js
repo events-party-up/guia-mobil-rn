@@ -21,7 +21,6 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 import {
   getCategoryChain,
-  getItemWithId,
   getReviewsForItemId,
   getCharsWithIds,
   getGalleryForItem,
@@ -197,8 +196,8 @@ class ItemDetailsView extends Component<Props, State> {
           <CategoriesBreakdrum categoryChain={this.props.categoryChain} />
           <Text style={styles.title}> {name.toUpperCase()}</Text>
           <View style={styles.actionItems}>
-            <Button title="LLamar" primary onPress={this.callPlace} />
-            <Button title="Ver en mapa" primary />
+            <Button title="LLAMAR" primary onPress={this.callPlace} />
+            <Button title="VER EN MAPA" primary />
           </View>
           <ItemInfoBlock {...this.props} />
           <View style={styles.descriptionContainer} />

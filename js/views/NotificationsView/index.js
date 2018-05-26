@@ -1,9 +1,10 @@
 // @flow
 
 import React, { Component } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, Text } from "react-native";
 import { withTheme } from "styled-components";
 import { connect } from "react-redux";
+import { Icon } from "react-native-elements";
 import type { Notification } from "../../reducers/notifications";
 import Header from "../../components/Header";
 import I18n from "../../i18n";
@@ -29,6 +30,27 @@ class NotificationsView extends Component<Props> {
     });
   };
 
+  renderEmptyNotificationsView = notifications => {
+    if (notifications && notifications.length) {
+      return null;
+    }
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <View>
+          <Icon
+            name="notifications-none"
+            type="material-icons"
+            iconStyle={{
+              fontSize: 160,
+              color: "#bababa"
+            }}
+          />
+          <Text>Su lista de notificaciones está vacia</Text>
+        </View>
+      </View>
+    );
+  };
+
   renderNotificationRow = ({ item }) => {
     return (
       <NotificationCard
@@ -38,10 +60,26 @@ class NotificationsView extends Component<Props> {
     );
   };
 
+  renderNotificationList = notifications => {
+    if (notifications && notifications.length) {
+      return (
+        <View style={styles.container}>
+          <FlatList
+            style={styles.container}
+            data={notifications}
+            renderItem={this.renderNotificationRow}
+            keyExtractor={item => `notification_${item.id}`}
+          />
+        </View>
+      );
+    }
+    return null;
+  };
+
   render() {
     const { theme, navigator, notifications } = this.props;
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "white" }}>
         <Header
           leftItem={{
             icon: "window-close",
@@ -53,14 +91,8 @@ class NotificationsView extends Component<Props> {
           titleColor={theme.colors.highContrast}
           itemsColor="white"
         />
-        <View style={styles.container}>
-          <FlatList
-            style={styles.container}
-            data={notifications}
-            renderItem={this.renderNotificationRow}
-            keyExtractor={item => `notification_${item.id}`}
-          />
-        </View>
+        {this.renderEmptyNotificationsView(notifications)}
+        {this.renderNotificationList(notifications)}
       </View>
     );
   }

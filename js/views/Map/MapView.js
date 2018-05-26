@@ -4,7 +4,6 @@ import { View, Dimensions, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import MapboxGL from "@mapbox/react-native-mapbox-gl";
 import GeoViewport from "@mapbox/geo-viewport";
-import { Icon } from "react-native-elements";
 import { withTheme } from "styled-components";
 import sheet from "../../styles/sheet";
 import { IItem } from "../../models";
@@ -175,9 +174,7 @@ class MapView extends React.Component<Props, State> {
   };
 
   showFiltersModal = () => {
-    this.props.navigator.showModal({
-      screen: "FiltersModal"
-    });
+    this.props.navigator.showModal({ screen: "animus.FiltersModal" });
   };
 
   loadDataForItem = async itemId => {

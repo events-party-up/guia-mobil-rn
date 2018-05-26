@@ -299,6 +299,12 @@ class HomeView extends React.Component<Props, State> {
           leftItem={leftItem}
           extraItems={[
             {
+              icon: "search",
+              iconType: "material",
+              onPress: () =>
+                navigator.showModal({ screen: "animus.SearchView" })
+            },
+            {
               icon: "sun",
               iconType: "feather",
               onPress: () =>
@@ -372,7 +378,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  state: state,
+  state,
   isAuthenticated: state.auth.isAuthenticated,
   weekPics: state.weekPics,
   favoritesIds: getFavoriteItemsIds(state),
@@ -386,4 +392,5 @@ const mapStateToProps = state => ({
       ? state.auth.userProfile.profilePic
       : ""
 });
+
 export default withTheme(connect(mapStateToProps)(HomeView));

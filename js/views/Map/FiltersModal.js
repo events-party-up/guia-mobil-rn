@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import { withTheme } from "styled-components";
 import { List, ListItem } from "react-native-elements";
 import type NavigationScreenProp from "react-navigation";
@@ -21,16 +21,16 @@ type Props = Filters & {
   toggleSleepFilter: () => void,
   toggleActivityFilter: () => void,
   toggleServicesFilter: () => void,
-  navigation: NavigationScreenProp
+  theme: Object,
+  navigatior: any
 };
+
 class FiltersModal extends React.Component<Props> {
-  clearFilters = () => {
-    // no op
-  };
+  static navigatorStyle = { navBarHidden: true, tabBarHidden: true };
+
   render() {
     const {
       theme,
-      navigation,
       resetFilters,
       eat,
       sleep,
@@ -42,13 +42,13 @@ class FiltersModal extends React.Component<Props> {
       toggleSleepFilter
     } = this.props;
     return (
-      <View>
+      <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
         <Header
           title="Filtros"
           leftItem={{
             icon: "window-close",
             iconType: "material-community",
-            onPress: () => navigation.goBack(null)
+            onPress: () => this.props.navigator.dismissModal()
           }}
           rightItem={{
             title: "Restablecer",
@@ -66,7 +66,12 @@ class FiltersModal extends React.Component<Props> {
             switched={eat}
             title="Mostrar donde comer"
             onSwitch={toggleEatFilter}
-            switchOnTintColor={theme.colors.primary}
+            switchThumbTintColor={
+              Platform.OS !== "ios" ? theme.colors.primary : null
+            }
+            switchOnTintColor={
+              Platform.OS === "ios" ? theme.colors.primary : null
+            }
           />
           <ListItem
             switchButton
@@ -74,7 +79,12 @@ class FiltersModal extends React.Component<Props> {
             switched={sleep}
             title="Mostrar donde dormir"
             onSwitch={toggleSleepFilter}
-            switchOnTintColor={theme.colors.primary}
+            switchThumbTintColor={
+              Platform.OS !== "ios" ? theme.colors.primary : null
+            }
+            switchOnTintColor={
+              Platform.OS === "ios" ? theme.colors.primary : null
+            }
           />
           <ListItem
             switchButton
@@ -82,15 +92,26 @@ class FiltersModal extends React.Component<Props> {
             switched={activities}
             title="Mostrar actividades"
             onSwitch={toggleActivityFilter}
-            switchOnTintColor={theme.colors.primary}
+            switchThumbTintColor={
+              Platform.OS !== "ios" ? theme.colors.primary : null
+            }
+            switchOnTintColor={
+              Platform.OS === "ios" ? theme.colors.primary : null
+            }
           />
+
           <ListItem
             switchButton
             hideChevron
             switched={services}
             title="Mostrar servicios"
             onSwitch={toggleServicesFilter}
-            switchOnTintColor={theme.colors.primary}
+            switchThumbTintColor={
+              Platform.OS !== "ios" ? theme.colors.primary : null
+            }
+            switchOnTintColor={
+              Platform.OS === "ios" ? theme.colors.primary : null
+            }
           />
         </List>
       </View>

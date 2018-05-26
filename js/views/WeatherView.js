@@ -22,7 +22,8 @@ type Props = {
   icon: string,
   daily: {
     data: Object[]
-  }
+  },
+  currently: Object
 };
 
 const icons = {
@@ -33,7 +34,7 @@ const icons = {
   sleet: require("../components/img/weather/sleet.png"),
   wind: require("../components/img/weather/wind.png"),
   fog: require("../components/img/weather/Fog.png"),
-  cloudy: require("../components/img/weather/Cloudy.png"),
+  cloudy: require("../components/img/weather/cloudy.png"),
   "partly-cloudy-day": require("../components/img/weather/partlycloudy.png"),
   "partly-cloudy-night": require("../components/img/weather/nt_partlycloudy.png")
 };
@@ -44,6 +45,7 @@ const RowView = styled.View`
   justify-content: space-between;
   align-items: center;
 `;
+
 const Hr = styled.View`
   height: 1px;
   background-color: lightgray;
@@ -51,7 +53,7 @@ const Hr = styled.View`
 `;
 
 const SmallIcon = styled.Image`
-  width: 30px;
+  width: 20px;
   height: 20px;
   resize-mode: contain;
 `;
@@ -72,12 +74,17 @@ const SmallCell = styled(Cell)`
   width: 80px;
 `;
 
+const WeatherText = styled(Text)`
+  font-size: 14px;
+  font-family: "nunito";
+  color: #484848;
+`;
+
 class WeatherView extends Component<Props> {
   static navigatorStyle = { navBarHidden: true };
 
   componentDidMount() {
     this.props.dispatch(weatherUpdate());
-
     moment.locale("es-ES");
   }
 
@@ -151,7 +158,9 @@ class WeatherView extends Component<Props> {
               </Text>
             </Cell>
             <Cell>
-              <Text />
+              <SmallIcon
+                source={require("../components/img/weather/cloud_upload.png")}
+              />
               <Text>{todayWeatherData.pressure.toFixed(2)}</Text>
             </Cell>
           </RowView>
@@ -172,19 +181,40 @@ class WeatherView extends Component<Props> {
     return null;
   };
 
-  render() {
-    const {
-      theme,
-      summary,
-      navigator,
-      lastUpdate,
-      temperature,
-      loaded,
-      time,
-      icon,
-      daily
-    } = this.props;
+  renderCurrentWeather = () => {
+    const { currently } = this.props;
+    const { temperature, icon, summary } = currently;
+    return (
+      <CurrentWeather
+        icon={icon}
+        temperature={temperature}
+        summary={summary}
+        loaded
+      />
+    );
+  };
+
+  renderLoaded = () => {
+    const { currently, daily } = this.props;
+    const { time } = currently;
+    // overal day temperature stats
+    const todayTemperatureData = daily.data[0];
     const mTime = moment(time, "X");
+    return (
+      <View>
+        {this.renderCurrentWeather()}
+        <RowView>
+          <WeatherText>{mTime.format("dddd")}</WeatherText>
+        </RowView>
+        {this.renderDetailedInfo(todayTemperatureData)}
+        <Hr />
+        {this.renderBottomView()}
+      </View>
+    );
+  };
+  render() {
+    const { theme, navigator, loaded } = this.props;
+
     return (
       <View style={{ flex: 1 }}>
         <Header
@@ -199,19 +229,7 @@ class WeatherView extends Component<Props> {
           itemsColor="white"
         />
         <ScrollView style={styles.container}>
-          <CurrentWeather
-            icon={icon}
-            temperature={temperature}
-            summary={summary}
-            loaded={loaded}
-          />
-          <RowView>
-            <Text>{mTime.format("dddd")}</Text>
-          </RowView>
-          {/* first row */}
-          {this.renderDetailedInfo()}
-          <Hr />
-          {this.renderBottomView()}
+          {loaded && this.renderLoaded()}
         </ScrollView>
       </View>
     );
@@ -226,7 +244,7 @@ const mapStateToProps = state => {
   if (state.weather.status) {
     props = {
       ...props,
-      ...state.weather.status.currently,
+      currently: state.weather.status.currently,
       daily: state.weather.status.daily,
       loaded: true
     };

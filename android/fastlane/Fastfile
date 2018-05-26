@@ -27,7 +27,6 @@ platform :android do
 
   desc "Submit a new Beta Build to Crashlytics Beta"
   lane :beta do 
-     increment_build_number
      gradle(task: "assembleRelease")
      crashlytics(
       api_token: 'cadaf92c090d2e079d5aa1c798183910d0abd112',
