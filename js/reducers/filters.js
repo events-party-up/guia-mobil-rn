@@ -66,8 +66,6 @@ export default filters;
 export const getActiveCategories = (state: Filters) =>
   Object.keys(state).reduce((acc, key) => {
     if (state[key]) {
-      console.log({ key });
-      console.log({ val: categoryIdMap[key] });
       return [...acc, categoryIdMap[key]];
     }
     return acc;
