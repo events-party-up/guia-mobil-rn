@@ -1,6 +1,6 @@
 // @flow
 import { normalize, schema } from "normalizr";
-import type Axios from "axios";
+import type { Axios } from "axios";
 // Define a users schema
 const picture = new schema.Entity("pictures");
 const gallery = new schema.Array(picture);

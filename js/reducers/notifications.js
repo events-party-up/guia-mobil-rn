@@ -1,12 +1,7 @@
 // @flow
 
 import { Platform } from "react-native";
-import type { Action } from "../actions/types";
-import {
-  LOAD_NOTIFICATIONS_SUCCESS,
-  RECEIVED_PUSH_NOTIFICATION,
-  NOTIFICATION_SEEN
-} from "../actions";
+import type { Action } from "../types/actions";
 
 export type Notification = {
   title: string,
@@ -39,9 +34,7 @@ export default function notifications(
   action: Action
 ): State {
   switch (action.type) {
-    case LOAD_NOTIFICATIONS_SUCCESS:
-      return state;
-    case RECEIVED_PUSH_NOTIFICATION:
+    case "RECEIVED_PUSH_NOTIFICATION":
       return {
         ...state,
         seen: {
@@ -50,7 +43,7 @@ export default function notifications(
         },
         push: append({ ...action.notification, date: Date.now() }, state.push)
       };
-    case NOTIFICATION_SEEN:
+    case "NOTIFICATION_SEEN":
       return {
         ...state,
         seen: { ...state.seen, [action.notificationId]: true }
@@ -71,6 +64,5 @@ export function getNotificationWithId(
   state: State,
   notificationId: string | number
 ): ?Notification {
-  console.log({ state });
   return state.push.find(notification => notification.id === notificationId);
 }

@@ -26,7 +26,7 @@ const addComment = (state: Comment[] = [], action) => {
 };
 
 export type State = {
-  byId: { [id: string]: IReview },
+  byId: { [id: string | number]: IReview },
   allIds: number[],
   byItemId: {
     [id: string]: number[]
@@ -71,7 +71,10 @@ const reviews = combineReducers({ allIds, byId, byItemId });
 
 export default reviews;
 
-export function getReviewsForItemId(state, id: number): IReview[] {
+export function getReviewsForItemId(
+  state: State,
+  id: number | string
+): IReview[] {
   const reviewsIds = state.byItemId[id];
 
   if (reviewsIds) {

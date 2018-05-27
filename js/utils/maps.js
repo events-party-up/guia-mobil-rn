@@ -26,7 +26,7 @@ export const computeDistanceBetweenPoints = (
       `This does not look as an array to me ${JSON.stringify(toPoint)}`
     );
   }
-  //longitude, latitude
+  // longitude, latitude
   const from = turf.point(fromPoint);
   const to = turf.point(toPoint);
 

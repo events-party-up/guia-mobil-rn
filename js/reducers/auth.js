@@ -1,6 +1,6 @@
 // @flow
-import * as actions from "../actions";
-import type { Action } from "../actions/types";
+
+import type { Action } from "../types/actions";
 
 export type State =
   | { isAuthenticated: false }
@@ -15,28 +15,30 @@ export type State =
       }
     };
 
-const auth = (
-  state: State = {
-    isAuthenticated: false
-  },
-  action: Action
-) => {
+const initalState: State = {
+  isAuthenticated: false
+};
+
+function auth(state: State = initalState, action: Action) {
   switch (action.type) {
-    case actions.LOGOUT:
+    case "LOGOUT": {
       return { isAuthenticated: false };
-    case actions.SET_FACEBOOK_CREDENTIALS:
+    }
+    case "SET_FACEBOOK_CREDENTIALS": {
+      const { credentials, profile } = action;
       return {
         isAuthenticated: true,
-        credentials: action.credentials,
+        credentials,
         provider: "facebook",
         userProfile: {
-          id: action.profile.id,
-          firstName: action.profile.first_name,
-          lastName: action.profile.last_name,
-          profilePic: action.profile.picture.data.url
+          id: profile.id,
+          firstName: profile.first_name,
+          lastName: profile.last_name,
+          profilePic: profile.picture.data.url
         }
       };
-    case actions.SET_GOOGLE_CREDENTIALS:
+    }
+    case "SET_GOOGLE_CREDENTIALS":
       return {
         isAuthenticated: true,
         credentials: action.credentials,
@@ -51,6 +53,6 @@ const auth = (
     default:
       return state;
   }
-};
+}
 
 export default auth;

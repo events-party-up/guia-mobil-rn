@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
   Linking,
   Platform,
-  Share,
-  Image
+  Share
 } from "react-native";
 import { connect } from "react-redux";
 import PhotoView from "@merryjs/photo-viewer";
@@ -146,7 +145,7 @@ class ItemDetailsView extends Component<Props, State> {
   };
 
   render() {
-    const { name, description, image, theme, coord, id, reviews } = this.props;
+    const { name, image, theme, coord, id, reviews } = this.props;
     const photos = [
       {
         id: 0,
@@ -252,6 +251,7 @@ const mapStateToProps = (state, { item }) => {
       userLocation: userCoord
     };
   }
+  return {};
 };
 
 export default withTheme(connect(mapStateToProps)(ItemDetailsView));

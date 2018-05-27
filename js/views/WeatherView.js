@@ -17,11 +17,6 @@ type Props = {
   theme: Object,
   loaded: boolean,
   navigator: Object,
-  summary: string,
-  temperature: number,
-  lastUpdate: number,
-  time: number,
-  icon: string,
   daily: {
     data: Object[]
   },

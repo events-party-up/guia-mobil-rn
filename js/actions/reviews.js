@@ -1,9 +1,9 @@
 // @flow
 
 import DeviceInfo from "react-native-device-info";
-import type { State } from "../reducers/auth";
 import { ToastAndroid } from "react-native";
-import type Axios from "axios";
+import type { Axios } from "axios";
+import type { State } from "../reducers/auth";
 
 export const ADD_ITEM_REVIEW = "ADD_ITEM_REVIEW";
 export const ADD_ITEM_REVIEW_SUCCESS = "ADD_ITEM_REVIEW_SUCCESS";
@@ -60,7 +60,7 @@ export const LOAD_REVIEWS_FAILURE = "LOAD_REVIEWS_FAILURE";
 
 export const reviewsUpdate = (options: {}) => ({
   type: LOAD_REVIEWS,
-  apiCall: apiClient => {
+  apiCall: (apiClient: Axios) => {
     return apiClient.get("/update/reviews/0");
   },
   options

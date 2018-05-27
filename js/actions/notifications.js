@@ -1,6 +1,6 @@
 // @flow
 
-import type Axios from "axios";
+import type { Axios } from "axios";
 import DeviceInfo from "react-native-device-info";
 import { Platform } from "react-native";
 

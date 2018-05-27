@@ -3,7 +3,12 @@
 import { GoogleSignin } from "react-native-google-signin";
 import { FBLoginManager } from "react-native-facebook-login";
 import { ToastAndroid } from "react-native";
-import type { Dispatch } from "./types";
+import type { Dispatch } from "redux";
+import type {
+  LogoutAction,
+  SetGoogleCredentialsAction,
+  SetFacebookCredentialsAction
+} from "../types/actions";
 
 export const SET_FACEBOOK_CREDENTIALS = "SET_FACEBOOK_CREDENTIALS";
 export const SET_GOOGLE_CREDENTIALS = "SET_GOOGLE_CREDENTIALS";
@@ -32,7 +37,7 @@ export type GoogleProfileData = {
 export const setFacebookCredentials = (
   credentials: { userId: string, token: string },
   profile: FacebookProfileData
-) => ({
+): SetFacebookCredentialsAction => ({
   type: SET_FACEBOOK_CREDENTIALS,
   credentials,
   profile
@@ -41,16 +46,17 @@ export const setFacebookCredentials = (
 export const setGoogleCredentials = (
   credentials: { userId: string, token: string },
   profile: GoogleProfileData
-) => ({
+): SetGoogleCredentialsAction => ({
   type: SET_GOOGLE_CREDENTIALS,
   credentials,
   profile
 });
 
 export const LOGOUT = "LOGOUT";
+
 export const logout = (provider: "facebook" | "google") => (
   dispatch: Dispatch
-) => {
+): LogoutAction => {
   const logoutAction = { type: LOGOUT };
   ToastAndroid.show("Login out...", ToastAndroid.SHORT);
   switch (provider) {
