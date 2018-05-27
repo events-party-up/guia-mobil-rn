@@ -1,5 +1,5 @@
-// flow-typed signature: a40823cc5da9c510d4c9de2d4e569a40
-// flow-typed version: 10553704de/lodash_v4.x.x/flow_>=v0.63.x
+// flow-typed signature: a47321d987c43f691a3b3cbe9343c20b
+// flow-typed version: 1730310374/lodash_v4.x.x/flow_>=v0.63.x
 
 declare module "lodash" {
   declare type __CurriedFunction1<A, R, AA: A> = (...r: [AA]) => R;
@@ -215,7 +215,7 @@ declare module "lodash" {
     chunk<T>(array?: ?Array<T>, size?: ?number): Array<Array<T>>;
     compact<T, N: ?T>(array?: ?Array<N>): Array<T>;
     concat<T>(base?: ?Array<T>, ...elements: Array<any>): Array<T | any>;
-    difference<T>(array?: ?$ReadOnlyArray<T>, values?: ?$ReadOnlyArray<T>): Array<T>;
+    difference<T>(array?: ?$ReadOnlyArray<T>, ...values: Array<?$ReadOnlyArray<T>>): Array<T>;
     differenceBy<T>(
       array?: ?$ReadOnlyArray<T>,
       values?: ?$ReadOnlyArray<T>,
