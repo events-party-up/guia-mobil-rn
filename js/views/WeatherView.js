@@ -4,6 +4,8 @@ import { View, ScrollView, StyleSheet } from "react-native";
 import styled, { withTheme } from "styled-components";
 import { connect } from "react-redux";
 import moment from "moment";
+import "moment/locale/es";
+import "moment/locale/pt";
 import Header from "../components/Header";
 import CurrentWeather from "../components/WeatherView/CurrentWeather";
 import { Text } from "../components/common/Text";
@@ -85,7 +87,7 @@ class WeatherView extends Component<Props> {
 
   componentDidMount() {
     this.props.dispatch(weatherUpdate());
-    moment.locale("es-ES");
+    moment.locale("es");
   }
 
   renderBottomView = () => {
